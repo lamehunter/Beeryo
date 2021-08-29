@@ -13,6 +13,8 @@
 		B750530026DBFE660040887E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B75052FF26DBFE660040887E /* Preview Assets.xcassets */; };
 		B750530226DBFE660040887E /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750530126DBFE660040887E /* Persistence.swift */; };
 		B750530526DBFE660040887E /* Beeryo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B750530326DBFE660040887E /* Beeryo.xcdatamodeld */; };
+		B750530F26DBFEDD0040887E /* RecipeEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750530D26DBFEDD0040887E /* RecipeEntity+CoreDataClass.swift */; };
+		B750531026DBFEDD0040887E /* RecipeEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750530E26DBFEDD0040887E /* RecipeEntity+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		B750530126DBFE660040887E /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		B750530426DBFE660040887E /* Beeryo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Beeryo.xcdatamodel; sourceTree = "<group>"; };
 		B750530626DBFE660040887E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B750530D26DBFEDD0040887E /* RecipeEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecipeEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		B750530E26DBFEDD0040887E /* RecipeEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecipeEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,12 +60,12 @@
 		B75052F726DBFE660040887E /* Beeryo */ = {
 			isa = PBXGroup;
 			children = (
+				B750530C26DBFE750040887E /* Models */,
 				B75052F826DBFE660040887E /* BeeryoApp.swift */,
 				B75052FA26DBFE660040887E /* ContentView.swift */,
 				B75052FC26DBFE660040887E /* Assets.xcassets */,
 				B750530126DBFE660040887E /* Persistence.swift */,
 				B750530626DBFE660040887E /* Info.plist */,
-				B750530326DBFE660040887E /* Beeryo.xcdatamodeld */,
 				B75052FE26DBFE660040887E /* Preview Content */,
 			);
 			path = Beeryo;
@@ -73,6 +77,16 @@
 				B75052FF26DBFE660040887E /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B750530C26DBFE750040887E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B750530D26DBFEDD0040887E /* RecipeEntity+CoreDataClass.swift */,
+				B750530E26DBFEDD0040887E /* RecipeEntity+CoreDataProperties.swift */,
+				B750530326DBFE660040887E /* Beeryo.xcdatamodeld */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,6 +158,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B750531026DBFEDD0040887E /* RecipeEntity+CoreDataProperties.swift in Sources */,
+				B750530F26DBFEDD0040887E /* RecipeEntity+CoreDataClass.swift in Sources */,
 				B750530226DBFE660040887E /* Persistence.swift in Sources */,
 				B750530526DBFE660040887E /* Beeryo.xcdatamodeld in Sources */,
 				B75052FB26DBFE660040887E /* ContentView.swift in Sources */,
