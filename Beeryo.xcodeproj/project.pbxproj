@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B747321926DD661400591CB0 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B747321826DD661400591CB0 /* SplashView.swift */; };
+		B747321B26DD664500591CB0 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B747321A26DD664500591CB0 /* MainMenuView.swift */; };
+		B747321D26DD672300591CB0 /* ContentViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B747321C26DD672300591CB0 /* ContentViewTest.swift */; };
 		B75052F926DBFE660040887E /* BeeryoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75052F826DBFE660040887E /* BeeryoApp.swift */; };
 		B75052FB26DBFE660040887E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75052FA26DBFE660040887E /* ContentView.swift */; };
 		B75052FD26DBFE660040887E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B75052FC26DBFE660040887E /* Assets.xcassets */; };
@@ -19,6 +22,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B747321826DD661400591CB0 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		B747321A26DD664500591CB0 /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
+		B747321C26DD672300591CB0 /* ContentViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewTest.swift; sourceTree = "<group>"; };
 		B75052F526DBFE660040887E /* Beeryo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beeryo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B75052F826DBFE660040887E /* BeeryoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeryoApp.swift; sourceTree = "<group>"; };
 		B75052FA26DBFE660040887E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -43,6 +49,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B747321E26DD6A2800591CB0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		B75052EC26DBFE650040887E = {
 			isa = PBXGroup;
 			children = (
@@ -62,6 +75,7 @@
 		B75052F726DBFE660040887E /* Beeryo */ = {
 			isa = PBXGroup;
 			children = (
+				B747321E26DD6A2800591CB0 /* Resources */,
 				B750531126DC04F50040887E /* Views */,
 				B750530C26DBFE750040887E /* Models */,
 				B75052F826DBFE660040887E /* BeeryoApp.swift */,
@@ -96,6 +110,9 @@
 			children = (
 				B75052FA26DBFE660040887E /* ContentView.swift */,
 				B750531226DC051D0040887E /* AddRecipeView.swift */,
+				B747321826DD661400591CB0 /* SplashView.swift */,
+				B747321A26DD664500591CB0 /* MainMenuView.swift */,
+				B747321C26DD672300591CB0 /* ContentViewTest.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -169,7 +186,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B747321D26DD672300591CB0 /* ContentViewTest.swift in Sources */,
 				B750531326DC051D0040887E /* AddRecipeView.swift in Sources */,
+				B747321B26DD664500591CB0 /* MainMenuView.swift in Sources */,
+				B747321926DD661400591CB0 /* SplashView.swift in Sources */,
 				B750531026DBFEDD0040887E /* RecipeEntity+CoreDataProperties.swift in Sources */,
 				B750530F26DBFEDD0040887E /* RecipeEntity+CoreDataClass.swift in Sources */,
 				B750530226DBFE660040887E /* Persistence.swift in Sources */,

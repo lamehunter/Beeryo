@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddRecipeView: View {
   @Environment(\.managedObjectContext) private var viewContext
-  @State var recipeName: String
+  @State var recipeName: String = ""
   
     var body: some View {
       VStack{
@@ -28,6 +28,6 @@ struct AddRecipeView: View {
 
 struct AddRecipeView_Previews: PreviewProvider {
     static var previews: some View {
-      AddRecipeView(recipeName: "beername")
+      AddRecipeView()
     }
 }
