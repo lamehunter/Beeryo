@@ -48,6 +48,6 @@ struct MenuRowView : View {
 
 struct MainMenuView_Previews: PreviewProvider {
   static var previews: some View {
-    MainMenuView()
+    MainMenuView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
   }
 }

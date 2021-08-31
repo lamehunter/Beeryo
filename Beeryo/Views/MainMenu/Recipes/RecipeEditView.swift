@@ -9,21 +9,25 @@ import SwiftUI
 
 struct RecipeEditView: View {
   @Environment(\.managedObjectContext) private var viewContext
+  @Environment(\.presentationMode) var presentationMode
+  
   @State var recipeName: String = ""
-  @State var batchSize: Float = 0.0
+  @State var recipeStyle: String = ""
+  @State var recipeBatchSize: String = ""
   
   var body: some View {
     VStack{
       Header()
       RowTextFieldUnderlined(text: "Name", data: $recipeName)
-      RowTextFieldUnderlined(text: "Style", data: $recipeName)
-      RowTextFieldUnderlined(text: "Batch size", data: $recipeName)
+      RowTextFieldUnderlined(text: "Style", data: $recipeStyle)
+      RowTextFieldUnderlined(text: "Batch size", data: $recipeBatchSize)
     }
     .padding()
     .navigationBarItems(trailing: Button(action: {
-      
+      RecipeEntity.createWith(recipeName: recipeName, using: viewContext)
+      presentationMode.wrappedValue.dismiss()
     }) {
-      Text("SaveButton")
+      Text("Save")
     })
     
   }

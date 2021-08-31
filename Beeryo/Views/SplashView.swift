@@ -19,7 +19,7 @@ struct SplashView: View {
       }
     }
     .onAppear {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
         withAnimation {
           self.isMainMenuActive = true
         }
@@ -64,6 +64,6 @@ struct SplashViewContents : View {
 
 struct SplashView_Previews: PreviewProvider {
   static var previews: some View {
-    SplashView()
+    SplashView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
   }
 }
