@@ -18,7 +18,8 @@
 		B750530526DBFE660040887E /* Beeryo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B750530326DBFE660040887E /* Beeryo.xcdatamodeld */; };
 		B750530F26DBFEDD0040887E /* RecipeEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750530D26DBFEDD0040887E /* RecipeEntity+CoreDataClass.swift */; };
 		B750531026DBFEDD0040887E /* RecipeEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750530E26DBFEDD0040887E /* RecipeEntity+CoreDataProperties.swift */; };
-		B750531326DC051D0040887E /* AddRecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750531226DC051D0040887E /* AddRecipeView.swift */; };
+		B750531326DC051D0040887E /* RecipeEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750531226DC051D0040887E /* RecipeEditView.swift */; };
+		B782145326DD887900BE916E /* RecipesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B782145226DD887900BE916E /* RecipesView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,7 +36,8 @@
 		B750530626DBFE660040887E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B750530D26DBFEDD0040887E /* RecipeEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecipeEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B750530E26DBFEDD0040887E /* RecipeEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecipeEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		B750531226DC051D0040887E /* AddRecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecipeView.swift; sourceTree = "<group>"; };
+		B750531226DC051D0040887E /* RecipeEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeEditView.swift; sourceTree = "<group>"; };
+		B782145226DD887900BE916E /* RecipesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,12 +111,29 @@
 			isa = PBXGroup;
 			children = (
 				B75052FA26DBFE660040887E /* ContentView.swift */,
-				B750531226DC051D0040887E /* AddRecipeView.swift */,
-				B747321826DD661400591CB0 /* SplashView.swift */,
-				B747321A26DD664500591CB0 /* MainMenuView.swift */,
 				B747321C26DD672300591CB0 /* ContentViewTest.swift */,
+				B747321826DD661400591CB0 /* SplashView.swift */,
+				B782145426DD88CE00BE916E /* MainMenu */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		B782145426DD88CE00BE916E /* MainMenu */ = {
+			isa = PBXGroup;
+			children = (
+				B747321A26DD664500591CB0 /* MainMenuView.swift */,
+				B782145526DD88E000BE916E /* Recipes */,
+			);
+			path = MainMenu;
+			sourceTree = "<group>";
+		};
+		B782145526DD88E000BE916E /* Recipes */ = {
+			isa = PBXGroup;
+			children = (
+				B782145226DD887900BE916E /* RecipesView.swift */,
+				B750531226DC051D0040887E /* RecipeEditView.swift */,
+			);
+			path = Recipes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -187,7 +206,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B747321D26DD672300591CB0 /* ContentViewTest.swift in Sources */,
-				B750531326DC051D0040887E /* AddRecipeView.swift in Sources */,
+				B750531326DC051D0040887E /* RecipeEditView.swift in Sources */,
 				B747321B26DD664500591CB0 /* MainMenuView.swift in Sources */,
 				B747321926DD661400591CB0 /* SplashView.swift in Sources */,
 				B750531026DBFEDD0040887E /* RecipeEntity+CoreDataProperties.swift in Sources */,
@@ -195,6 +214,7 @@
 				B750530226DBFE660040887E /* Persistence.swift in Sources */,
 				B750530526DBFE660040887E /* Beeryo.xcdatamodeld in Sources */,
 				B75052FB26DBFE660040887E /* ContentView.swift in Sources */,
+				B782145326DD887900BE916E /* RecipesView.swift in Sources */,
 				B75052F926DBFE660040887E /* BeeryoApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
