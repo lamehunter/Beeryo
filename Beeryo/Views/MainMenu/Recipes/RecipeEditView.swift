@@ -11,9 +11,20 @@ struct RecipeEditView: View {
   @Environment(\.managedObjectContext) private var viewContext
   @Environment(\.presentationMode) var presentationMode
   
+  @FetchRequest(entity: RecipeEntity.entity(),
+                sortDescriptors: [],
+                animation: .default)
+  private var items: FetchedResults<RecipeEntity>
+  
   @State var recipeName: String = ""
   @State var recipeStyle: String = ""
   @State var recipeBatchSize: String = ""
+  @State var showAlert: Bool = false
+  @State var alertText = ""
+  
+  init(valueee: String) {
+    _recipeName = State(initialValue: valueee)
+  }
   
   var body: some View {
     VStack{
@@ -24,12 +35,26 @@ struct RecipeEditView: View {
     }
     .padding()
     .navigationBarItems(trailing: Button(action: {
-      RecipeEntity.createWith(recipeName: recipeName, using: viewContext)
-      presentationMode.wrappedValue.dismiss()
+            
+      if (recipeName == ""){
+        alertText = "Name field can't be empty"
+        showAlert = true
+      }
+      else if (items.filter({$0.name == recipeName}).count >= 1){
+        self.alertText = "Recipe name already exist"
+        showAlert = true
+      }
+      else {
+        RecipeEntity.createWith(recipeName: recipeName, using: viewContext)
+        presentationMode.wrappedValue.dismiss()
+      }
+      
     }) {
       Text("Save")
+    }.alert(isPresented: $showAlert, content: {
+      Alert(title: Text("Text Field"), message: Text(alertText), dismissButton: .destructive(Text("Dismiss")))
     })
-    
+    )
   }
 }
 
@@ -61,7 +86,7 @@ struct Header: View {
 
 struct RecipeEditView_Previews: PreviewProvider {
   static var previews: some View {
-    RecipeEditView()
+    RecipeEditView(valueee: "Mkay")
       .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
   }
 }

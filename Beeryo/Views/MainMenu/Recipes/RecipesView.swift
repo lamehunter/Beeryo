@@ -11,33 +11,38 @@ import SwiftUI
 struct RecipesView: View {
   @Environment(\.managedObjectContext) private var viewContext
   @State var isNewRecipeVisible = false
-  var fetchRequest = RecipeEntity.fetchRequest1()
+  
+  //var fetchRequest = RecipeEntity.fetchRequest1()
   
   @FetchRequest(entity: RecipeEntity.entity(),
                 sortDescriptors: [],
                 animation: .default)
+  
+  
   private var items: FetchedResults<RecipeEntity>
   
   var body: some View {
-    NavigationLink(
-      destination: RecipeEditView(),
-      isActive: $isNewRecipeVisible
-    ) {
-      EmptyView()
-    }
-    
-    List {
-      
-      ForEach(items){item in
-        NavigationLink(item.name!, destination: RecipeEditView())
+    VStack{
+      NavigationLink(
+        destination: RecipeEditView(valueee: ""),
+        isActive: $isNewRecipeVisible
+      ) {
+        EmptyView()
       }
-      NavigationLink("Recipe 1", destination: RecipeEditView())
-      NavigationLink("Recipe 2", destination: RecipeEditView())
+      
+      List {
+        
+        ForEach(items){item in
+          NavigationLink(item.name!, destination: RecipeEditView(valueee: item.name!))
+        }
+        NavigationLink("Recipe 1", destination: RecipeEditView(valueee: "Recipe1"))
+        NavigationLink("Recipe 2", destination: RecipeEditView(valueee: "Recip2"))
+      }
+      .navigationTitle("My Recipes")
+      .navigationViewStyle(DefaultNavigationViewStyle())
+      .navigationBarItems(
+        trailing: NavigationBarRightButtonView(isNewRecipeVisible: $isNewRecipeVisible))
     }
-    .navigationTitle("My Recipes")
-    .navigationViewStyle(DefaultNavigationViewStyle())
-    .navigationBarItems(
-      trailing: NavigationBarRightButtonView(isNewRecipeVisible: $isNewRecipeVisible))
   }
 }
 
