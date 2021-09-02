@@ -19,6 +19,9 @@ struct RecipeEditView: View {
   @State var recipeName: String = ""
   @State var recipeStyle: String = ""
   @State var recipeBatchSize: String = ""
+  @State var recipeOG: String = ""
+  @State var recipeFG: String = ""
+  
   @State var showAlert: Bool = false
   @State var alertText = ""
   
@@ -27,11 +30,24 @@ struct RecipeEditView: View {
   }
   
   var body: some View {
-    VStack{
-      Header()
-      RowTextFieldUnderlined(text: "Name", data: $recipeName)
-      RowTextFieldUnderlined(text: "Style", data: $recipeStyle)
-      RowTextFieldUnderlined(text: "Batch size", data: $recipeBatchSize)
+    VStack (alignment: .center){
+      Section(header: SectionHeader(title: "General")){
+        RowTextFieldUnderlined(text: "Name", data: $recipeName)
+        RowTextFieldUnderlined(text: "Style", data: $recipeStyle)
+        RowTextFieldUnderlined(text: "Batch size", data:
+                               $recipeBatchSize)
+        RowTextFieldUnderlined(text: "OG", data: $recipeStyle)
+        RowTextFieldUnderlined(text: "FG", data: $recipeBatchSize)
+          .padding(.bottom, 20)
+      }
+      
+      Section(header: SectionHeader(title: "Ingredients")){
+        RowTextFieldUnderlined(text: "Name", data: $recipeName)
+        RowTextFieldUnderlined(text: "Style", data: $recipeStyle)
+        RowTextFieldUnderlined(text: "Batch size", data: $recipeBatchSize)
+          .padding(.bottom, 20)
+      }
+     
     }
     .padding()
     .navigationBarItems(trailing: Button(action: {
@@ -77,10 +93,28 @@ struct RowTextFieldUnderlined: View {
   }
 }
 
-struct Header: View {
+struct SectionHeader: View {
+  let title: String
+  let imageSize: CGFloat = 20
+  let fontColor = Color.black
+  let backgroundColor = Color.gray.opacity(0.1)
+  let headerPadding: CGFloat = 5
+  
   var body: some View {
-    Text("Recipe Details")
-      .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+    HStack  {
+      Spacer()
+      Image(systemName: "highlighter")
+        .resizable()
+        .frame(width: imageSize, height: imageSize)
+      Text(title)
+        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+      Spacer()
+    }
+    .padding(headerPadding)
+    .foregroundColor(fontColor)
+    .background(RoundedRectangle(cornerRadius: 10)
+                  .foregroundColor(backgroundColor))
+    
   }
 }
 

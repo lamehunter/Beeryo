@@ -35,8 +35,8 @@ struct RecipesView: View {
         ForEach(items){item in
           NavigationLink(item.name!, destination: RecipeEditView(valueee: item.name!))
         }
-        NavigationLink("Recipe 1", destination: RecipeEditView(valueee: "Recipe1"))
-        NavigationLink("Recipe 2", destination: RecipeEditView(valueee: "Recip2"))
+        //NavigationLink("Recipe 1", destination: RecipeEditView(valueee: "Recipe1"))
+        //NavigationLink("Recipe 2", destination: RecipeEditView(valueee: "Recip2"))
       }
       .navigationTitle("My Recipes")
       .navigationViewStyle(DefaultNavigationViewStyle())
