@@ -21,6 +21,9 @@ struct RecipeEditView: View {
   @State var recipeBatchSize: String = ""
   @State var recipeOG: String = ""
   @State var recipeFG: String = ""
+  @State var recipeMalts: String = ""
+  @State var recipeHops: String = ""
+  @State var recipeYeast: String = ""
   
   @State var showAlert: Bool = false
   @State var alertText = ""
@@ -30,65 +33,110 @@ struct RecipeEditView: View {
   }
   
   var body: some View {
-    VStack (alignment: .center){
-      Section(header: SectionHeader(title: "General")){
-        RowTextFieldUnderlined(text: "Name", data: $recipeName)
-        RowTextFieldUnderlined(text: "Style", data: $recipeStyle)
-        RowTextFieldUnderlined(text: "Batch size", data:
-                               $recipeBatchSize)
-        RowTextFieldUnderlined(text: "OG", data: $recipeStyle)
-        RowTextFieldUnderlined(text: "FG", data: $recipeBatchSize)
-          .padding(.bottom, 20)
+    VStack {
+      VStack (alignment: .center){
+        Section(header: SectionHeader(title: "General")){
+          generalSectionRow(title: "Name", textFieldContent: "", isTextEditEnabled: true, bindingValue: $recipeName)
+          generalSectionRow(title: "Style", textFieldContent: "", isTextEditEnabled: true, bindingValue: $recipeStyle)
+          generalSectionRow(title: "Batch size", textFieldContent: "",isTextEditEnabled: true, bindingValue:
+                              $recipeBatchSize)
+          generalSectionRow(title: "OG", textFieldContent: "", isTextEditEnabled: true, bindingValue:  $recipeOG)
+          generalSectionRow(title: "FG", textFieldContent: "", isTextEditEnabled: true, bindingValue:  $recipeFG)
+            .padding(.bottom, 20)
+        }
+        
+        Section(header: SectionHeader(title: "Ingredients")){
+          ingredientsSectionRow(title: "Malts", bindingValue: $recipeMalts)
+          ingredientsSectionRow(title: "Hops", bindingValue: $recipeHops)
+          ingredientsSectionRow(title: "Yeast", bindingValue: $recipeYeast)
+            .padding(.bottom, 20)
+        }
       }
+      .padding()
+      .navigationTitle("Recipe Details")
+      .navigationBarItems(trailing: Button(action: {
+        
+        if (recipeName == ""){
+          alertText = "Name field can't be empty"
+          showAlert = true
+        }
+        else if (items.filter({$0.name == recipeName}).count >= 1){
+          self.alertText = "Recipe name already exist"
+          showAlert = true
+        }
+        else {
+          RecipeEntity.createWith(recipeName: recipeName, using: viewContext)
+          presentationMode.wrappedValue.dismiss()
+        }
+        
+      }) {
+        Text("Save")
+      }
+      .alert(isPresented: $showAlert, content: {
+        Alert(title: Text("Text Field"), message: Text(alertText), dismissButton: .destructive(Text("Dismiss")))
+      }))
       
-      Section(header: SectionHeader(title: "Ingredients")){
-        RowTextFieldUnderlined(text: "Name", data: $recipeName)
-        RowTextFieldUnderlined(text: "Style", data: $recipeStyle)
-        RowTextFieldUnderlined(text: "Batch size", data: $recipeBatchSize)
-          .padding(.bottom, 20)
-      }
-     
+      Spacer()
     }
-    .padding()
-    .navigationBarItems(trailing: Button(action: {
-            
-      if (recipeName == ""){
-        alertText = "Name field can't be empty"
-        showAlert = true
-      }
-      else if (items.filter({$0.name == recipeName}).count >= 1){
-        self.alertText = "Recipe name already exist"
-        showAlert = true
-      }
-      else {
-        RecipeEntity.createWith(recipeName: recipeName, using: viewContext)
-        presentationMode.wrappedValue.dismiss()
-      }
-      
-    }) {
-      Text("Save")
-    }.alert(isPresented: $showAlert, content: {
-      Alert(title: Text("Text Field"), message: Text(alertText), dismissButton: .destructive(Text("Dismiss")))
-    })
-    )
   }
 }
 
-struct RowTextFieldUnderlined: View {
-  var text: String
-  @Binding var data: String
+struct generalSectionRow: View {
+  var title: String
+  var textFieldContent: String
+  var isTextEditEnabled: Bool
+  @Binding var bindingValue: String
   var titleTextFrameSizeH: CGFloat = 80
   var titleTextFrameSizeV: CGFloat = 20
   
   var body: some View {
     HStack{
-      Text(text)
-        .frame(width: titleTextFrameSizeH, height: titleTextFrameSizeV, alignment: .leading)
-      TextField(text, text: $data)
+      Text(title)
+        .frame(width: titleTextFrameSizeH,
+               height: titleTextFrameSizeV,
+               alignment: .leading)
+      TextField(textFieldContent,
+                text: $bindingValue)
+        .disabled(!isTextEditEnabled)
         .overlay(VStack{
                   Divider()
                     .background(Color.red)
                     .offset(x: 0, y: 15)})
+    }
+  }
+}
+
+struct ingredientsSectionRow: View {
+  var title: String
+  @Binding var bindingValue: String
+  
+  var body: some View {
+    HStack {
+      generalSectionRow(title: title,
+                        textFieldContent: "->",
+                        isTextEditEnabled: false,
+                        bindingValue: $bindingValue)
+      addOrRemoveButton()
+    }
+  }
+}
+
+struct addOrRemoveButton: View {
+  let imageSystemName = "plusminus"
+  @State var isAddIngredientsViewActive = false
+  
+  var body: some View {
+    NavigationLink(
+      destination: AddIngredientsView(),
+      isActive: $isAddIngredientsViewActive
+    ) {
+      Button(action: {
+        isAddIngredientsViewActive = true
+      }) {
+        Image(systemName: imageSystemName)
+          .resizable()
+          .frame(width: 15, height: 15)
+      }
     }
   }
 }

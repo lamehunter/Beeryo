@@ -19,6 +19,14 @@
 		B750530F26DBFEDD0040887E /* RecipeEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750530D26DBFEDD0040887E /* RecipeEntity+CoreDataClass.swift */; };
 		B750531026DBFEDD0040887E /* RecipeEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750530E26DBFEDD0040887E /* RecipeEntity+CoreDataProperties.swift */; };
 		B750531326DC051D0040887E /* RecipeEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750531226DC051D0040887E /* RecipeEditView.swift */; };
+		B76F2DA626E13D3700177B19 /* AddIngredientsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F2DA526E13D3700177B19 /* AddIngredientsView.swift */; };
+		B76F2DA826E1443E00177B19 /* IngredientClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F2DA726E1443E00177B19 /* IngredientClass.swift */; };
+		B76F2DAA26E144B500177B19 /* QuantityUnitEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F2DA926E144B500177B19 /* QuantityUnitEnum.swift */; };
+		B76F2DAC26E1455300177B19 /* HopClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F2DAB26E1455300177B19 /* HopClass.swift */; };
+		B76F2DAE26E145FC00177B19 /* TimeUnitEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F2DAD26E145FC00177B19 /* TimeUnitEnum.swift */; };
+		B76F2DB026E1516100177B19 /* MaltClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F2DAF26E1516100177B19 /* MaltClass.swift */; };
+		B76F2DB426E152B700177B19 /* YeastClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F2DB326E152B700177B19 /* YeastClass.swift */; };
+		B76F2DB626E153A800177B19 /* YeastTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F2DB526E153A800177B19 /* YeastTypeEnum.swift */; };
 		B782145326DD887900BE916E /* RecipesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B782145226DD887900BE916E /* RecipesView.swift */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +45,14 @@
 		B750530D26DBFEDD0040887E /* RecipeEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecipeEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B750530E26DBFEDD0040887E /* RecipeEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecipeEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B750531226DC051D0040887E /* RecipeEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeEditView.swift; sourceTree = "<group>"; };
+		B76F2DA526E13D3700177B19 /* AddIngredientsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientsView.swift; sourceTree = "<group>"; };
+		B76F2DA726E1443E00177B19 /* IngredientClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientClass.swift; sourceTree = "<group>"; };
+		B76F2DA926E144B500177B19 /* QuantityUnitEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuantityUnitEnum.swift; sourceTree = "<group>"; };
+		B76F2DAB26E1455300177B19 /* HopClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HopClass.swift; sourceTree = "<group>"; };
+		B76F2DAD26E145FC00177B19 /* TimeUnitEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeUnitEnum.swift; sourceTree = "<group>"; };
+		B76F2DAF26E1516100177B19 /* MaltClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaltClass.swift; sourceTree = "<group>"; };
+		B76F2DB326E152B700177B19 /* YeastClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YeastClass.swift; sourceTree = "<group>"; };
+		B76F2DB526E153A800177B19 /* YeastTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YeastTypeEnum.swift; sourceTree = "<group>"; };
 		B782145226DD887900BE916E /* RecipesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -100,6 +116,8 @@
 		B750530C26DBFE750040887E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B76F2DB226E1527C00177B19 /* Units */,
+				B76F2DB126E1525900177B19 /* Ingredients */,
 				B750530D26DBFEDD0040887E /* RecipeEntity+CoreDataClass.swift */,
 				B750530E26DBFEDD0040887E /* RecipeEntity+CoreDataProperties.swift */,
 				B750530326DBFE660040887E /* Beeryo.xcdatamodeld */,
@@ -118,6 +136,27 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		B76F2DB126E1525900177B19 /* Ingredients */ = {
+			isa = PBXGroup;
+			children = (
+				B76F2DA726E1443E00177B19 /* IngredientClass.swift */,
+				B76F2DAB26E1455300177B19 /* HopClass.swift */,
+				B76F2DB326E152B700177B19 /* YeastClass.swift */,
+				B76F2DAF26E1516100177B19 /* MaltClass.swift */,
+				B76F2DB526E153A800177B19 /* YeastTypeEnum.swift */,
+			);
+			path = Ingredients;
+			sourceTree = "<group>";
+		};
+		B76F2DB226E1527C00177B19 /* Units */ = {
+			isa = PBXGroup;
+			children = (
+				B76F2DA926E144B500177B19 /* QuantityUnitEnum.swift */,
+				B76F2DAD26E145FC00177B19 /* TimeUnitEnum.swift */,
+			);
+			path = Units;
+			sourceTree = "<group>";
+		};
 		B782145426DD88CE00BE916E /* MainMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +171,7 @@
 			children = (
 				B782145226DD887900BE916E /* RecipesView.swift */,
 				B750531226DC051D0040887E /* RecipeEditView.swift */,
+				B76F2DA526E13D3700177B19 /* AddIngredientsView.swift */,
 			);
 			path = Recipes;
 			sourceTree = "<group>";
@@ -206,16 +246,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				B747321D26DD672300591CB0 /* ContentViewTest.swift in Sources */,
+				B76F2DAC26E1455300177B19 /* HopClass.swift in Sources */,
+				B76F2DA826E1443E00177B19 /* IngredientClass.swift in Sources */,
 				B750531326DC051D0040887E /* RecipeEditView.swift in Sources */,
 				B747321B26DD664500591CB0 /* MainMenuView.swift in Sources */,
+				B76F2DB626E153A800177B19 /* YeastTypeEnum.swift in Sources */,
 				B747321926DD661400591CB0 /* SplashView.swift in Sources */,
 				B750531026DBFEDD0040887E /* RecipeEntity+CoreDataProperties.swift in Sources */,
 				B750530F26DBFEDD0040887E /* RecipeEntity+CoreDataClass.swift in Sources */,
 				B750530226DBFE660040887E /* Persistence.swift in Sources */,
+				B76F2DAA26E144B500177B19 /* QuantityUnitEnum.swift in Sources */,
 				B750530526DBFE660040887E /* Beeryo.xcdatamodeld in Sources */,
 				B75052FB26DBFE660040887E /* ContentView.swift in Sources */,
+				B76F2DAE26E145FC00177B19 /* TimeUnitEnum.swift in Sources */,
 				B782145326DD887900BE916E /* RecipesView.swift in Sources */,
+				B76F2DB426E152B700177B19 /* YeastClass.swift in Sources */,
 				B75052F926DBFE660040887E /* BeeryoApp.swift in Sources */,
+				B76F2DB026E1516100177B19 /* MaltClass.swift in Sources */,
+				B76F2DA626E13D3700177B19 /* AddIngredientsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
