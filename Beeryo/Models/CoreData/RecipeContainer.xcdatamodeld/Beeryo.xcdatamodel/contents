@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20G95" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="RecipeEntity" representedClassName="RecipeEntity" syncable="YES">
-        <attribute name="bottling" optional="YES" attributeType="Transformable"/>
-        <attribute name="fermenting" optional="YES" attributeType="Transformable"/>
         <attribute name="fg" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="hops" optional="YES" attributeType="Transformable"/>
-        <attribute name="malts" optional="YES" attributeType="Transformable"/>
-        <attribute name="mashing" optional="YES" attributeType="Transformable"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="og" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="style" optional="YES" attributeType="String"/>
-        <attribute name="yeast" optional="YES" attributeType="Transformable"/>
     </entity>
     <elements>
-        <element name="RecipeEntity" positionX="-36" positionY="18" width="128" height="179"/>
+        <element name="RecipeEntity" positionX="-36" positionY="18" width="128" height="89"/>
     </elements>
 </model>

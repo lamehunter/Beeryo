@@ -8,20 +8,20 @@
 import SwiftUI
 
 struct SplashView: View {
-  @State var isMainMenuActive:Bool = false
+  @State var isMainMenuActive: Bool = false
   
   var body: some View {
     VStack {
-      if self.isMainMenuActive {
+      if isMainMenuActive {
         MainMenuView()
       } else {
         SplashViewContents()
       }
     }
     .onAppear {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
         withAnimation {
-          self.isMainMenuActive = true
+          isMainMenuActive = true
         }
       }
     }
@@ -64,6 +64,6 @@ struct SplashViewContents : View {
 
 struct SplashView_Previews: PreviewProvider {
   static var previews: some View {
-    SplashView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    SplashView()
   }
 }

@@ -9,31 +9,29 @@ import SwiftUI
 
 
 struct RecipesView: View {
-  @Environment(\.managedObjectContext) private var viewContext
+  @StateObject var recipesViewModel = RecipesViewModel()
+  
+  //@Environment(\.managedObjectContext) private var viewContext
   @State var isNewRecipeVisible = false
   
   //var fetchRequest = RecipeEntity.fetchRequest1()
   
-  @FetchRequest(entity: RecipeEntity.entity(),
-                sortDescriptors: [],
-                animation: .default)
   
-  
-  private var items: FetchedResults<RecipeEntity>
   
   var body: some View {
     VStack{
       NavigationLink(
-        destination: RecipeEditView(valueee: ""),
+        destination: RecipeEditView(entity: RecipeEntity(), viewModel: recipesViewModel),
         isActive: $isNewRecipeVisible
       ) {
         EmptyView()
       }
       
       List {
-        
-        ForEach(items){item in
-          NavigationLink(item.name!, destination: RecipeEditView(valueee: item.name!))
+        ForEach(recipesViewModel.allRecipes){item in
+          NavigationLink(item.name ?? "noName",
+                         destination: RecipeEditView(entity: item,
+                                                     viewModel: recipesViewModel))
         }
         //NavigationLink("Recipe 1", destination: RecipeEditView(valueee: "Recipe1"))
         //NavigationLink("Recipe 2", destination: RecipeEditView(valueee: "Recip2"))
@@ -68,6 +66,6 @@ struct NavigationBarRightButtonView: View {
 
 struct RecipesView_Previews: PreviewProvider {
   static var previews: some View {
-    RecipesView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    RecipesView()
   }
 }

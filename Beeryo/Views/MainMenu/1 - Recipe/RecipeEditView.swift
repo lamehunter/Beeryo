@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct RecipeEditView: View {
-  @Environment(\.managedObjectContext) private var viewContext
-  @Environment(\.presentationMode) var presentationMode
-  
+@Environment(\.managedObjectContext) private var viewContext
+@Environment(\.presentationMode) var presentationMode
+
   @FetchRequest(entity: RecipeEntity.entity(),
                 sortDescriptors: [],
                 animation: .default)
@@ -28,20 +28,38 @@ struct RecipeEditView: View {
   @State var showAlert: Bool = false
   @State var alertText = ""
   
-  init(valueee: String) {
-    _recipeName = State(initialValue: valueee)
+  var recipeEntity: RecipeEntity
+  @ObservedObject var recipeViewModel: RecipesViewModel
+  
+  init(entity: RecipeEntity, viewModel: RecipesViewModel) {
+    recipeEntity = entity
+    recipeViewModel = viewModel
   }
   
   var body: some View {
     VStack {
       VStack (alignment: .center){
         Section(header: SectionHeader(title: "General")){
-          generalSectionRow(title: "Name", textFieldContent: "", isTextEditEnabled: true, bindingValue: $recipeName)
-          generalSectionRow(title: "Style", textFieldContent: "", isTextEditEnabled: true, bindingValue: $recipeStyle)
-          generalSectionRow(title: "Batch size", textFieldContent: "",isTextEditEnabled: true, bindingValue:
-                              $recipeBatchSize)
-          generalSectionRow(title: "OG", textFieldContent: "", isTextEditEnabled: true, bindingValue:  $recipeOG)
-          generalSectionRow(title: "FG", textFieldContent: "", isTextEditEnabled: true, bindingValue:  $recipeFG)
+          generalSectionRow(title: "Name",
+                            textFieldContent: recipeEntity.name ?? "",
+                            isTextEditEnabled: true,
+                            bindingValue: $recipeName)
+          generalSectionRow(title: "Style",
+                            textFieldContent: recipeEntity.style ?? "",
+                            isTextEditEnabled: true,
+                            bindingValue: $recipeStyle)
+          generalSectionRow(title: "Batch size",
+                            textFieldContent: "--",
+                            isTextEditEnabled: true,
+                            bindingValue: $recipeBatchSize)
+          generalSectionRow(title: "OG",
+                            textFieldContent: String(recipeEntity.og),
+                            isTextEditEnabled: true,
+                            bindingValue:  $recipeOG)
+          generalSectionRow(title: "FG",
+                            textFieldContent: String(recipeEntity.fg),
+                            isTextEditEnabled: true,
+                            bindingValue:  $recipeFG)
             .padding(.bottom, 20)
         }
         
@@ -65,7 +83,10 @@ struct RecipeEditView: View {
           showAlert = true
         }
         else {
-          RecipeEntity.createWith(recipeName: recipeName, using: viewContext)
+          let recipe = RecipeEntity(context: viewContext)
+          recipe.name = recipeName
+          recipe.og = Float(recipeOG) ?? 0.0
+          recipeViewModel.addRecipe(_recipe: recipe)
           presentationMode.wrappedValue.dismiss()
         }
         
@@ -168,7 +189,6 @@ struct SectionHeader: View {
 
 struct RecipeEditView_Previews: PreviewProvider {
   static var previews: some View {
-    RecipeEditView(valueee: "Mkay")
-      .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    RecipeEditView(entity: RecipeEntity(), viewModel: RecipesViewModel())
   }
 }
