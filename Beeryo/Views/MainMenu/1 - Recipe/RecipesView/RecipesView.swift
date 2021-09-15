@@ -11,7 +11,7 @@ import SwiftUI
 struct RecipesView: View {
   @StateObject var recipesViewModel = RecipesViewModel()
   
-  //@Environment(\.managedObjectContext) private var viewContext
+  @Environment(\.managedObjectContext) private var viewContext
   @State var isNewRecipeVisible = false
   
   //var fetchRequest = RecipeEntity.fetchRequest1()
@@ -21,7 +21,7 @@ struct RecipesView: View {
   var body: some View {
     VStack{
       NavigationLink(
-        destination: RecipeEditView(entity: RecipeEntity(), viewModel: recipesViewModel),
+        destination: RecipeEditView(entity: RecipeEntity(context: viewContext), viewModel: recipesViewModel),
         isActive: $isNewRecipeVisible
       ) {
         EmptyView()
