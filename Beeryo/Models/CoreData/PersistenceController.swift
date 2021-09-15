@@ -1,13 +1,14 @@
 //
-//  RecipeViewModel.swift
+//  PersistenceController.swift
 //  Beeryo
 //
-//  Created by Jacek K on 14/09/2021.
+//  Created by Jacek K on 15/09/2021.
 //
 
 import CoreData
 
-final class RecipesViewModel: ObservableObject {
+final class PersistenceController: ObservableObject {
+  static let shared = PersistenceController()
   
   let container: NSPersistentContainer
   @Published var allRecipes: [RecipeEntity] = []
@@ -37,13 +38,14 @@ final class RecipesViewModel: ObservableObject {
     }
   }
   
-  func addRecipe(_recipe: RecipeEntity) {
-    let recipe = RecipeEntity(context: container.viewContext)
-    recipe.name = _recipe.name
-    recipe.og = _recipe.og
-    recipe.fg = _recipe.fg
-    saveData()
-  }
+  //addREcipe
+//  func addRecipe(_recipe: RecipeEntity) {
+//    //let recipe = RecipeEntity(context: container.viewContext)
+//    //recipe.name = _recipe.name
+//    //recipe.og = _recipe.og
+//    //recipe.fg = _recipe.fg
+//    saveData()
+//  }
   
   func deleteRecipe(indexSet: IndexSet) {
     guard let index = indexSet.first else { return }
@@ -62,7 +64,3 @@ final class RecipesViewModel: ObservableObject {
     }
   }
 }
-
-
-
-

@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct RecipeEditView: View {
-@Environment(\.managedObjectContext) private var viewContext
-@Environment(\.presentationMode) var presentationMode
-
-  @FetchRequest(entity: RecipeEntity.entity(),
-                sortDescriptors: [],
-                animation: .default)
-  private var items: FetchedResults<RecipeEntity>
+  var persistenceController = PersistenceController.shared
+  @Environment(\.managedObjectContext) private var viewContext
+  @Environment(\.presentationMode) var presentationMode
+  
+  //  @FetchRequest(entity: RecipeEntity.entity(),
+  //                sortDescriptors: [],
+  //                animation: .default)
+  //  private var items: FetchedResults<RecipeEntity>
+  private var items: [RecipeEntity]
   
   @State var recipeName: String = ""
   @State var recipeStyle: String = ""
@@ -29,11 +31,10 @@ struct RecipeEditView: View {
   @State var alertText = ""
   
   var recipeEntity: RecipeEntity
-  @ObservedObject var recipeViewModel: RecipesViewModel
   
-  init(entity: RecipeEntity, viewModel: RecipesViewModel) {
+  init(entity: RecipeEntity) {
     recipeEntity = entity
-    recipeViewModel = viewModel
+    items = persistenceController.allRecipes
   }
   
   var body: some View {
@@ -41,11 +42,11 @@ struct RecipeEditView: View {
       VStack (alignment: .center){
         Section(header: SectionHeader(title: "General")){
           generalSectionRow(title: "Name",
-                            textFieldContent: recipeEntity.name ?? "",
+                            textFieldContent: recipeEntity.name ?? "nameNul",
                             isTextEditEnabled: true,
                             bindingValue: $recipeName)
           generalSectionRow(title: "Style",
-                            textFieldContent: recipeEntity.style ?? "",
+                            textFieldContent: recipeEntity.style ?? "styleNul",
                             isTextEditEnabled: true,
                             bindingValue: $recipeStyle)
           generalSectionRow(title: "Batch size",
@@ -83,10 +84,9 @@ struct RecipeEditView: View {
           showAlert = true
         }
         else {
-          let recipe = RecipeEntity(context: viewContext)
-          recipe.name = recipeName
-          recipe.og = Float(recipeOG) ?? 0.0
-          recipeViewModel.addRecipe(_recipe: recipe)
+          recipeEntity.name = recipeName
+          recipeEntity.og = Float(recipeOG) ?? 0.0
+          persistenceController.saveData()
           presentationMode.wrappedValue.dismiss()
         }
         
@@ -189,6 +189,6 @@ struct SectionHeader: View {
 
 struct RecipeEditView_Previews: PreviewProvider {
   static var previews: some View {
-    RecipeEditView(entity: RecipeEntity(), viewModel: RecipesViewModel())
+    RecipeEditView(entity: RecipeEntity())
   }
 }

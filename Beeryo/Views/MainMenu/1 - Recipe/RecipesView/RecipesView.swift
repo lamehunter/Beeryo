@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct RecipesView: View {
-  @StateObject var recipesViewModel = RecipesViewModel()
+  @StateObject var persistenceController = PersistenceController.shared
   
   @Environment(\.managedObjectContext) private var viewContext
   @State var isNewRecipeVisible = false
@@ -21,17 +21,16 @@ struct RecipesView: View {
   var body: some View {
     VStack{
       NavigationLink(
-        destination: RecipeEditView(entity: RecipeEntity(context: viewContext), viewModel: recipesViewModel),
+        destination: RecipeEditView(entity: RecipeEntity(context: viewContext)),
         isActive: $isNewRecipeVisible
       ) {
         EmptyView()
       }
       
       List {
-        ForEach(recipesViewModel.allRecipes){item in
+        ForEach(persistenceController.allRecipes){item in
           NavigationLink(item.name ?? "noName",
-                         destination: RecipeEditView(entity: item,
-                                                     viewModel: recipesViewModel))
+                         destination: RecipeEditView(entity: item))
         }
         //NavigationLink("Recipe 1", destination: RecipeEditView(valueee: "Recipe1"))
         //NavigationLink("Recipe 2", destination: RecipeEditView(valueee: "Recip2"))

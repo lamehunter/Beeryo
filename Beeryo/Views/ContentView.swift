@@ -14,20 +14,6 @@ struct ContentView: View {
   var body: some View {
     SplashView()
       .onAppear(perform: {
-        // populate entity with test data
-//        RecipeEntity.createWith(
-//          recipeName: "test data 1",
-//          using: viewContext)
-//        RecipeEntity.createWith(
-//          recipeName: "test data 2",
-//          using: viewContext)
-//        RecipeEntity.createWith(
-//          recipeName: "test data 3",
-//          using: viewContext)
-//        RecipeEntity.createWith(
-//          recipeName: "test data 4",
-//          using: viewContext)
-        
       })
   }
   

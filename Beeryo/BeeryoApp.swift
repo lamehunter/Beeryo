@@ -9,10 +9,12 @@ import SwiftUI
 
 @main
 struct BeeryoApp: App {
-
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-    }
+  let persistenceContainer = PersistenceController.shared
+  
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
+        .environment(\.managedObjectContext, persistenceContainer.container.viewContext)}
+  }
 }
+
