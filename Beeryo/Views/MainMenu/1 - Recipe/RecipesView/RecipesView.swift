@@ -29,7 +29,7 @@ struct RecipesView: View {
       
       List {
         ForEach(persistenceController.allRecipes){item in
-          NavigationLink(item.name ?? "noName",
+          NavigationLink(item.name ?? "error (itemNameNil)",
                          destination: RecipeEditView(entity: item))
         }
         //NavigationLink("Recipe 1", destination: RecipeEditView(valueee: "Recipe1"))
@@ -58,7 +58,6 @@ struct NavigationBarRightButtonView: View {
           .fontWeight(.semibold)
           .font(.headline)
       }
-      // }
     })
   }
 }

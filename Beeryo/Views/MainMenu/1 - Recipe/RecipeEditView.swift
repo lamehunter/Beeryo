@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecipeEditView: View {
-  var persistenceController = PersistenceController.shared
+  private var persistenceController = PersistenceController.shared
   @Environment(\.managedObjectContext) private var viewContext
   @Environment(\.presentationMode) var presentationMode
   
@@ -17,24 +17,28 @@ struct RecipeEditView: View {
   //                animation: .default)
   //  private var items: FetchedResults<RecipeEntity>
   private var items: [RecipeEntity]
+  private var recipeEntity: RecipeEntity
   
   @State var recipeName: String = ""
   @State var recipeStyle: String = ""
   @State var recipeBatchSize: String = ""
-  @State var recipeOG: String = ""
-  @State var recipeFG: String = ""
+  @State var recipeOG: Float = 0.0
+  @State var recipeFG: Float = 0.0
   @State var recipeMalts: String = ""
   @State var recipeHops: String = ""
   @State var recipeYeast: String = ""
-  
   @State var showAlert: Bool = false
   @State var alertText = ""
   
-  var recipeEntity: RecipeEntity
   
   init(entity: RecipeEntity) {
     recipeEntity = entity
     items = persistenceController.allRecipes
+    
+    recipeName = entity.name ?? ""
+    recipeStyle = entity.style ?? ""
+    recipeOG = entity.og
+    recipeFG = entity.fg
   }
   
   var body: some View {
@@ -53,12 +57,12 @@ struct RecipeEditView: View {
                             textFieldContent: "--",
                             isTextEditEnabled: true,
                             bindingValue: $recipeBatchSize)
-          generalSectionRow(title: "OG",
-                            textFieldContent: String(recipeEntity.og),
+          generalSectionRowNumeric(title: "OG",
+                                   textFieldContent: recipeEntity.og == 0.0 ? "" : String(recipeEntity.og),
                             isTextEditEnabled: true,
                             bindingValue:  $recipeOG)
-          generalSectionRow(title: "FG",
-                            textFieldContent: String(recipeEntity.fg),
+          generalSectionRowNumeric(title: "FG",
+                            textFieldContent: recipeEntity.fg == 0.0 ? "" : String(recipeEntity.fg),
                             isTextEditEnabled: true,
                             bindingValue:  $recipeFG)
             .padding(.bottom, 20)
@@ -85,7 +89,9 @@ struct RecipeEditView: View {
         }
         else {
           recipeEntity.name = recipeName
-          recipeEntity.og = Float(recipeOG) ?? 0.0
+          recipeEntity.og = recipeOG
+          recipeEntity.style = recipeStyle
+          recipeEntity.fg = recipeFG
           persistenceController.saveData()
           presentationMode.wrappedValue.dismiss()
         }
@@ -118,6 +124,33 @@ struct generalSectionRow: View {
                alignment: .leading)
       TextField(textFieldContent,
                 text: $bindingValue)
+        .disabled(!isTextEditEnabled)
+        .overlay(VStack{
+                  Divider()
+                    .background(Color.red)
+                    .offset(x: 0, y: 15)})
+    }
+  }
+}
+
+struct generalSectionRowNumeric: View {
+  var title: String
+  var textFieldContent: String
+  var isTextEditEnabled: Bool
+  @Binding var bindingValue: Float
+  var titleTextFrameSizeH: CGFloat = 80
+  var titleTextFrameSizeV: CGFloat = 20
+  
+  var body: some View {
+    HStack{
+      Text(title)
+        .frame(width: titleTextFrameSizeH,
+               height: titleTextFrameSizeV,
+               alignment: .leading)
+      TextField(textFieldContent,
+                value: $bindingValue,
+                formatter: NumberFormatter())
+        .keyboardType(.decimalPad)
         .disabled(!isTextEditEnabled)
         .overlay(VStack{
                   Divider()

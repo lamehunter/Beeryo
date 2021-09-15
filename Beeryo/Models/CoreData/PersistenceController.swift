@@ -38,14 +38,14 @@ final class PersistenceController: ObservableObject {
     }
   }
   
-  //addREcipe
-//  func addRecipe(_recipe: RecipeEntity) {
-//    //let recipe = RecipeEntity(context: container.viewContext)
-//    //recipe.name = _recipe.name
-//    //recipe.og = _recipe.og
-//    //recipe.fg = _recipe.fg
-//    saveData()
-//  }
+  func addRecipe(_recipe: RecipeEntity) {
+    let recipe = RecipeEntity(context: container.viewContext)
+    recipe.name = _recipe.name
+    recipe.style = _recipe.style
+    recipe.og = _recipe.og
+    recipe.fg = _recipe.fg
+    saveData()
+  }
   
   func deleteRecipe(indexSet: IndexSet) {
     guard let index = indexSet.first else { return }
