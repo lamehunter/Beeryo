@@ -3,7 +3,7 @@
 //  Beeryo
 //
 //  Created by Jacek K on 29/08/2021.
-//
+//  test git commit
 
 import SwiftUI
 import CoreData
