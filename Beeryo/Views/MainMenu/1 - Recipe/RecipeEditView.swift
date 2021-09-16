@@ -15,7 +15,7 @@ struct RecipeEditView: View {
   @FetchRequest(entity: RecipeEntity.entity(),
                   sortDescriptors: [],
                   animation: .default) private var items: FetchedResults<RecipeEntity>
-  @StateObject private var recipeEntity: RecipeEntity
+  @StateObject private var recipeEntity: RecipeEntity = RecipeEntity()
   
   @State var recipeName: String = ""
   @State var recipeStyle: String = ""
@@ -38,10 +38,8 @@ struct RecipeEditView: View {
     _recipeFG = State(initialValue: entity.fg)
   }
   
-  init() {
-    let newEntity = RecipeEntity(context: persistenceController.container.viewContext)
-    newEntity.name = ""
-    _recipeEntity = StateObject(wrappedValue: newEntity)
+  init(){
+    _recipeEntity = StateObject(wrappedValue: RecipeEntity(context: PersistenceController.shared.container.viewContext))
   }
   
   var body: some View {
@@ -86,18 +84,13 @@ struct RecipeEditView: View {
           showAlert = true
         }
         else {
-        //  recipeEntity.name = recipeName
-         // persistenceController.addRecipe(_recipe: recipeEntity)
           recipeEntity.name = recipeName
           recipeEntity.og = recipeOG
           recipeEntity.style = recipeStyle
           recipeEntity.fg = recipeFG
-          //if (recipeEntity.name == ""){
+         
             persistenceController.addRecipe(_recipe: recipeEntity)
-          //}
-          //else {
-          //  persistenceController.saveData()
-          //}
+          
           presentationMode.wrappedValue.dismiss()
         }
         

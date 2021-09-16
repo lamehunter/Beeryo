@@ -25,7 +25,6 @@ struct MainMenuView: View {
   }
 }
 
-
 struct MenuRowView : View {
   let imageSystemName: String
   let rowName: String

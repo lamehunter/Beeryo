@@ -13,8 +13,6 @@ final class PersistenceController: ObservableObject {
   var container: NSPersistentContainer
   @Published var allRecipes: [RecipeEntity] = []
   
- 
-  
   init() {
     let containerName = "RecipeContainer"
     
@@ -31,9 +29,9 @@ final class PersistenceController: ObservableObject {
   }
   
   static var managedObjectModel: NSManagedObjectModel = {
-              let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle(for: PersistenceController.self)])!
-              return managedObjectModel
-          }()
+    let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle(for: PersistenceController.self)])!
+    return managedObjectModel
+  }()
   
   func getAllRecipes() {
     let request = NSFetchRequest<RecipeEntity>(entityName: "RecipeEntity")
@@ -51,11 +49,11 @@ final class PersistenceController: ObservableObject {
       saveData()
     }
     else {
-//      let recipe = RecipeEntity(context: container.viewContext)
-//      recipe.name = _recipe.name
-//      recipe.style = _recipe.style
-//      recipe.og = _recipe.og
-//      recipe.fg = _recipe.fg
+      let recipe = RecipeEntity(context: container.viewContext)
+      recipe.name = _recipe.name
+      recipe.style = _recipe.style
+      recipe.og = _recipe.og
+      recipe.fg = _recipe.fg
       saveData()
     }
   }

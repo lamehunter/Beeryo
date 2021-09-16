@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B72595D426F11B1E00C7E0C8 /* superseeded-RecipesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72595D326F11B1E00C7E0C8 /* superseeded-RecipesViewModel.swift */; };
 		B72595D826F12D9800C7E0C8 /* RecipeEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72595D626F12D9800C7E0C8 /* RecipeEntity+CoreDataClass.swift */; };
 		B72595D926F12D9800C7E0C8 /* RecipeEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72595D726F12D9800C7E0C8 /* RecipeEntity+CoreDataProperties.swift */; };
 		B747321926DD661400591CB0 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B747321826DD661400591CB0 /* SplashView.swift */; };
@@ -31,7 +30,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B72595D326F11B1E00C7E0C8 /* superseeded-RecipesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "superseeded-RecipesViewModel.swift"; sourceTree = "<group>"; };
 		B72595D626F12D9800C7E0C8 /* RecipeEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecipeEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B72595D726F12D9800C7E0C8 /* RecipeEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecipeEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B747321826DD661400591CB0 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
@@ -83,7 +81,6 @@
 			isa = PBXGroup;
 			children = (
 				B782145226DD887900BE916E /* RecipesView.swift */,
-				B72595D326F11B1E00C7E0C8 /* superseeded-RecipesViewModel.swift */,
 			);
 			path = RecipesView;
 			sourceTree = "<group>";
@@ -267,7 +264,6 @@
 				B750531326DC051D0040887E /* RecipeEditView.swift in Sources */,
 				B747321B26DD664500591CB0 /* MainMenuView.swift in Sources */,
 				B76F2DB626E153A800177B19 /* YeastTypeEnum.swift in Sources */,
-				B72595D426F11B1E00C7E0C8 /* superseeded-RecipesViewModel.swift in Sources */,
 				B747321926DD661400591CB0 /* SplashView.swift in Sources */,
 				B76F2DAA26E144B500177B19 /* QuantityUnitEnum.swift in Sources */,
 				B750530526DBFE660040887E /* RecipeContainer.xcdatamodeld in Sources */,

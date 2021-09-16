@@ -7,18 +7,12 @@
 
 import SwiftUI
 
-
 struct RecipesView: View {
   @StateObject var persistenceController = PersistenceController.shared
   
   @Environment(\.managedObjectContext) private var viewContext
   
-  
   @State var isNewRecipeVisible = false
-  
-  //var fetchRequest = RecipeEntity.fetchRequest1()
-  
-  
   
   var body: some View {
     VStack{
