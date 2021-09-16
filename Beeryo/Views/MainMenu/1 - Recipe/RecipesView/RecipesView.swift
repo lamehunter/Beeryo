@@ -12,6 +12,8 @@ struct RecipesView: View {
   @StateObject var persistenceController = PersistenceController.shared
   
   @Environment(\.managedObjectContext) private var viewContext
+  
+  
   @State var isNewRecipeVisible = false
   
   //var fetchRequest = RecipeEntity.fetchRequest1()
@@ -21,14 +23,14 @@ struct RecipesView: View {
   var body: some View {
     VStack{
       NavigationLink(
-        destination: RecipeEditView(entity: RecipeEntity(context: viewContext)),
+        destination: RecipeEditView(),
         isActive: $isNewRecipeVisible
       ) {
         EmptyView()
       }
       
       List {
-        ForEach(persistenceController.allRecipes){item in
+        ForEach(persistenceController.allRecipes) { item in
           NavigationLink(item.name ?? "error (itemNameNil)",
                          destination: RecipeEditView(entity: item))
         }

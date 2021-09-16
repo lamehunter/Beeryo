@@ -12,12 +12,10 @@ struct RecipeEditView: View {
   @Environment(\.managedObjectContext) private var viewContext
   @Environment(\.presentationMode) var presentationMode
   
-  //  @FetchRequest(entity: RecipeEntity.entity(),
-  //                sortDescriptors: [],
-  //                animation: .default)
-  //  private var items: FetchedResults<RecipeEntity>
-  private var items: [RecipeEntity]
-  private var recipeEntity: RecipeEntity
+  @FetchRequest(entity: RecipeEntity.entity(),
+                  sortDescriptors: [],
+                  animation: .default) private var items: FetchedResults<RecipeEntity>
+  @StateObject private var recipeEntity: RecipeEntity
   
   @State var recipeName: String = ""
   @State var recipeStyle: String = ""
@@ -28,17 +26,22 @@ struct RecipeEditView: View {
   @State var recipeHops: String = ""
   @State var recipeYeast: String = ""
   @State var showAlert: Bool = false
+
   @State var alertText = ""
   
   
   init(entity: RecipeEntity) {
-    recipeEntity = entity
-    items = persistenceController.allRecipes
-    
-    recipeName = entity.name ?? ""
-    recipeStyle = entity.style ?? ""
-    recipeOG = entity.og
-    recipeFG = entity.fg
+    _recipeEntity = StateObject(wrappedValue: entity)
+    _recipeName = State(initialValue: entity.name ?? "")
+    _recipeStyle = State(initialValue: entity.style ?? "")
+    _recipeOG = State(initialValue: entity.og)
+    _recipeFG = State(initialValue: entity.fg)
+  }
+  
+  init() {
+    let newEntity = RecipeEntity(context: persistenceController.container.viewContext)
+    newEntity.name = ""
+    _recipeEntity = StateObject(wrappedValue: newEntity)
   }
   
   var body: some View {
@@ -47,23 +50,23 @@ struct RecipeEditView: View {
         Section(header: SectionHeader(title: "General")){
           generalSectionRow(title: "Name",
                             textFieldContent: recipeEntity.name ?? "nameNul",
-                            isTextEditEnabled: true,
+                           
                             bindingValue: $recipeName)
           generalSectionRow(title: "Style",
                             textFieldContent: recipeEntity.style ?? "styleNul",
-                            isTextEditEnabled: true,
+                           
                             bindingValue: $recipeStyle)
           generalSectionRow(title: "Batch size",
                             textFieldContent: "--",
-                            isTextEditEnabled: true,
+                           
                             bindingValue: $recipeBatchSize)
           generalSectionRowNumeric(title: "OG",
                                    textFieldContent: recipeEntity.og == 0.0 ? "" : String(recipeEntity.og),
-                            isTextEditEnabled: true,
+                           
                             bindingValue:  $recipeOG)
           generalSectionRowNumeric(title: "FG",
                             textFieldContent: recipeEntity.fg == 0.0 ? "" : String(recipeEntity.fg),
-                            isTextEditEnabled: true,
+                           
                             bindingValue:  $recipeFG)
             .padding(.bottom, 20)
         }
@@ -79,30 +82,41 @@ struct RecipeEditView: View {
       .navigationTitle("Recipe Details")
       .navigationBarItems(trailing: Button(action: {
         
-        if (recipeName == ""){
-          alertText = "Name field can't be empty"
-          showAlert = true
-        }
-        else if (items.filter({$0.name == recipeName}).count >= 1){
-          self.alertText = "Recipe name already exist"
+        if (items.filter({$0.name == recipeName}).count >= 1){
           showAlert = true
         }
         else {
+        //  recipeEntity.name = recipeName
+         // persistenceController.addRecipe(_recipe: recipeEntity)
           recipeEntity.name = recipeName
           recipeEntity.og = recipeOG
           recipeEntity.style = recipeStyle
           recipeEntity.fg = recipeFG
-          persistenceController.saveData()
+          //if (recipeEntity.name == ""){
+            persistenceController.addRecipe(_recipe: recipeEntity)
+          //}
+          //else {
+          //  persistenceController.saveData()
+          //}
           presentationMode.wrappedValue.dismiss()
         }
         
-      }) {
+      })
+      {
         Text("Save")
       }
       .alert(isPresented: $showAlert, content: {
-        Alert(title: Text("Text Field"), message: Text(alertText), dismissButton: .destructive(Text("Dismiss")))
+        Alert(
+            title: Text("Recipe name already exist"),
+            message: Text("Overwrite?"),
+            primaryButton: .destructive(Text("Yes")) {
+              print("OVERWRITE VALUE")
+            },
+            secondaryButton: .cancel()
+        )
       }))
       
+     
       Spacer()
     }
   }
@@ -111,7 +125,7 @@ struct RecipeEditView: View {
 struct generalSectionRow: View {
   var title: String
   var textFieldContent: String
-  var isTextEditEnabled: Bool
+
   @Binding var bindingValue: String
   var titleTextFrameSizeH: CGFloat = 80
   var titleTextFrameSizeV: CGFloat = 20
@@ -122,9 +136,9 @@ struct generalSectionRow: View {
         .frame(width: titleTextFrameSizeH,
                height: titleTextFrameSizeV,
                alignment: .leading)
-      TextField(textFieldContent,
+      TextField("textFieldContent",
                 text: $bindingValue)
-        .disabled(!isTextEditEnabled)
+       
         .overlay(VStack{
                   Divider()
                     .background(Color.red)
@@ -136,7 +150,7 @@ struct generalSectionRow: View {
 struct generalSectionRowNumeric: View {
   var title: String
   var textFieldContent: String
-  var isTextEditEnabled: Bool
+
   @Binding var bindingValue: Float
   var titleTextFrameSizeH: CGFloat = 80
   var titleTextFrameSizeV: CGFloat = 20
@@ -151,7 +165,7 @@ struct generalSectionRowNumeric: View {
                 value: $bindingValue,
                 formatter: NumberFormatter())
         .keyboardType(.decimalPad)
-        .disabled(!isTextEditEnabled)
+       
         .overlay(VStack{
                   Divider()
                     .background(Color.red)
@@ -168,7 +182,7 @@ struct ingredientsSectionRow: View {
     HStack {
       generalSectionRow(title: title,
                         textFieldContent: "->",
-                        isTextEditEnabled: false,
+                       
                         bindingValue: $bindingValue)
       addOrRemoveButton()
     }

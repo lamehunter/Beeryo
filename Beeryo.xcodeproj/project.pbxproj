@@ -53,6 +53,7 @@
 		B76F2DAF26E1516100177B19 /* MaltClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaltClass.swift; sourceTree = "<group>"; };
 		B76F2DB326E152B700177B19 /* YeastClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YeastClass.swift; sourceTree = "<group>"; };
 		B76F2DB526E153A800177B19 /* YeastTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YeastTypeEnum.swift; sourceTree = "<group>"; };
+		B7754FA526F3D24D009BD414 /* Beeryo 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Beeryo 2.xcdatamodel"; sourceTree = "<group>"; };
 		B782145226DD887900BE916E /* RecipesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -473,9 +474,10 @@
 		B750530326DBFE660040887E /* RecipeContainer.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				B7754FA526F3D24D009BD414 /* Beeryo 2.xcdatamodel */,
 				B750530426DBFE660040887E /* Beeryo.xcdatamodel */,
 			);
-			currentVersion = B750530426DBFE660040887E /* Beeryo.xcdatamodel */;
+			currentVersion = B7754FA526F3D24D009BD414 /* Beeryo 2.xcdatamodel */;
 			path = RecipeContainer.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

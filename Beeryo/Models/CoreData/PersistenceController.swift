@@ -10,13 +10,15 @@ import CoreData
 final class PersistenceController: ObservableObject {
   static let shared = PersistenceController()
   
-  let container: NSPersistentContainer
+  var container: NSPersistentContainer
   @Published var allRecipes: [RecipeEntity] = []
+  
+ 
   
   init() {
     let containerName = "RecipeContainer"
     
-    container = NSPersistentContainer(name: containerName)
+    container = NSPersistentContainer(name: containerName, managedObjectModel: PersistenceController.managedObjectModel)
     container.loadPersistentStores { description, error in
       if let error = error {
         print("Failed to load container: \(error)")
@@ -27,6 +29,11 @@ final class PersistenceController: ObservableObject {
     }
     getAllRecipes()
   }
+  
+  static var managedObjectModel: NSManagedObjectModel = {
+              let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle(for: PersistenceController.self)])!
+              return managedObjectModel
+          }()
   
   func getAllRecipes() {
     let request = NSFetchRequest<RecipeEntity>(entityName: "RecipeEntity")
@@ -39,13 +46,20 @@ final class PersistenceController: ObservableObject {
   }
   
   func addRecipe(_recipe: RecipeEntity) {
-    let recipe = RecipeEntity(context: container.viewContext)
-    recipe.name = _recipe.name
-    recipe.style = _recipe.style
-    recipe.og = _recipe.og
-    recipe.fg = _recipe.fg
-    saveData()
+    getAllRecipes()
+    if (allRecipes.filter({$0.name == _recipe.name}).count >= 1) {
+      saveData()
+    }
+    else {
+//      let recipe = RecipeEntity(context: container.viewContext)
+//      recipe.name = _recipe.name
+//      recipe.style = _recipe.style
+//      recipe.og = _recipe.og
+//      recipe.fg = _recipe.fg
+      saveData()
+    }
   }
+  
   
   func deleteRecipe(indexSet: IndexSet) {
     guard let index = indexSet.first else { return }
