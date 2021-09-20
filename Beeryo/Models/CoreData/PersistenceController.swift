@@ -13,16 +13,31 @@ final class PersistenceController: ObservableObject {
   var container: NSPersistentContainer
   @Published var allRecipes: [RecipeEntity] = []
   
-  init() {
+  static var preview: PersistenceController = {
+    let controller = PersistenceController(inMemory: true)
+    for number in 0..<10 {
+      let recipe = RecipeEntity(context: controller.container.viewContext)
+      recipe.name = "Recipe no." + String(number)
+    }
+    return controller
+  }()
+  
+  init(inMemory: Bool = true) {
+    
     let containerName = "RecipeContainer"
     
     container = NSPersistentContainer(name: containerName, managedObjectModel: PersistenceController.managedObjectModel)
+    
+    if inMemory {
+      container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
+    }
+    
     container.loadPersistentStores { description, error in
       if let error = error {
         print("Failed to load container: \(error)")
       }
       else {
-        print("Successfully loaded container - \(containerName)")
+        print("Successfully loaded container: \(containerName)")
       }
     }
     getAllRecipes()

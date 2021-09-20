@@ -3,7 +3,6 @@
 //  Beeryo
 //
 //  Created by Jacek K on 29/08/2021.
-//  test git commit
 
 import SwiftUI
 import CoreData
@@ -17,10 +16,11 @@ struct ContentView: View {
       })
   }
   
-  
   struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
       ContentView()
+      ContentView()
+        .preferredColorScheme(.dark)
       
     }}
 }

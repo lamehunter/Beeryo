@@ -21,6 +21,7 @@ struct RecipesView: View {
         isActive: $isNewRecipeVisible
       ) {
         EmptyView()
+        
       }
       
       List {
@@ -28,8 +29,8 @@ struct RecipesView: View {
           NavigationLink(item.name ?? "error (itemNameNil)",
                          destination: RecipeEditView(entity: item))
         }
-        //NavigationLink("Recipe 1", destination: RecipeEditView(valueee: "Recipe1"))
-        //NavigationLink("Recipe 2", destination: RecipeEditView(valueee: "Recip2"))
+//        NavigationLink("Recipe 1", destination: RecipeEditView(valueee: "Recipe1"))
+//        NavigationLink("Recipe 2", destination: RecipeEditView(valueee: "Recip2"))
       }
       .navigationTitle("My Recipes")
       .navigationViewStyle(DefaultNavigationViewStyle())
@@ -59,7 +60,9 @@ struct NavigationBarRightButtonView: View {
 }
 
 struct RecipesView_Previews: PreviewProvider {
+  
   static var previews: some View {
-    RecipesView()
+    RecipesView(persistenceController: PersistenceController.preview, isNewRecipeVisible: false)
+      .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
   }
 }

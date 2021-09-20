@@ -38,6 +38,8 @@ struct SplashViewContents : View {
       Spacer()
       Image("beerSplashScreenLogo")
         .resizable()
+        .renderingMode(.template)
+        .foregroundColor(Color("TextColor"))
         .frame(width: imageSize, height: imageSize)
       Text("Beeryo")
         .font(Font.largeTitle)
@@ -65,5 +67,6 @@ struct SplashViewContents : View {
 struct SplashView_Previews: PreviewProvider {
   static var previews: some View {
     SplashView()
+    SplashView().preferredColorScheme(/*@START_MENU_TOKEN@*/.dark/*@END_MENU_TOKEN@*/)
   }
 }

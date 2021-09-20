@@ -13,21 +13,52 @@ struct MainMenuView: View {
   var body: some View {
     NavigationView{
       VStack (alignment: .leading, spacing: vStackSpacing){
+        TitleRow(text: "Let's start ...", textPosition: "left")
         Button(action: {
         }) {
           NavigationLink(
             destination: RecipesView()){
-            MenuRowView(imageSystemName: "doc.text", rowName: "Recipes")
+            MenuRowView(imageSystemName: "doc.text", text: "Recipes")
           }
         }
-        MenuRowView(imageSystemName: "archivebox", rowName: "Store")
-      }}
+        MenuRowView(imageSystemName: "archivebox", text: "Store")
+        Spacer()
+        TitleRow(text: "... brewing!", textPosition: "right")
+      }
+    }
+  }
+}
+
+struct TitleRow : View {
+  let text: String
+  let textPosition: String
+  
+  var body: some View {
+    HStack{
+      if (textPosition == "left"){
+        Text(text)
+          .bold()
+          .font(.title)
+          .padding(.leading, 10)
+        Spacer()
+      }
+      else if (textPosition == "right"){
+        Spacer()
+        Text(text)
+          .bold()
+          .font(.title)
+          .padding(.leading, 10)
+      }
+    }
+    .padding(5)
+    .padding(.leading, 20)
+    .padding(.trailing, 20)
   }
 }
 
 struct MenuRowView : View {
   let imageSystemName: String
-  let rowName: String
+  let text: String
   
   let menuPositionImageSize: CGFloat = 25
   let paddingLeftMenuPosition: CGFloat = 20
@@ -37,16 +68,27 @@ struct MenuRowView : View {
       Image(systemName: imageSystemName)
         .resizable()
         .frame(width: menuPositionImageSize, height: menuPositionImageSize)
-      Text(rowName)
+        .padding(.leading, 10)
+      Text(text)
         .bold()
         .font(.title)
-        .padding(.leading, paddingLeftMenuPosition)
+        .padding(.leading, 10)
+      
     }
+    .padding(5)
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .overlay(
+      RoundedRectangle(cornerRadius: 5)
+        .stroke(Color("StrokeColor"), lineWidth: 1))
+    .padding(.leading, 20)
+    .padding(.trailing, 20)
   }
 }
 
 struct MainMenuView_Previews: PreviewProvider {
   static var previews: some View {
     MainMenuView()
+    MainMenuView()
+      .preferredColorScheme(/*@START_MENU_TOKEN@*/.dark/*@END_MENU_TOKEN@*/)
   }
 }

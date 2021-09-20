@@ -13,8 +13,8 @@ struct RecipeEditView: View {
   @Environment(\.presentationMode) var presentationMode
   
   @FetchRequest(entity: RecipeEntity.entity(),
-                  sortDescriptors: [],
-                  animation: .default) private var items: FetchedResults<RecipeEntity>
+                sortDescriptors: [],
+                animation: .default) private var items: FetchedResults<RecipeEntity>
   @StateObject private var recipeEntity: RecipeEntity = RecipeEntity()
   
   @State var recipeName: String = ""
@@ -26,7 +26,7 @@ struct RecipeEditView: View {
   @State var recipeHops: String = ""
   @State var recipeYeast: String = ""
   @State var showAlert: Bool = false
-
+  
   @State var alertText = ""
   
   
@@ -48,24 +48,24 @@ struct RecipeEditView: View {
         Section(header: SectionHeader(title: "General")){
           generalSectionRow(title: "Name",
                             textFieldContent: recipeEntity.name ?? "nameNul",
-                           
+                            
                             bindingValue: $recipeName)
           generalSectionRow(title: "Style",
                             textFieldContent: recipeEntity.style ?? "styleNul",
-                           
+                            
                             bindingValue: $recipeStyle)
           generalSectionRow(title: "Batch size",
                             textFieldContent: "--",
-                           
+                            
                             bindingValue: $recipeBatchSize)
           generalSectionRowNumeric(title: "OG",
                                    textFieldContent: recipeEntity.og == 0.0 ? "" : String(recipeEntity.og),
-                           
-                            bindingValue:  $recipeOG)
+                                   
+                                   bindingValue:  $recipeOG)
           generalSectionRowNumeric(title: "FG",
-                            textFieldContent: recipeEntity.fg == 0.0 ? "" : String(recipeEntity.fg),
-                           
-                            bindingValue:  $recipeFG)
+                                   textFieldContent: recipeEntity.fg == 0.0 ? "" : String(recipeEntity.fg),
+                                   
+                                   bindingValue:  $recipeFG)
             .padding(.bottom, 20)
         }
         
@@ -88,8 +88,8 @@ struct RecipeEditView: View {
           recipeEntity.og = recipeOG
           recipeEntity.style = recipeStyle
           recipeEntity.fg = recipeFG
-         
-            persistenceController.addRecipe(_recipe: recipeEntity)
+          
+          persistenceController.addRecipe(_recipe: recipeEntity)
           
           presentationMode.wrappedValue.dismiss()
         }
@@ -100,16 +100,14 @@ struct RecipeEditView: View {
       }
       .alert(isPresented: $showAlert, content: {
         Alert(
-            title: Text("Recipe name already exist"),
-            message: Text("Overwrite?"),
-            primaryButton: .destructive(Text("Yes")) {
-              print("OVERWRITE VALUE")
-            },
-            secondaryButton: .cancel()
+          title: Text("Recipe name already exist"),
+          message: Text("Overwrite?"),
+          primaryButton: .destructive(Text("Yes")) {
+            print("OVERWRITE VALUE")
+          },
+          secondaryButton: .cancel()
         )
       }))
-      
-     
       Spacer()
     }
   }
@@ -118,7 +116,7 @@ struct RecipeEditView: View {
 struct generalSectionRow: View {
   var title: String
   var textFieldContent: String
-
+  
   @Binding var bindingValue: String
   var titleTextFrameSizeH: CGFloat = 80
   var titleTextFrameSizeV: CGFloat = 20
@@ -129,12 +127,12 @@ struct generalSectionRow: View {
         .frame(width: titleTextFrameSizeH,
                height: titleTextFrameSizeV,
                alignment: .leading)
-      TextField("textFieldContent",
+      TextField("",
                 text: $bindingValue)
-       
+        
         .overlay(VStack{
                   Divider()
-                    .background(Color.red)
+                    .background(Color.gray)
                     .offset(x: 0, y: 15)})
     }
   }
@@ -143,7 +141,7 @@ struct generalSectionRow: View {
 struct generalSectionRowNumeric: View {
   var title: String
   var textFieldContent: String
-
+  
   @Binding var bindingValue: Float
   var titleTextFrameSizeH: CGFloat = 80
   var titleTextFrameSizeV: CGFloat = 20
@@ -158,7 +156,6 @@ struct generalSectionRowNumeric: View {
                 value: $bindingValue,
                 formatter: NumberFormatter())
         .keyboardType(.decimalPad)
-       
         .overlay(VStack{
                   Divider()
                     .background(Color.red)
@@ -175,7 +172,6 @@ struct ingredientsSectionRow: View {
     HStack {
       generalSectionRow(title: title,
                         textFieldContent: "->",
-                       
                         bindingValue: $bindingValue)
       addOrRemoveButton()
     }
@@ -206,7 +202,7 @@ struct SectionHeader: View {
   let title: String
   let imageSize: CGFloat = 20
   let fontColor = Color.black
-  let backgroundColor = Color.gray.opacity(0.1)
+  let backgroundColor = Color("BackgroundRectangleColor")
   let headerPadding: CGFloat = 5
   
   var body: some View {
@@ -215,20 +211,26 @@ struct SectionHeader: View {
       Image(systemName: "highlighter")
         .resizable()
         .frame(width: imageSize, height: imageSize)
+        .foregroundColor(Color("TextColor"))
       Text(title)
         .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+        .foregroundColor(Color("TextColor"))
       Spacer()
     }
     .padding(headerPadding)
     .foregroundColor(fontColor)
     .background(RoundedRectangle(cornerRadius: 10)
-                  .foregroundColor(backgroundColor))
-    
+                  .strokeBorder(Color("StrokeColor"), lineWidth: 1.0))
   }
 }
 
 struct RecipeEditView_Previews: PreviewProvider {
+  
   static var previews: some View {
-    RecipeEditView(entity: RecipeEntity())
+    RecipeEditView()
+      .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
+    RecipeEditView()
+      .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
+      .preferredColorScheme(.dark)
   }
 }
