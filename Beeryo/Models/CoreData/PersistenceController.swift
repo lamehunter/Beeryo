@@ -74,6 +74,14 @@ final class PersistenceController: ObservableObject {
     }
   }
   
+  func doesRecipeNameExist(name: String) -> Bool {
+    if (allRecipes.filter({$0.name == name}).count >= 1) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
   
   func deleteRecipe(indexSet: IndexSet) {
     guard let index = indexSet.first else { return }

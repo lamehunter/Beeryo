@@ -15,7 +15,8 @@ struct RecipeEditView: View {
   @FetchRequest(entity: RecipeEntity.entity(),
                 sortDescriptors: [],
                 animation: .default) private var items: FetchedResults<RecipeEntity>
-  @StateObject private var recipeEntity: RecipeEntity = RecipeEntity()
+  
+  private var passedEntity: RecipeEntity? = nil
   
   @State var recipeName: String = ""
   @State var recipeStyle: String = ""
@@ -29,17 +30,13 @@ struct RecipeEditView: View {
   
   @State var alertText = ""
   
-  
   init(entity: RecipeEntity) {
-    _recipeEntity = StateObject(wrappedValue: entity)
-    _recipeName = State(initialValue: entity.name ?? "")
-    _recipeStyle = State(initialValue: entity.style ?? "")
-    _recipeOG = State(initialValue: entity.og)
-    _recipeFG = State(initialValue: entity.fg)
+    passedEntity = entity
+    _recipeName = State(initialValue: entity.name!)
+    _recipeStyle = State(initialValue: entity.style!)
   }
   
   init(){
-    _recipeEntity = StateObject(wrappedValue: RecipeEntity(context: PersistenceController.shared.container.viewContext))
   }
   
   var body: some View {
@@ -47,25 +44,23 @@ struct RecipeEditView: View {
       VStack (alignment: .center){
         Section(header: SectionHeader(title: "General")){
           generalSectionRow(title: "Name",
-                            textFieldContent: recipeEntity.name ?? "nameNul",
-                            
+                            textFieldContent: recipeName,
                             bindingValue: $recipeName)
           generalSectionRow(title: "Style",
-                            textFieldContent: recipeEntity.style ?? "styleNul",
-                            
+                            textFieldContent: recipeStyle,
                             bindingValue: $recipeStyle)
-          generalSectionRow(title: "Batch size",
-                            textFieldContent: "--",
-                            
-                            bindingValue: $recipeBatchSize)
-          generalSectionRowNumeric(title: "OG",
-                                   textFieldContent: recipeEntity.og == 0.0 ? "" : String(recipeEntity.og),
-                                   
-                                   bindingValue:  $recipeOG)
-          generalSectionRowNumeric(title: "FG",
-                                   textFieldContent: recipeEntity.fg == 0.0 ? "" : String(recipeEntity.fg),
-                                   
-                                   bindingValue:  $recipeFG)
+//          generalSectionRow(title: "Batch size",
+//                            textFieldContent: "--",
+//
+//                            bindingValue: $recipeBatchSize)
+//          generalSectionRowNumeric(title: "OG",
+//                                   textFieldContent: recipeEntity.og == 0.0 ? "" : String(recipeEntity.og),
+//
+//                                   bindingValue:  $recipeOG)
+//          generalSectionRowNumeric(title: "FG",
+//                                   textFieldContent: recipeEntity.fg == 0.0 ? "" : String(recipeEntity.fg),
+//
+//                                   bindingValue:  $recipeFG)
             .padding(.bottom, 20)
         }
         
@@ -79,34 +74,33 @@ struct RecipeEditView: View {
       .padding()
       .navigationTitle("Recipe Details")
       .navigationBarItems(trailing: Button(action: {
-        
-        if (items.filter({$0.name == recipeName}).count >= 1){
+        if (persistenceController.doesRecipeNameExist(name: recipeName)){
           showAlert = true
         }
-        else {
-          recipeEntity.name = recipeName
-          recipeEntity.og = recipeOG
-          recipeEntity.style = recipeStyle
-          recipeEntity.fg = recipeFG
-          
-          persistenceController.addRecipe(_recipe: recipeEntity)
-          
+        else if (passedEntity != nil){
+          passedEntity?.name = recipeName
+          persistenceController.saveData()
           presentationMode.wrappedValue.dismiss()
         }
-        
+        else {
+          let newEntity = RecipeEntity(context: persistenceController.container.viewContext )
+          newEntity.name = recipeName
+          newEntity.og = recipeOG
+          newEntity.style = recipeStyle
+          newEntity.fg = recipeFG
+          persistenceController.addRecipe(_recipe: newEntity)
+          presentationMode.wrappedValue.dismiss()
+        }
       })
       {
         Text("Save")
       }
+      .disabled(recipeName.isEmpty)
       .alert(isPresented: $showAlert, content: {
         Alert(
-          title: Text("Recipe name already exist"),
-          message: Text("Overwrite?"),
-          primaryButton: .destructive(Text("Yes")) {
-            print("OVERWRITE VALUE")
-          },
-          secondaryButton: .cancel()
-        )
+          title: Text("Warning!"),
+          message: Text("Recipe name already exist!"),
+          dismissButton: .cancel())
       }))
       Spacer()
     }
@@ -129,7 +123,6 @@ struct generalSectionRow: View {
                alignment: .leading)
       TextField("",
                 text: $bindingValue)
-        
         .overlay(VStack{
                   Divider()
                     .background(Color.gray)
