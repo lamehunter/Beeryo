@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct RecipeEditView: View {
-  private var persistenceController = PersistenceController.shared
   @Environment(\.managedObjectContext) private var viewContext
   @Environment(\.presentationMode) var presentationMode
   
@@ -16,6 +15,7 @@ struct RecipeEditView: View {
                 sortDescriptors: [],
                 animation: .default) private var items: FetchedResults<RecipeEntity>
   
+  private var persistenceController = PersistenceController.shared
   private var passedEntity: RecipeEntity? = nil
   
   @State var recipeName: String = ""
@@ -26,17 +26,16 @@ struct RecipeEditView: View {
   @State var recipeMalts: String = ""
   @State var recipeHops: String = ""
   @State var recipeYeast: String = ""
+  
   @State var showAlert: Bool = false
-  
-  @State var alertText = ""
-  
+
   init(entity: RecipeEntity) {
     passedEntity = entity
-    _recipeName = State(initialValue: entity.name!)
-    _recipeStyle = State(initialValue: entity.style!)
+    _recipeName = State(initialValue: entity.name ?? "error")
+    _recipeStyle = State(initialValue: entity.style ?? "error")
   }
   
-  init(){
+  init() {
   }
   
   var body: some View {
@@ -74,16 +73,17 @@ struct RecipeEditView: View {
       .padding()
       .navigationTitle("Recipe Details")
       .navigationBarItems(trailing: Button(action: {
-        if (persistenceController.doesRecipeNameExist(name: recipeName)){
-          showAlert = true
-        }
-        else if (passedEntity != nil){
+        if (passedEntity != nil){
           passedEntity?.name = recipeName
+          passedEntity?.style = recipeStyle
           persistenceController.saveData()
           presentationMode.wrappedValue.dismiss()
         }
+        else if (persistenceController.doesRecipeNameExist(name: recipeName)){
+          showAlert = true
+        }
         else {
-          let newEntity = RecipeEntity(context: persistenceController.container.viewContext )
+          let newEntity = RecipeEntity(context: persistenceController.container.viewContext)
           newEntity.name = recipeName
           newEntity.og = recipeOG
           newEntity.style = recipeStyle

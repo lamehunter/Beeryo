@@ -83,10 +83,8 @@ final class PersistenceController: ObservableObject {
     }
   }
   
-  func deleteRecipe(indexSet: IndexSet) {
-    guard let index = indexSet.first else { return }
-    let entity = allRecipes[index]
-    container.viewContext.delete(entity)
+  func deleteRecipe(index: IndexSet.Element) {
+    container.viewContext.delete(allRecipes[index])
     saveData()
   }
   

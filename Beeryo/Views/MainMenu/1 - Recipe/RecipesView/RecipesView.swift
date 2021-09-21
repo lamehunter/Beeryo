@@ -23,6 +23,7 @@ struct RecipesView: View {
   }
   
   var body: some View {
+    
     VStack {
       NavigationLink(
         destination: RecipeEditView(),
@@ -33,14 +34,18 @@ struct RecipesView: View {
       
       List {
         ForEach(persistenceController.allRecipes) { item in
-          NavigationLink(item.name ?? "error (itemNameNil)",
+          NavigationLink(item.name!,
                          destination: RecipeEditView(entity: item))
-        }
+        }.onDelete(perform: { indexSet in
+          indexSet.forEach { index in
+            persistenceController.deleteRecipe(index: index)
+          }
+        })
 //        NavigationLink("Recipe 1", destination: RecipeEditView(valueee: "Recipe1"))
 //        NavigationLink("Recipe 2", destination: RecipeEditView(valueee: "Recip2"))
       }
       .navigationTitle("My Recipes")
-      .navigationViewStyle(DefaultNavigationViewStyle())
+      .navigationViewStyle(StackNavigationViewStyle())
       .navigationBarItems(
         trailing: NavigationBarRightButtonView(isNewRecipeVisible: $isNewRecipeVisible))
     }

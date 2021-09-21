@@ -27,6 +27,7 @@
 		B76F2DB426E152B700177B19 /* YeastClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F2DB326E152B700177B19 /* YeastClass.swift */; };
 		B76F2DB626E153A800177B19 /* YeastTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F2DB526E153A800177B19 /* YeastTypeEnum.swift */; };
 		B782145326DD887900BE916E /* RecipesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B782145226DD887900BE916E /* RecipesView.swift */; };
+		B7F759F326FA973B00EB1FF6 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F759F226FA973B00EB1FF6 /* Recipe.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 		B76F2DB526E153A800177B19 /* YeastTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YeastTypeEnum.swift; sourceTree = "<group>"; };
 		B7754FA526F3D24D009BD414 /* Beeryo 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Beeryo 2.xcdatamodel"; sourceTree = "<group>"; };
 		B782145226DD887900BE916E /* RecipesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesView.swift; sourceTree = "<group>"; };
+		B7F759F226FA973B00EB1FF6 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 		B750530C26DBFE750040887E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B7F759F126FA972400EB1FF6 /* JSON Objects */,
 				B72595C826F1197400C7E0C8 /* CoreData */,
 				B76F2DB226E1527C00177B19 /* Units */,
 				B76F2DB126E1525900177B19 /* Ingredients */,
@@ -188,6 +191,14 @@
 				B76F2DA526E13D3700177B19 /* AddIngredientsView.swift */,
 			);
 			path = "1 - Recipe";
+			sourceTree = "<group>";
+		};
+		B7F759F126FA972400EB1FF6 /* JSON Objects */ = {
+			isa = PBXGroup;
+			children = (
+				B7F759F226FA973B00EB1FF6 /* Recipe.swift */,
+			);
+			path = "JSON Objects";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -275,6 +286,7 @@
 				B72595D826F12D9800C7E0C8 /* RecipeEntity+CoreDataClass.swift in Sources */,
 				B75052F926DBFE660040887E /* BeeryoApp.swift in Sources */,
 				B76F2DB026E1516100177B19 /* MaltClass.swift in Sources */,
+				B7F759F326FA973B00EB1FF6 /* Recipe.swift in Sources */,
 				B72595D926F12D9800C7E0C8 /* RecipeEntity+CoreDataProperties.swift in Sources */,
 				B76F2DA626E13D3700177B19 /* AddIngredientsView.swift in Sources */,
 			);

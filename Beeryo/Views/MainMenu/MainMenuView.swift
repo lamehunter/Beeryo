@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainMenuView: View {
-  let vStackSpacing: CGFloat = 20
+  let vStackSpacing: CGFloat = 10
   let screenWidth = CGFloat(UIScreen.main.bounds.size.width)
   let screenHeight = CGFloat(UIScreen.main.bounds.size.height)
   lazy var backgroundImageSize = screenWidth < screenHeight ? screenWidth : screenHeight
@@ -18,14 +18,34 @@ struct MainMenuView: View {
       ZStack {
         VStack (alignment: .leading, spacing: vStackSpacing){
           TitleRow(text: "Let's start ...", textPosition: "left")
+          
           Button(action: {
           }) {
             NavigationLink(
               destination: RecipesView()){
-              MenuRowView(imageSystemName: "doc.text", text: "Recipes")
+              MenuRowView(imageSystemName: "doc.text", text: "My Recipes")
             }
           }
-          MenuRowView(imageSystemName: "archivebox", text: "Store")
+          
+          MenuRowView(imageSystemName: "archivebox", text: "Ingredients storage")
+          
+          Button(action: {
+          }) {
+            NavigationLink(
+              destination: RecipesView()){
+              MenuRowView(imageSystemName: "doc.text", text: "Upload recipes")
+            }
+          }
+          
+          Button(action: {
+          }) {
+            NavigationLink(
+              destination: RecipesView()){
+              MenuRowView(imageSystemName: "doc.text", text: "Download recipes")
+            }
+          }
+          
+          
           Spacer()
           TitleRow(text: "... brewing!", textPosition: "right")
         }
@@ -72,7 +92,7 @@ struct MenuRowView : View {
   let imageSystemName: String
   let text: String
   
-  let menuPositionImageSize: CGFloat = 25
+  let menuPositionImageSize: CGFloat = 20
   let paddingLeftMenuPosition: CGFloat = 20
   
   var body: some View {
@@ -83,7 +103,7 @@ struct MenuRowView : View {
         .padding(.leading, 10)
       Text(text)
         .bold()
-        .font(.title)
+        .font(.body)
         .padding(.leading, 10)
       
     }
@@ -91,7 +111,8 @@ struct MenuRowView : View {
     .frame(maxWidth: .infinity, alignment: .leading)
     .overlay(
       RoundedRectangle(cornerRadius: 5)
-        .stroke(Color("StrokeColor"), lineWidth: 1))
+        .stroke(Color("StrokeColor"), lineWidth: 1)
+        .opacity(0.3))
     .padding(.leading, 20)
     .padding(.trailing, 20)
   }
