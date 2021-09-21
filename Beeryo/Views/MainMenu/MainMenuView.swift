@@ -9,21 +9,33 @@ import SwiftUI
 
 struct MainMenuView: View {
   let vStackSpacing: CGFloat = 20
+  let screenWidth = CGFloat(UIScreen.main.bounds.size.width)
+  let screenHeight = CGFloat(UIScreen.main.bounds.size.height)
+  lazy var backgroundImageSize = screenWidth < screenHeight ? screenWidth : screenHeight
   
   var body: some View {
-    NavigationView{
-      VStack (alignment: .leading, spacing: vStackSpacing){
-        TitleRow(text: "Let's start ...", textPosition: "left")
-        Button(action: {
-        }) {
-          NavigationLink(
-            destination: RecipesView()){
-            MenuRowView(imageSystemName: "doc.text", text: "Recipes")
+    NavigationView {
+      ZStack {
+        VStack (alignment: .leading, spacing: vStackSpacing){
+          TitleRow(text: "Let's start ...", textPosition: "left")
+          Button(action: {
+          }) {
+            NavigationLink(
+              destination: RecipesView()){
+              MenuRowView(imageSystemName: "doc.text", text: "Recipes")
+            }
           }
+          MenuRowView(imageSystemName: "archivebox", text: "Store")
+          Spacer()
+          TitleRow(text: "... brewing!", textPosition: "right")
         }
-        MenuRowView(imageSystemName: "archivebox", text: "Store")
-        Spacer()
-        TitleRow(text: "... brewing!", textPosition: "right")
+        Image("beerSplashScreenLogo")
+          .resizable()
+          .renderingMode(.template)
+          .foregroundColor(Color("TextColor"))
+          .opacity(0.2)
+          .frame(width: screenWidth < screenHeight ? screenWidth : screenHeight,
+                 height: screenWidth < screenHeight ? screenWidth : screenHeight)
       }
     }
   }
@@ -34,7 +46,7 @@ struct TitleRow : View {
   let textPosition: String
   
   var body: some View {
-    HStack{
+    HStack {
       if (textPosition == "left"){
         Text(text)
           .bold()
@@ -64,7 +76,7 @@ struct MenuRowView : View {
   let paddingLeftMenuPosition: CGFloat = 20
   
   var body: some View {
-    HStack{
+    HStack {
       Image(systemName: imageSystemName)
         .resizable()
         .frame(width: menuPositionImageSize, height: menuPositionImageSize)
