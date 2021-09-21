@@ -18,6 +18,7 @@ final class PersistenceController: ObservableObject {
     for number in 0..<10 {
       let recipe = RecipeEntity(context: controller.container.viewContext)
       recipe.name = "Recipe no." + String(number)
+      controller.addRecipe(_recipe: recipe)
     }
     return controller
   }()

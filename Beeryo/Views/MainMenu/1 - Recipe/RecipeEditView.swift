@@ -227,10 +227,15 @@ struct SectionHeader: View {
 struct RecipeEditView_Previews: PreviewProvider {
   
   static var previews: some View {
-    RecipeEditView()
-      .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
-    RecipeEditView()
-      .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
-      .preferredColorScheme(.dark)
+    NavigationView{
+      RecipeEditView()
+        .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
+    }
+    
+    NavigationView {
+      RecipeEditView()
+        .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
+        .preferredColorScheme(.dark)
+    }
   }
 }

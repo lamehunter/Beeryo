@@ -14,14 +14,21 @@ struct RecipesView: View {
   
   @State var isNewRecipeVisible = false
   
+  init(){
+  }
+  
+  //initizalizer just for preview purposes
+  init(previewController: PersistenceController) {
+    _persistenceController = StateObject(wrappedValue: previewController)
+  }
+  
   var body: some View {
-    VStack{
+    VStack {
       NavigationLink(
         destination: RecipeEditView(),
         isActive: $isNewRecipeVisible
       ) {
         EmptyView()
-        
       }
       
       List {
@@ -60,9 +67,10 @@ struct NavigationBarRightButtonView: View {
 }
 
 struct RecipesView_Previews: PreviewProvider {
-  
   static var previews: some View {
-    RecipesView(persistenceController: PersistenceController.preview, isNewRecipeVisible: false)
-      .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    NavigationView {
+      RecipesView(previewController: PersistenceController.preview)
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    }
   }
 }
