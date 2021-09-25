@@ -27,6 +27,7 @@
 		B76F2DB426E152B700177B19 /* YeastClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F2DB326E152B700177B19 /* YeastClass.swift */; };
 		B76F2DB626E153A800177B19 /* YeastTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F2DB526E153A800177B19 /* YeastTypeEnum.swift */; };
 		B782145326DD887900BE916E /* RecipesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B782145226DD887900BE916E /* RecipesView.swift */; };
+		B7C19BD426FBDD8800F374C4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B7C19BD326FBDD8800F374C4 /* GoogleService-Info.plist */; };
 		B7F759F326FA973B00EB1FF6 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F759F226FA973B00EB1FF6 /* Recipe.swift */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,8 @@
 		B76F2DB526E153A800177B19 /* YeastTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YeastTypeEnum.swift; sourceTree = "<group>"; };
 		B7754FA526F3D24D009BD414 /* Beeryo 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Beeryo 2.xcdatamodel"; sourceTree = "<group>"; };
 		B782145226DD887900BE916E /* RecipesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesView.swift; sourceTree = "<group>"; };
+		B7C19BD326FBDD8800F374C4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B7C19BD526FBDD8D00F374C4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B7F759F226FA973B00EB1FF6 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -97,6 +100,7 @@
 		B75052EC26DBFE650040887E = {
 			isa = PBXGroup;
 			children = (
+				B7C19BD326FBDD8800F374C4 /* GoogleService-Info.plist */,
 				B75052F726DBFE660040887E /* Beeryo */,
 				B75052F626DBFE660040887E /* Products */,
 			);
@@ -119,6 +123,7 @@
 				B75052F826DBFE660040887E /* BeeryoApp.swift */,
 				B75052FC26DBFE660040887E /* Assets.xcassets */,
 				B750530626DBFE660040887E /* Info.plist */,
+				B7C19BD526FBDD8D00F374C4 /* GoogleService-Info.plist */,
 				B75052FE26DBFE660040887E /* Preview Content */,
 			);
 			path = Beeryo;
@@ -260,6 +265,7 @@
 			files = (
 				B750530026DBFE660040887E /* Preview Assets.xcassets in Resources */,
 				B75052FD26DBFE660040887E /* Assets.xcassets in Resources */,
+				B7C19BD426FBDD8800F374C4 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
