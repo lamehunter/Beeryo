@@ -15,7 +15,7 @@ struct RecipeEditView: View {
                 sortDescriptors: [],
                 animation: .default) private var items: FetchedResults<RecipeEntity>
   
-  private var persistenceController = PersistenceController.shared
+  @StateObject private var persistenceController = PersistenceController.shared
   private var recipeEntity: RecipeEntity? = nil
   
   @State var recipeName: String = ""
@@ -64,34 +64,32 @@ struct RecipeEditView: View {
         }
         
         Section(header: SectionHeader(title: "Ingredients")){
-          displayMaltsRow()
+          displayMaltsRow(recipeEntity: recipeEntity!)
             .padding(.bottom, 20)
         }
       }
       .padding()
       .navigationTitle("Recipe Details")
       .navigationBarItems(trailing: Button(action: {
-          if (recipeEntity?.name == recipeName) {
-            recipeEntity?.name = recipeName
-            recipeEntity?.style = recipeStyle
-            persistenceController.saveData()
-            presentationMode.wrappedValue.dismiss()
-          }
-        else if (persistenceController.doesRecipeNameExist(name: recipeName)){
+        if (recipeEntity?.name != recipeName && persistenceController.doesRecipeNameExist(name: recipeName)) {
           showAlert = true
         }
-      })
-                          {
+        else {
+          recipeEntity?.name = recipeName
+          recipeEntity?.style = recipeStyle
+          persistenceController.saveData()
+          presentationMode.wrappedValue.dismiss()
+        }
+      }){
         Text("Save")
-      }
-        .disabled(recipeName.isEmpty)
-        .alert(isPresented: $showAlert,
-               content: {
+      }.disabled(recipeName.isEmpty)
+                            .alert(isPresented: $showAlert,content: {
         Alert(
           title: Text("Warning!"),
           message: Text("Recipe name already exist!"),
           dismissButton: .cancel())
-      }))
+      })
+      )
       Spacer()
     }
   }
@@ -148,7 +146,11 @@ struct generalSectionRowNumeric: View {
 }
 
 struct displayMaltsRow: View {
-  var maltEntities : [MaltEntity]?
+  @StateObject var recipeEntity: RecipeEntity
+  
+  init(recipeEntity: RecipeEntity) {
+    _recipeEntity = StateObject(wrappedValue: recipeEntity)
+  }
   
   var body: some View {
     HStack {
@@ -158,18 +160,21 @@ struct displayMaltsRow: View {
                  height: 20,
                  alignment: .leading)
         List {
-          if let maltEntities = maltEntities {
+          if let maltEntities = recipeEntity.malts?.allObjects as? [MaltEntity] {
             ForEach (maltEntities) {malt in
               if
-                let malt = malt,
-                let name = malt.name {
-                Text("String \(name)")
+                let name = malt.name,
+                let weight = malt.weight {
+                HStack{
+                  Text("\(name)")
+                  Spacer()
+                  Text("\(weight)")
+                }
               }
             }
           }
-          
         }
-        addOrRemoveButton()
+        addOrRemoveButton(recipeEntity: recipeEntity)
       }
     }
   }}
@@ -178,9 +183,15 @@ struct addOrRemoveButton: View {
   let imageSystemName = "plusminus"
   @State var isAddIngredientsViewActive = false
   
+  var recipeEntity: RecipeEntity
+  
+  init(recipeEntity: RecipeEntity) {
+    self.recipeEntity = recipeEntity
+  }
+  
   var body: some View {
     NavigationLink(
-      destination: AddMaltsView(),
+      destination: AddMaltsView(recipeEntity_: recipeEntity),
       isActive: $isAddIngredientsViewActive
     ) {
       Button(action: {
@@ -222,12 +233,12 @@ struct SectionHeader: View {
 
 struct RecipeEditView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView{
-      RecipeEditView()
+    NavigationView {
+      RecipeEditView(recipeEntity: PersistenceController.preview.allRecipes.first ?? RecipeEntity())
         .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
     }
     NavigationView {
-      RecipeEditView()
+      RecipeEditView(recipeEntity: PersistenceController.preview.allRecipes.first ?? RecipeEntity())
         .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
         .preferredColorScheme(.dark)
     }

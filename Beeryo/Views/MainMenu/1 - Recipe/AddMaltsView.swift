@@ -14,6 +14,13 @@ struct AddMaltsView: View {
   @State var maltWeight: Float = 0.0
   @State var maltWeightString: String = ""
   @ObservedObject var persistenceController = PersistenceController.shared
+  @State var isAlertPresented = false
+  
+  var recipeEntity: RecipeEntity
+  
+  init(recipeEntity_: RecipeEntity) {
+    self.recipeEntity = recipeEntity_
+  }
   
   func convertWeight(){
     maltWeight = Float(maltWeightString) ?? 0.0
@@ -27,28 +34,27 @@ struct AddMaltsView: View {
   var body: some View {
     VStack {
       List {
-        ForEach(persistenceController.allMalts) { malt in
-          if let malt = malt,
-             let name = malt.name,
-             let weight = malt.weight {
-            HStack{
-              
-              Text("\(name)")
-              Spacer()
-              Text(String.localizedStringWithFormat("%.2f %@", weight, unit))
-              
-
+        if let maltEntities = recipeEntity.malts?.allObjects as? [MaltEntity] {
+          ForEach (maltEntities) { malt in
+            if
+              let name = malt.name,
+              let weight = malt.weight {
+              HStack{
+                Text("\(name)")
+                Spacer()
+                Text(String.localizedStringWithFormat("%.2f %@", weight, unit))
+              }
             }
-          }
+          }.listRowBackground(Color.yellow)
         }
-      }
-      HStack{
+      }.background(Color.red)
+      HStack {
         Text("Name:")
         TextField("Malt name", text: $maltName)
       }
       .padding()
-
-      HStack{
+      
+      HStack {
         Text("Weight:")
         TextField("Malt weight", text: $maltWeightString).keyboardType(.decimalPad)
       }
@@ -56,10 +62,11 @@ struct AddMaltsView: View {
       
       Button {
         convertWeight()
-        if areInputsValid() {
-          persistenceController.addMalt(name: maltName, weight: maltWeight)
+        if areInputsValid() &&
+            !(persistenceController.doesMaltNameExist(recipe: recipeEntity, name: maltName)) {
+          persistenceController.addMaltToRecipe(name: maltName, weight: maltWeight, recipeEntity: recipeEntity)
         }
-        else { return }
+        else { isAlertPresented = true }
       } label: {
         Text("Add new malt")
           .padding()
@@ -69,19 +76,19 @@ struct AddMaltsView: View {
       }
     }
     .padding()
-    .navigationTitle("Pick malts")
-    .navigationBarItems(trailing: Button(action: {
-      
-    }, label: {
-      Text("Save selection")
-    }))
-    
+    .alert(isPresented: $isAlertPresented, content: {
+      Alert(
+        title: Text("Warning!"),
+        message: Text("Malt name already exist!"),
+        dismissButton: .cancel())
+    })
+    .navigationTitle("Add malts")
   }
-
 }
 
 struct AddMaltsView_Previews: PreviewProvider {
+  
   static var previews: some View {
-    AddMaltsView()
+    AddMaltsView(recipeEntity_: PersistenceController.preview.allRecipes.first!)
   }
 }

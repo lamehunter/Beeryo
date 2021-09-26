@@ -59,10 +59,12 @@ struct RecipesView: View {
           }
           else {
             persistenceController.addRecipeByName(_recipeName: newRecipeName)
+            newRecipeName = ""
           }
         } label: {
           Text("Add New")
         }
+        .disabled(newRecipeName.isEmpty)
       }
       .padding()
       .alert(isPresented: $isAlertPresented) {
