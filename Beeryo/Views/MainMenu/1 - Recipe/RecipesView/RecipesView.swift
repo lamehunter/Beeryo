@@ -13,6 +13,8 @@ struct RecipesView: View {
   @Environment(\.managedObjectContext) private var viewContext
   
   @State var isNewRecipeVisible = false
+  @State var newRecipeName: String = ""
+  @State var isAlertPresented = false
   
   init(){
   }
@@ -34,14 +36,9 @@ struct RecipesView: View {
       
       List {
         ForEach(persistenceController.allRecipes) { item in
-          if
-            let item = item,
-            let malts = item.malts?.allObjects as? [MaltEntity] {
-            
+          if let item = item {
             NavigationLink(item.name!,
-                           destination: RecipeEditView(
-                            recipeEntity: item,
-                            maltEntities: malts)
+                           destination: RecipeEditView(recipeEntity: item)
             )
           }
         }.onDelete(perform: { indexSet in
@@ -52,30 +49,28 @@ struct RecipesView: View {
         //        NavigationLink("Recipe 1", destination: RecipeEditView(valueee: "Recipe1"))
         //        NavigationLink("Recipe 2", destination: RecipeEditView(valueee: "Recip2"))
       }
+      Spacer()
+      HStack() {
+        TextField("Name...", text: $newRecipeName)
+        Spacer()
+        Button {
+          if persistenceController.doesRecipeNameExist(name: newRecipeName) {
+            isAlertPresented = true
+          }
+          else {
+            persistenceController.addRecipeByName(_recipeName: newRecipeName)
+          }
+        } label: {
+          Text("Add New")
+        }
+      }
+      .padding()
+      .alert(isPresented: $isAlertPresented) {
+        Alert(title: Text("Warning"), message: Text("Recipe already exist"), dismissButton: .cancel())
+      }
       .navigationTitle("My Recipes")
       .navigationViewStyle(StackNavigationViewStyle())
-      .navigationBarItems(
-        trailing: NavigationBarRightButtonView(isNewRecipeVisible: $isNewRecipeVisible))
     }
-  }
-}
-
-struct NavigationBarRightButtonView: View {
-  @Binding var isNewRecipeVisible: Bool
-  var body: some View {
-    
-    Button(action: {
-      isNewRecipeVisible = true
-    }, label: {
-      HStack {
-        Image(systemName: "plus.circle")
-          .resizable()
-          .frame(width: 25, height: 25, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-        Text("New Recipe")
-          .fontWeight(.semibold)
-          .font(.headline)
-      }
-    })
   }
 }
 

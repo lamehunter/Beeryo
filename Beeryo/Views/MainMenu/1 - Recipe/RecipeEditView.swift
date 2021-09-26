@@ -17,7 +17,6 @@ struct RecipeEditView: View {
   
   private var persistenceController = PersistenceController.shared
   private var recipeEntity: RecipeEntity? = nil
-  private var maltEntities: [MaltEntity]? = nil
   
   @State var recipeName: String = ""
   @State var recipeStyle: String = ""
@@ -30,12 +29,10 @@ struct RecipeEditView: View {
   
   @State var showAlert: Bool = false
   
-  init(recipeEntity: RecipeEntity, maltEntities: [MaltEntity]) {
+  init(recipeEntity: RecipeEntity) {
     self.recipeEntity = recipeEntity
-    _recipeName = State(initialValue: recipeEntity.name ?? "error")
-    _recipeStyle = State(initialValue: recipeEntity.style ?? "error")
-    
-    self.maltEntities = maltEntities
+    _recipeName = State(initialValue: recipeEntity.name ?? "")
+    _recipeStyle = State(initialValue: recipeEntity.style ?? "")
   }
   
   init() {
@@ -67,37 +64,29 @@ struct RecipeEditView: View {
         }
         
         Section(header: SectionHeader(title: "Ingredients")){
-          displayMaltsRow(maltEntities: maltEntities)
+          displayMaltsRow()
             .padding(.bottom, 20)
         }
       }
       .padding()
       .navigationTitle("Recipe Details")
       .navigationBarItems(trailing: Button(action: {
-        if (recipeEntity != nil){
-          recipeEntity?.name = recipeName
-          recipeEntity?.style = recipeStyle
-          persistenceController.saveData()
-          presentationMode.wrappedValue.dismiss()
-        }
+          if (recipeEntity?.name == recipeName) {
+            recipeEntity?.name = recipeName
+            recipeEntity?.style = recipeStyle
+            persistenceController.saveData()
+            presentationMode.wrappedValue.dismiss()
+          }
         else if (persistenceController.doesRecipeNameExist(name: recipeName)){
           showAlert = true
-        }
-        else {
-          let newEntity = RecipeEntity(context: persistenceController.container.viewContext)
-          newEntity.name = recipeName
-          newEntity.og = recipeOG
-          newEntity.style = recipeStyle
-          newEntity.fg = recipeFG
-          persistenceController.addRecipe(_recipe: newEntity)
-          presentationMode.wrappedValue.dismiss()
         }
       })
                           {
         Text("Save")
       }
-                            .disabled(recipeName.isEmpty)
-                            .alert(isPresented: $showAlert, content: {
+        .disabled(recipeName.isEmpty)
+        .alert(isPresented: $showAlert,
+               content: {
         Alert(
           title: Text("Warning!"),
           message: Text("Recipe name already exist!"),
@@ -184,64 +173,64 @@ struct displayMaltsRow: View {
       }
     }
   }}
+
+struct addOrRemoveButton: View {
+  let imageSystemName = "plusminus"
+  @State var isAddIngredientsViewActive = false
   
-  struct addOrRemoveButton: View {
-    let imageSystemName = "plusminus"
-    @State var isAddIngredientsViewActive = false
-    
-    var body: some View {
-      NavigationLink(
-        destination: AddMaltsView(),
-        isActive: $isAddIngredientsViewActive
-      ) {
-        Button(action: {
-          isAddIngredientsViewActive = true
-        }) {
-          Image(systemName: imageSystemName)
-            .resizable()
-            .frame(width: 15, height: 15)
-        }
-      }
-    }
-  }
-  
-  struct SectionHeader: View {
-    let title: String
-    let imageSize: CGFloat = 20
-    let fontColor = Color.black
-    let backgroundColor = Color("BackgroundRectangleColor")
-    let headerPadding: CGFloat = 5
-    
-    var body: some View {
-      HStack  {
-        Spacer()
-        Image(systemName: "highlighter")
+  var body: some View {
+    NavigationLink(
+      destination: AddMaltsView(),
+      isActive: $isAddIngredientsViewActive
+    ) {
+      Button(action: {
+        isAddIngredientsViewActive = true
+      }) {
+        Image(systemName: imageSystemName)
           .resizable()
-          .frame(width: imageSize, height: imageSize)
-          .foregroundColor(Color("TextColor"))
-        Text(title)
-          .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-          .foregroundColor(Color("TextColor"))
-        Spacer()
+          .frame(width: 15, height: 15)
       }
-      .padding(headerPadding)
-      .foregroundColor(fontColor)
-      .background(RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(Color("StrokeColor"), lineWidth: 1.0))
     }
   }
+}
+
+struct SectionHeader: View {
+  let title: String
+  let imageSize: CGFloat = 20
+  let fontColor = Color.black
+  let backgroundColor = Color("BackgroundRectangleColor")
+  let headerPadding: CGFloat = 5
   
-  struct RecipeEditView_Previews: PreviewProvider {
-    static var previews: some View {
-      NavigationView{
-        RecipeEditView()
-          .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
-      }
-      NavigationView {
-        RecipeEditView()
-          .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
-          .preferredColorScheme(.dark)
-      }
+  var body: some View {
+    HStack  {
+      Spacer()
+      Image(systemName: "highlighter")
+        .resizable()
+        .frame(width: imageSize, height: imageSize)
+        .foregroundColor(Color("TextColor"))
+      Text(title)
+        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+        .foregroundColor(Color("TextColor"))
+      Spacer()
+    }
+    .padding(headerPadding)
+    .foregroundColor(fontColor)
+    .background(RoundedRectangle(cornerRadius: 10)
+                  .strokeBorder(Color("StrokeColor"), lineWidth: 1.0))
+  }
+}
+
+struct RecipeEditView_Previews: PreviewProvider {
+  static var previews: some View {
+    NavigationView{
+      RecipeEditView()
+        .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
+    }
+    NavigationView {
+      RecipeEditView()
+        .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
+        .preferredColorScheme(.dark)
     }
   }
+}
 

@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct AddMaltsView: View {
+  var unit = "kg"
+  
   @State var maltName: String = ""
   @State var maltWeight: Float = 0.0
   @State var maltWeightString: String = ""
   @ObservedObject var persistenceController = PersistenceController.shared
- 
+  
   func convertWeight(){
     maltWeight = Float(maltWeightString) ?? 0.0
   }
@@ -27,38 +29,55 @@ struct AddMaltsView: View {
       List {
         ForEach(persistenceController.allMalts) { malt in
           if let malt = malt,
-             let name = malt.name {
-          Text("\(name)")
+             let name = malt.name,
+             let weight = malt.weight {
+            HStack{
+              
+              Text("\(name)")
+              Spacer()
+              Text(String.localizedStringWithFormat("%.2f %@", weight, unit))
+              
+
+            }
           }
         }
       }
-      Text("Add malts")
       HStack{
-        Text("Malt name:")
-        TextField("Malt name: ", text: $maltName)
+        Text("Name:")
+        TextField("Malt name", text: $maltName)
+      }
+      .padding()
+
+      HStack{
+        Text("Weight:")
+        TextField("Malt weight", text: $maltWeightString).keyboardType(.decimalPad)
       }
       .padding()
       
-      HStack{
-        Text("Malt weight:")
-        TextField("Malt weight: ", text: $maltWeightString).keyboardType(.decimalPad)
+      Button {
+        convertWeight()
+        if areInputsValid() {
+          persistenceController.addMalt(name: maltName, weight: maltWeight)
+        }
+        else { return }
+      } label: {
+        Text("Add new malt")
+          .padding()
+          .foregroundColor(.white)
+          .background(Color.blue)
+          .cornerRadius(15.0)
       }
-      .padding()
-      
     }
     .padding()
-    .navigationTitle("Add malts")
+    .navigationTitle("Pick malts")
     .navigationBarItems(trailing: Button(action: {
-      convertWeight()
-      if areInputsValid() {
-        persistenceController.addMalt(name: maltName, weight: maltWeight)
-      }
-      else { return }
+      
     }, label: {
-      Text("Add")
+      Text("Save selection")
     }))
     
   }
+
 }
 
 struct AddMaltsView_Previews: PreviewProvider {

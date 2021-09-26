@@ -86,6 +86,13 @@ final class PersistenceController: ObservableObject {
     }
   }
   
+  func addRecipeByName(_recipeName: String) {
+    getAllRecipes()
+    let recipe = RecipeEntity(context: container.viewContext)
+    recipe.name = _recipeName
+    saveData()
+  }
+  
   func doesRecipeNameExist(name: String) -> Bool {
     if (allRecipes.filter({$0.name == name}).count >= 1) {
       return true
@@ -115,6 +122,11 @@ final class PersistenceController: ObservableObject {
     let malt = MaltEntity(context: container.viewContext)
     malt.name = name
     malt.weight = weight
+    saveData()
+  }
+  
+  func modifyMaltWeight(in maltEntity: MaltEntity, withValue weight: Float){
+    maltEntity.weight = weight
     saveData()
   }
 }
