@@ -104,6 +104,7 @@ final class PersistenceController: ObservableObject {
     do {
       try container.viewContext.save()
       getAllRecipes()
+      getAllMalts()
     }
     catch let error {
       print("Error to save recipe: \(error)")
