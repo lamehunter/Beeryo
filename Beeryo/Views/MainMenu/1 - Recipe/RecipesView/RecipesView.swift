@@ -34,15 +34,23 @@ struct RecipesView: View {
       
       List {
         ForEach(persistenceController.allRecipes) { item in
-          NavigationLink(item.name!,
-                         destination: RecipeEditView(entity: item))
+          if
+            let item = item,
+            let malts = item.malts?.allObjects as? [MaltEntity] {
+            
+            NavigationLink(item.name!,
+                           destination: RecipeEditView(
+                            recipeEntity: item,
+                            maltEntities: malts)
+            )
+          }
         }.onDelete(perform: { indexSet in
           indexSet.forEach { index in
             persistenceController.deleteRecipe(index: index)
           }
         })
-//        NavigationLink("Recipe 1", destination: RecipeEditView(valueee: "Recipe1"))
-//        NavigationLink("Recipe 2", destination: RecipeEditView(valueee: "Recip2"))
+        //        NavigationLink("Recipe 1", destination: RecipeEditView(valueee: "Recipe1"))
+        //        NavigationLink("Recipe 2", destination: RecipeEditView(valueee: "Recip2"))
       }
       .navigationTitle("My Recipes")
       .navigationViewStyle(StackNavigationViewStyle())

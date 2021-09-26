@@ -12,6 +12,7 @@ final class PersistenceController: ObservableObject {
   
   var container: NSPersistentContainer
   @Published var allRecipes: [RecipeEntity] = []
+  @Published var allMalts: [MaltEntity] = []
   
   static var preview: PersistenceController = {
     let controller = PersistenceController(inMemory: true)
@@ -42,6 +43,7 @@ final class PersistenceController: ObservableObject {
       }
     }
     getAllRecipes()
+    getAllMalts()
   }
   
   static var managedObjectModel: NSManagedObjectModel = {
@@ -56,6 +58,16 @@ final class PersistenceController: ObservableObject {
     }
     catch let error {
       print("Error to fetch all recipes: \(error)")
+    }
+  }
+  
+  func getAllMalts() {
+    let request = NSFetchRequest<MaltEntity>(entityName: "MaltEntity")
+    do {
+      allMalts = try container.viewContext.fetch(request)
+    }
+    catch let error {
+      print("Error to fetch all malts: \(error)")
     }
   }
   
@@ -96,5 +108,12 @@ final class PersistenceController: ObservableObject {
     catch let error {
       print("Error to save recipe: \(error)")
     }
+  }
+  
+  func addMalt(name: String, weight: Float){
+    let malt = MaltEntity(context: container.viewContext)
+    malt.name = name
+    malt.weight = weight
+    saveData()
   }
 }

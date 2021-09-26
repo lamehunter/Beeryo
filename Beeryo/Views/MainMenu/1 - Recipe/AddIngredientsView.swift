@@ -8,8 +8,17 @@
 import SwiftUI
 
 struct AddIngredientsView: View {
+  var passedRecipeEntity: RecipeEntity? = nil
+  
+  init(){
+   
+  }
+  
+  init(recipe: RecipeEntity){
+    passedRecipeEntity = recipe
+  }
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+      Text("Add malts for \(passedRecipeEntity?.name ?? "")")
     }
 }
 
