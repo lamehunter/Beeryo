@@ -7,16 +7,17 @@
 
 import SwiftUI
 
-struct AddMaltsView: View {
+struct AddHopsView: View {
   var unit = "kg"
   
-  @State var newMaltName: String = ""
-  @State var newMaltWeight: Float = 0.0
-  @State var newMaltWeight_string: String = ""
+  @State var newHopName: String = ""
+  @State var newHopWeight: Int32 = 0
+  @State var newHopWeight_string: String = ""
+  @State var newHopDuration: Int32 = 0
   
-  @State var maltName_row: String = ""
-  @State var maltWeight_row: Float = 0.0
-  @State var maltWeight_row_string: String = ""
+  @State var hopName_row: String = ""
+  @State var hopWeight_row: Int32 = 0
+  @State var hopWeight_row_string: String = ""
   
   @ObservedObject var persistenceController = PersistenceController.shared
   
@@ -31,30 +32,30 @@ struct AddMaltsView: View {
   }
   
   func convertWeight() {
-    newMaltWeight = Float(newMaltWeight_string) ?? 0.0
-    maltWeight_row = Float(maltWeight_row_string) ?? 0.0
+    newHopWeight = Int32(newHopWeight_string) ?? 0
+    hopWeight_row = Int32(hopWeight_row_string) ?? 0
   }
   
   func areInputsValid() -> Bool {
-    if newMaltName.isEmpty || newMaltWeight <= 0.0 { return false }
+    if newHopName.isEmpty || newHopWeight <= 0 { return false }
     else { return true }
   }
   
   var body: some View {
     VStack {
       List {
-        if let maltEntities = recipeEntity.malts?.allObjects as? [MaltEntity] {
-          ForEach (maltEntities) { malt in
+        if let hopEntities = recipeEntity.hops?.allObjects as? [HopsEntity] {
+          ForEach (hopEntities) { hop in
             if
-              let name = malt.name,
-              let weight = malt.weight {
-              NavigationLink(destination: ModifyMaltView(maltEntity: malt)) {
+              let name = hop.name,
+              let weight = hop.weight,
+              let duration = hop.duration {
+              NavigationLink(destination: ModifyHopView(hopEntity: hop)) {
                 HStack {
-                  Text("\(name)")
-                    .foregroundColor(Color("TextColor"))
+                  Text("\(name), ")
                   Spacer()
-                  Text(String.localizedStringWithFormat("%.2f %@", weight, unit))
-                    .foregroundColor(Color("TextColor"))
+                  Text("\(weight) \(unit)")
+                  Text("@ \(duration) min")
                 }
               }
             }
@@ -68,27 +69,31 @@ struct AddMaltsView: View {
       
       HStack {
         Text("Name:")
-        TextField("Malt name", text: $newMaltName)
+        TextField("Hop name", text: $newHopName)
       }
       .padding(.leading)
       .padding(.trailing)
       
       HStack {
         Text("Weight:")
-        TextField("Malt weight", text: $newMaltWeight_string).keyboardType(.decimalPad)
+        TextField("Hop weight", text: $newHopWeight_string).keyboardType(.decimalPad)
       }
       .padding()
       
       Button {
         convertWeight()
         if areInputsValid() &&
-            !(persistenceController.doesMaltNameExist(recipe: recipeEntity, name: newMaltName)) {
-          persistenceController.addMaltToRecipe(name: newMaltName, weight: newMaltWeight, recipeEntity: recipeEntity)
+            !(persistenceController.doesHopNameExist(recipe: recipeEntity, name: newHopName)) {
+          persistenceController.addHopToRecipe(
+            name: newHopName,
+            weight: newHopWeight,
+            duration: newHopDuration,
+            recipeEntity: recipeEntity)
           // isAddRecipeSheetPresented = true
         }
         else { isAlertPresented = true }
       } label: {
-        Text("Add new malt")
+        Text("Add new hop")
           .padding()
           .foregroundColor(.white)
           .background(Color.blue)
@@ -99,47 +104,47 @@ struct AddMaltsView: View {
     .alert(isPresented: $isAlertPresented, content: {
       Alert(
         title: Text("Warning!"),
-        message: Text("Malt name already exist or fields are empty!"),
+        message: Text("Hop name already exist or fields are empty!"),
         dismissButton: .cancel())
     })
     
-    .navigationTitle("Add malts")
+    .navigationTitle("Add hops")
     .navigationViewStyle(StackNavigationViewStyle())
   }
 }
 
-struct ModifyMaltView: View {
-  var maltEntity: MaltEntity
+struct ModifyHopView: View {
+  var hopEntity: HopsEntity
   @ObservedObject var persistenceController = PersistenceController.shared
-  @State var maltName: String
-  @State var maltWeight: Float
-  @State var maltWeight_string: String = ""
+  @State var hopName: String
+  @State var hopWeight: Int32
+  @State var hopWeight_string: String = ""
   
-  init(maltEntity: MaltEntity) {
-    self.maltEntity = maltEntity
-    _maltName = State(initialValue: maltEntity.name ?? "")
-    _maltWeight = State(initialValue: maltEntity.weight)
+  init(hopEntity: HopsEntity) {
+    self.hopEntity = hopEntity
+    _hopName = State(initialValue: hopEntity.name ?? "")
+    _hopWeight = State(initialValue: hopEntity.weight)
   }
   
   func convertWeight() {
-    maltWeight = Float(maltWeight_string) ?? 0.0
+    hopWeight = Int32(hopWeight_string) ?? 0
   }
   
   func areInputsValid() -> Bool {
-    if maltName.isEmpty || maltWeight <= 0.0 { return false }
+    if hopName.isEmpty || hopWeight <= 0 { return false }
     else { return true }
   }
   
   var body: some View {
     HStack {
       Text("Name:")
-      TextField("Malt name", text: $maltName)
+      TextField("Hop name", text: $hopName)
     }
     .padding()
     
     HStack {
       Text("Weight:")
-      TextField("Malt weight", text: $maltWeight_string)
+      TextField("Hop weight", text: $hopWeight_string)
         .keyboardType(.decimalPad)
     }
     .padding()
@@ -147,13 +152,13 @@ struct ModifyMaltView: View {
     Button {
       convertWeight()
       if areInputsValid() {
-        maltEntity.name = maltName
-        maltEntity.weight = maltWeight
+        hopEntity.name = hopName
+        hopEntity.weight = hopWeight
         persistenceController.saveData()
       }
       else { return }
     } label: {
-      Text("Add new malt")
+      Text("Add new hop")
         .padding()
         .foregroundColor(.white)
         .background(Color.blue)
@@ -162,11 +167,11 @@ struct ModifyMaltView: View {
   }
 }
 
-struct AddMaltsView_Previews: PreviewProvider {
+struct AddHopsView_Previews: PreviewProvider {
   
   static var previews: some View {
-    AddMaltsView(recipeEntity_: PersistenceController.preview.allRecipes.first!)
-    AddMaltsView(recipeEntity_: PersistenceController.preview.allRecipes.first!)
+    AddHopsView(recipeEntity_: PersistenceController.preview.allRecipes.first!)
+    AddHopsView(recipeEntity_: PersistenceController.preview.allRecipes.first!)
       .preferredColorScheme(.dark)
   }
 }

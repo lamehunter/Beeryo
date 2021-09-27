@@ -13,6 +13,7 @@ final class PersistenceController: ObservableObject {
   var container: NSPersistentContainer
   @Published var allRecipes: [RecipeEntity] = []
   @Published var allMalts: [MaltEntity] = []
+  @Published var allHops: [HopsEntity] = []
   
   static var preview: PersistenceController = {
     let controller = PersistenceController(inMemory: true)
@@ -23,11 +24,13 @@ final class PersistenceController: ObservableObject {
       
       let malt = MaltEntity(context: controller.container.viewContext)
       controller.addMaltToRecipe(name: "PilsnerMalt \(number)", weight: 1.0, recipeEntity: recipe)
+      let hop = HopsEntity(context: controller.container.viewContext)
+      controller.addHopToRecipe(name: "lubelski \(number)", weight: 12, duration: 50, recipeEntity: recipe)
     }
     return controller
   }()
   
-  init(inMemory: Bool = true) {
+  init(inMemory: Bool = false) {
     
     let containerName = "RecipeContainer"
     
@@ -47,6 +50,7 @@ final class PersistenceController: ObservableObject {
     }
     getAllRecipes()
     getAllMalts()
+    getAllHops()
   }
   
   static var managedObjectModel: NSManagedObjectModel = {
@@ -71,6 +75,16 @@ final class PersistenceController: ObservableObject {
     }
     catch let error {
       print("Error to fetch all malts: \(error)")
+    }
+  }
+  
+  func getAllHops() {
+    let request = NSFetchRequest<HopsEntity>(entityName: "HopsEntity")
+    do {
+      allHops = try container.viewContext.fetch(request)
+    }
+    catch let error {
+      print("Error to fetch all Hops: \(error)")
     }
   }
   
@@ -115,6 +129,7 @@ final class PersistenceController: ObservableObject {
       try container.viewContext.save()
       getAllRecipes()
       getAllMalts()
+      getAllHops()
     }
     catch let error {
       print("Error to save recipe: \(error)")
@@ -136,9 +151,30 @@ final class PersistenceController: ObservableObject {
     saveData()
   }
   
+  func addHopToRecipe(name: String, weight: Int32, duration: Int32, recipeEntity: RecipeEntity){
+    let hop = HopsEntity(context: container.viewContext)
+    hop.name = name
+    hop.weight = weight
+    hop.duration = duration
+    hop.recipe = recipeEntity
+    saveData()
+  }
+  
   func doesMaltNameExist(recipe: RecipeEntity, name: String) -> Bool {
     if let recipeMalts = recipe.malts?.allObjects as? [MaltEntity] {
       if (recipeMalts.filter({$0.name == name}).count >= 1) {
+        return true
+      }
+      else {
+        return false
+      }
+    }
+   return false
+  }
+  
+  func doesHopNameExist(recipe: RecipeEntity, name: String) -> Bool {
+    if let recipeHops = recipe.hops?.allObjects as? [HopsEntity] {
+      if (recipeHops.filter({$0.name == name}).count >= 1) {
         return true
       }
       else {

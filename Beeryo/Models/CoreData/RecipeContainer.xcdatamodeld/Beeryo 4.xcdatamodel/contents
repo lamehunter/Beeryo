@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19206" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="HopsEntity" representedClassName="HopsEntity" syncable="YES">
+        <attribute name="duration" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="weight" optional="YES" attributeType="Integer 32" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="recipe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RecipeEntity" inverseName="hops" inverseEntity="RecipeEntity"/>
+    </entity>
+    <entity name="MaltEntity" representedClassName="MaltEntity" syncable="YES">
+        <attribute name="name" attributeType="String"/>
+        <attribute name="weight" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="recipe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RecipeEntity" inverseName="malts" inverseEntity="RecipeEntity"/>
+    </entity>
+    <entity name="RecipeEntity" representedClassName="RecipeEntity" syncable="YES">
+        <attribute name="fg" optional="YES" attributeType="Float" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="og" optional="YES" attributeType="Float" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="style" optional="YES" attributeType="String"/>
+        <relationship name="hops" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="HopsEntity" inverseName="recipe" inverseEntity="HopsEntity"/>
+        <relationship name="malts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MaltEntity" inverseName="recipe" inverseEntity="MaltEntity"/>
+    </entity>
+    <elements>
+        <element name="HopsEntity" positionX="-12681" positionY="6840" width="128" height="89"/>
+        <element name="MaltEntity" positionX="-12824.59564208984" positionY="6681.655899047852" width="128" height="14"/>
+        <element name="RecipeEntity" positionX="-12544.38757324219" positionY="6948.121856689453" width="128" height="119"/>
+    </elements>
+</model>

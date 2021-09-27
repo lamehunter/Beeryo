@@ -2,7 +2,7 @@
 //  RecipeEntity+CoreDataProperties.swift
 //  Beeryo
 //
-//  Created by Jacek K on 26/09/2021.
+//  Created by Jacek K on 27/09/2021.
 //
 //
 
@@ -20,7 +20,25 @@ extension RecipeEntity {
     @NSManaged public var name: String?
     @NSManaged public var og: Float
     @NSManaged public var style: String?
+    @NSManaged public var hops: NSSet?
     @NSManaged public var malts: NSSet?
+
+}
+
+// MARK: Generated accessors for hops
+extension RecipeEntity {
+
+    @objc(addHopsObject:)
+    @NSManaged public func addToHops(_ value: HopsEntity)
+
+    @objc(removeHopsObject:)
+    @NSManaged public func removeFromHops(_ value: HopsEntity)
+
+    @objc(addHops:)
+    @NSManaged public func addToHops(_ values: NSSet)
+
+    @objc(removeHops:)
+    @NSManaged public func removeFromHops(_ values: NSSet)
 
 }
 

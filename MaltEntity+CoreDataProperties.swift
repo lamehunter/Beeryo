@@ -2,7 +2,7 @@
 //  MaltEntity+CoreDataProperties.swift
 //  Beeryo
 //
-//  Created by Jacek K on 26/09/2021.
+//  Created by Jacek K on 27/09/2021.
 //
 //
 
