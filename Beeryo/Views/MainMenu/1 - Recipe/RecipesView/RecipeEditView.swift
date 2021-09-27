@@ -43,12 +43,12 @@ struct RecipeEditView: View {
     VStack {
       VStack (alignment: .center){
         Section(header: SectionHeader(title: "General")){
-          generalSectionRow(title: "Name:",
-                            contentValue: recipeName,
+          TextField_General(title: "Name:",
+                            text: "Type name here",
                             bindingValue: $recipeName)
             .padding(.top, 5)
-          generalSectionRow(title: "Style:",
-                            contentValue: recipeStyle,
+          TextField_General(title: "Style:",
+                            text: "Type style here",
                             bindingValue: $recipeStyle)
           //          generalSectionRow(title: "Batch size",
           //                            textFieldContent: "--",
@@ -99,9 +99,9 @@ struct RecipeEditView: View {
   }
 }
 
-struct generalSectionRow: View {
+struct TextField_General: View {
   var title: String
-  var contentValue: String
+  var text: String
   
   @Binding var bindingValue: String
   var titleTextFrameSizeH: CGFloat = 60
@@ -114,7 +114,7 @@ struct generalSectionRow: View {
         .frame(width: titleTextFrameSizeH,
                height: titleTextFrameSizeV,
                alignment: .leading)
-      TextField("",
+      TextField(text,
                 text: $bindingValue)
         .overlay(VStack{
           Divider()
@@ -256,7 +256,8 @@ struct addOrRemoveMaltButton: View {
   
   var body: some View {
     NavigationLink(
-      destination: AddMaltsView(recipeEntity_: recipeEntity),
+      //destination: AddMaltsView(recipeEntity_: recipeEntity),
+      destination: AddIngredientView(recipeEntity_: recipeEntity, ingredientCase: IngredientType.malt),
       isActive: $isAddIngredientsViewActive
     ) {
       Button(action: {
@@ -283,7 +284,7 @@ struct addOrRemoveHopsButton: View {
   
   var body: some View {
     NavigationLink(
-      destination: AddHopsView(recipeEntity_: recipeEntity),
+      destination: AddIngredientView(recipeEntity_: recipeEntity, ingredientCase: IngredientType.hop),
       isActive: $isAddIngredientsViewActive
     ) {
       Button(action: {

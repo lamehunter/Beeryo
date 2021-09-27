@@ -67,38 +67,35 @@ struct AddHopsView: View {
         UITableView.appearance().backgroundColor = UIColor(Color("TextColorInversed"))
       }
       
-      HStack {
-        Text("Name:")
-        TextField("Hop name", text: $newHopName)
-      }
-      .padding(.leading)
-      .padding(.trailing)
-      
-      HStack {
-        Text("Weight:")
-        TextField("Hop weight", text: $newHopWeight_string).keyboardType(.decimalPad)
+      VStack (alignment: .center){
+        TextField_General(title: "Name:", text: "Type hop name here", bindingValue: $newHopName)
+          .padding(.bottom)
+        TextField_General(title: "Weight", text: "Type hop weight here", bindingValue: $newHopWeight_string)
+          .padding(.bottom)
+        
+        Button {
+          convertWeight()
+          if areInputsValid() &&
+              !(persistenceController.doesHopNameExist(recipe: recipeEntity, name: newHopName)) {
+            persistenceController.addHopToRecipe(
+              name: newHopName,
+              weight: newHopWeight,
+              duration: newHopDuration,
+              recipeEntity: recipeEntity)
+            // isAddRecipeSheetPresented = true
+          }
+          else { isAlertPresented = true }
+        } label: {
+          Text("Add new hop")
+            .padding()
+            .foregroundColor(.white)
+            .background(Color.blue)
+            .cornerRadius(15.0)
+        }
       }
       .padding()
-      
-      Button {
-        convertWeight()
-        if areInputsValid() &&
-            !(persistenceController.doesHopNameExist(recipe: recipeEntity, name: newHopName)) {
-          persistenceController.addHopToRecipe(
-            name: newHopName,
-            weight: newHopWeight,
-            duration: newHopDuration,
-            recipeEntity: recipeEntity)
-          // isAddRecipeSheetPresented = true
-        }
-        else { isAlertPresented = true }
-      } label: {
-        Text("Add new hop")
-          .padding()
-          .foregroundColor(.white)
-          .background(Color.blue)
-          .cornerRadius(15.0)
-      }
+      .overlay(RoundedRectangle(cornerRadius: 15)
+                .stroke())
     }
     .padding()
     .alert(isPresented: $isAlertPresented, content: {
@@ -108,7 +105,7 @@ struct AddHopsView: View {
         dismissButton: .cancel())
     })
     
-    .navigationTitle("Add hops")
+    .navigationTitle("Add")
     .navigationViewStyle(StackNavigationViewStyle())
   }
 }

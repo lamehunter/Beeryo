@@ -19,13 +19,13 @@ final class PersistenceController: ObservableObject {
     let controller = PersistenceController(inMemory: true)
     for number in 0..<10 {
       let recipe = RecipeEntity(context: controller.container.viewContext)
-      recipe.name = "Recipe no." + String(number)
+      recipe.name = "MyBrewRecipe_\(number)"
       controller.addRecipe(_recipe: recipe)
       
       let malt = MaltEntity(context: controller.container.viewContext)
-      controller.addMaltToRecipe(name: "PilsnerMalt \(number)", weight: 1.0, recipeEntity: recipe)
+      controller.addMaltToRecipe(name: "Pilsner_Ent\(number)", weight: 1.0, recipeEntity: recipe)
       let hop = HopsEntity(context: controller.container.viewContext)
-      controller.addHopToRecipe(name: "lubelski \(number)", weight: 12, duration: 50, recipeEntity: recipe)
+      controller.addHopToRecipe(name: "Lubelski_Ent\(number)", weight: 12, duration: 50, recipeEntity: recipe)
     }
     return controller
   }()
