@@ -8,9 +8,9 @@
 import CoreData
 
 final class PersistenceController: ObservableObject {
-  static let shared = PersistenceController()
+   static let shared = PersistenceController()
   
-  var container: NSPersistentContainer
+  @Published var container: NSPersistentContainer
   @Published var allRecipes: [RecipeEntity] = []
   @Published var allMalts: [MaltEntity] = []
   @Published var allHops: [HopsEntity] = []
@@ -72,6 +72,7 @@ final class PersistenceController: ObservableObject {
     let request = NSFetchRequest<MaltEntity>(entityName: "MaltEntity")
     do {
       allMalts = try container.viewContext.fetch(request)
+      print("All malts no. is \(allMalts.count)")
     }
     catch let error {
       print("Error to fetch all malts: \(error)")
@@ -122,6 +123,20 @@ final class PersistenceController: ObservableObject {
   func deleteRecipe(index: IndexSet.Element) {
     container.viewContext.delete(allRecipes[index])
     saveData()
+  }
+  
+  func deleteHop(recipeEntity: RecipeEntity, index: IndexSet.Element) {
+    if let hopEntities = recipeEntity.hops?.allObjects as? [HopsEntity] {
+      container.viewContext.delete(hopEntities[index])
+      saveData()
+    }
+  }
+  
+  func deleteMalt(recipeEntity: RecipeEntity, index: IndexSet.Element) {
+    if let maltEntities = recipeEntity.malts?.allObjects as? [MaltEntity] {
+      container.viewContext.delete(maltEntities[index])
+      saveData()
+    }
   }
   
   func saveData() {

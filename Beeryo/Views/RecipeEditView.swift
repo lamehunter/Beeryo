@@ -13,9 +13,9 @@ struct RecipeEditView: View {
   
   @FetchRequest(entity: RecipeEntity.entity(),
                 sortDescriptors: [],
-                animation: .default) private var items: FetchedResults<RecipeEntity>
+                animation: .default) private var recipeEntities: FetchedResults<RecipeEntity>
   
-  @StateObject private var persistenceController = PersistenceController.shared
+  @ObservedObject private var persistenceController = PersistenceController.shared
   private var recipeEntity: RecipeEntity? = nil
   
   @State var recipeName: String = ""
@@ -38,7 +38,6 @@ struct RecipeEditView: View {
   init() {
   }
   
-  /// <#Description#>
   var body: some View {
     VStack {
       VStack (alignment: .center){
@@ -66,9 +65,9 @@ struct RecipeEditView: View {
         }
         
         Section(header: SectionHeader(title: "Ingredients")){
-          displayMaltsRow(recipeEntity: recipeEntity!)
+          IngredientListView(recipeEntity: recipeEntity!, ingredient: IngredientType.malt)
             .padding(.bottom, 10)
-          displayHopsRow(recipeEntity: recipeEntity!)
+          IngredientListView(recipeEntity: recipeEntity!, ingredient: IngredientType.hop)
             .padding(.bottom, 10)
         }
       }
@@ -124,7 +123,7 @@ struct TextField_General: View {
   }
 }
 
-struct generalSectionRowNumeric: View {
+struct GeneralSectionRowNumeric: View {
   var title: String
   var textFieldContent: String
   
@@ -150,39 +149,73 @@ struct generalSectionRowNumeric: View {
   }
 }
 
-struct displayMaltsRow: View {
-  let unit = "kg"
-  @StateObject var recipeEntity: RecipeEntity
+struct IngredientListView: View {
+  let maltUnit = "kg"
+  let hopUnit = "g"
+  var ingredient: IngredientType
   
-  init(recipeEntity: RecipeEntity) {
+  @StateObject var recipeEntity: RecipeEntity
+  @ObservedObject var persistenceController = PersistenceController.shared
+  
+  
+  init(recipeEntity: RecipeEntity, ingredient: IngredientType) {
     _recipeEntity = StateObject(wrappedValue: recipeEntity)
+    self.ingredient = ingredient
   }
   
   var body: some View {
     HStack {
       VStack (spacing: 20){
-        Text("Malts")
+        Text(ingredient == IngredientType.malt ? "Malts" : ingredient == IngredientType.hop ? "Hops" : "error")
           .bold()
           .frame(width: 80,
                  height: 20,
                  alignment: .center)
-        addOrRemoveMaltButton(recipeEntity: recipeEntity)
+        AddIngredientButton(recipeEntity: recipeEntity, ingredient: ingredient)
       }
       ScrollView(.vertical) {
-        if let maltEntities = recipeEntity.malts?.allObjects as? [MaltEntity] {
-          ForEach (maltEntities) { malt in
-            if
-              let name = malt.name,
-              let weight = malt.weight {
-              HStack (alignment: .center){
-                Text("\(name), ")
-                Spacer()
-                Text(String.localizedStringWithFormat("%.2f %@", weight, unit))
+        switch ingredient {
+        case IngredientType.malt:
+          if let maltEntities = recipeEntity.malts?.allObjects as? [MaltEntity] {
+            
+              ForEach (maltEntities) { malt in
+                if
+                  let name = malt.name,
+                  let weight = malt.weight {
+                //  NavigationLink(destination: ModifyIngredientView(maltEntity: malt)) {
+                    HStack (alignment: .center){
+                      Text("\(name), ")
+                      Spacer()
+                      Text(String.localizedStringWithFormat("%.2f %@", weight, maltUnit))
+                    }
+                    .padding(.leading, 10)
+                    .padding(.trailing, 10)
+                    .padding(1)
+                    .cornerRadius(5)
+                //  }
+                }
               }
-              .padding(.leading, 10)
-              .padding(.trailing, 10)
-              .padding(1)
-              .cornerRadius(5)
+          }
+        case IngredientType.hop:
+          if let hopEntity = recipeEntity.hops?.allObjects as? [HopsEntity] {
+            ForEach (hopEntity) { hop in
+              if
+                let name = hop.name,
+                let weight = hop.weight,
+                let duration = hop.duration {
+              //  NavigationLink(destination: ModifyIngredientView(hopEntity: hop)) {
+                  HStack {
+                    Text("\(name), ")
+                    Spacer()
+                    Text("\(weight) \(hopUnit)")
+                    Text("@ \(duration) min")
+                  }
+               // }
+                .padding(.leading, 10)
+                .padding(.trailing, 10)
+                .padding(1)
+                .cornerRadius(5)
+              }
             }
           }
         }
@@ -196,68 +229,21 @@ struct displayMaltsRow: View {
   }
 }
 
-struct displayHopsRow: View {
-  let unit = "g"
-  @StateObject var recipeEntity: RecipeEntity
-  
-  init(recipeEntity: RecipeEntity) {
-    _recipeEntity = StateObject(wrappedValue: recipeEntity)
-  }
-  
-  var body: some View {
-    HStack {
-      VStack (spacing: 20){
-        Text("Hops")
-          .bold()
-          .frame(width: 80,
-                 height: 20,
-                 alignment: .center)
-        addOrRemoveHopsButton(recipeEntity: recipeEntity)
-      }
-      ScrollView(.vertical) {
-        if let hopsEntities = recipeEntity.hops?.allObjects as? [HopsEntity] {
-          ForEach (hopsEntities) { hop in
-            if
-              let name = hop.name,
-              let weight = hop.weight,
-              let duration = hop.duration {
-              HStack (alignment: .center){
-                Text("\(name), ")
-                Spacer()
-                Text("\(weight) \(unit)")
-                Text("@ \(duration) min")
-              }
-              .padding(.leading, 10)
-              .padding(.trailing, 10)
-              .padding(1)
-              .cornerRadius(5)
-            }
-          }
-        }
-      }
-      .padding(.top, 5)
-      .padding(.bottom, 5)
-      .frame(maxHeight: 120)
-      .background(RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(Color("StrokeColor"), lineWidth: 1.0))
-    }.padding(.top, 10)
-  }
-}
-
-struct addOrRemoveMaltButton: View {
+struct AddIngredientButton: View {
   let imageSystemName = "plus.circle"
   @State var isAddIngredientsViewActive = false
   
   var recipeEntity: RecipeEntity
+  var ingredient: IngredientType
   
-  init(recipeEntity: RecipeEntity) {
+  init(recipeEntity: RecipeEntity, ingredient: IngredientType) {
     self.recipeEntity = recipeEntity
+    self.ingredient = ingredient
   }
   
   var body: some View {
     NavigationLink(
-      //destination: AddMaltsView(recipeEntity_: recipeEntity),
-      destination: AddIngredientView(recipeEntity_: recipeEntity, ingredientCase: IngredientType.malt),
+      destination: AddIngredientView(recipeEntity_: recipeEntity, ingredient: ingredient),
       isActive: $isAddIngredientsViewActive
     ) {
       Button(action: {
@@ -266,34 +252,6 @@ struct addOrRemoveMaltButton: View {
         Image(systemName: imageSystemName)
           .resizable()
           .frame(width: 35, height: 35)
-        
-      }
-    }
-  }
-}
-
-struct addOrRemoveHopsButton: View {
-  let imageSystemName = "plus.circle"
-  @State var isAddIngredientsViewActive = false
-  
-  var recipeEntity: RecipeEntity
-  
-  init(recipeEntity: RecipeEntity) {
-    self.recipeEntity = recipeEntity
-  }
-  
-  var body: some View {
-    NavigationLink(
-      destination: AddIngredientView(recipeEntity_: recipeEntity, ingredientCase: IngredientType.hop),
-      isActive: $isAddIngredientsViewActive
-    ) {
-      Button(action: {
-        isAddIngredientsViewActive = true
-      }) {
-        Image(systemName: imageSystemName)
-          .resizable()
-          .frame(width: 35, height: 35)
-        
       }
     }
   }
@@ -328,9 +286,7 @@ struct SectionHeader: View {
 struct RecipeEditView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      RecipeEditView(recipeEntity:
-                      PersistenceController.preview.allRecipes.first ??
-                     RecipeEntity(context: PersistenceController.shared.container.viewContext))
+      RecipeEditView(recipeEntity: PersistenceController.preview.allRecipes.first ?? RecipeEntity())
         .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
     }
     NavigationView {

@@ -18,7 +18,6 @@ struct MainMenuView: View {
       ZStack {
         VStack (alignment: .leading, spacing: vStackSpacing){
           TitleRow(text: "Let's start ...", textPosition: "left")
-          
           Button(action: {
           }) {
             NavigationLink(
@@ -26,9 +25,8 @@ struct MainMenuView: View {
               MenuRowView(imageSystemName: "doc.text", text: "My Recipes")
             }
           }
-          
+          .buttonStyle(MainMenuButtonStyle())
           MenuRowView(imageSystemName: "archivebox", text: "Ingredients storage")
-          
           Button(action: {
           }) {
             NavigationLink(
@@ -36,7 +34,7 @@ struct MainMenuView: View {
               MenuRowView(imageSystemName: "doc.text", text: "Upload recipes")
             }
           }
-          
+          .buttonStyle(MainMenuButtonStyle())
           Button(action: {
           }) {
             NavigationLink(
@@ -44,21 +42,30 @@ struct MainMenuView: View {
               MenuRowView(imageSystemName: "doc.text", text: "Download recipes")
             }
           }
-          
-          
+          .buttonStyle(MainMenuButtonStyle())
           Spacer()
           TitleRow(text: "... brewing!", textPosition: "right")
         }
+        .navigationBarHidden(true)
         Image("beerSplashScreenLogo")
           .resizable()
           .renderingMode(.template)
           .foregroundColor(Color("TextColor"))
-          .opacity(0.2)
+          .opacity(0.05)
           .frame(width: screenWidth < screenHeight ? screenWidth : screenHeight,
                  height: screenWidth < screenHeight ? screenWidth : screenHeight)
       }
     }
   }
+}
+
+struct MainMenuButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+        .background(Color.clear)
+            .foregroundColor(Color("TextColor"))
+            
+    }
 }
 
 struct TitleRow : View {

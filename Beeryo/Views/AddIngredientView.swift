@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-enum IngredientType {
-  case malt, hop
-}
-
 struct AddIngredientView: View {
   var hopUnit = "g"
   var maltUnit = "kg"
@@ -41,11 +37,11 @@ struct AddIngredientView: View {
   @State var isAddRecipeSheetPresented = false
   
   var recipeEntity: RecipeEntity
-  var ingredientCase: IngredientType
+  var ingredient: IngredientType
   
-  init(recipeEntity_: RecipeEntity, ingredientCase: IngredientType) {
+  init(recipeEntity_: RecipeEntity, ingredient: IngredientType) {
     self.recipeEntity = recipeEntity_
-    self.ingredientCase = ingredientCase
+    self.ingredient = ingredient
   }
   
   func convertHopWeight() {
@@ -61,7 +57,7 @@ struct AddIngredientView: View {
   var body: some View {
     VStack {
       List {
-        if (ingredientCase == IngredientType.hop) {
+        if (ingredient == IngredientType.hop) {
           if let hopEntities = recipeEntity.hops?.allObjects as? [HopsEntity] {
             ForEach (hopEntities) { hop in
               if
@@ -78,11 +74,16 @@ struct AddIngredientView: View {
                 }
               }
             }
+            .onDelete(perform: { indexSet in
+              indexSet.forEach { index in
+                persistenceController.deleteHop(recipeEntity: recipeEntity, index: index)
+              }
+            })
             .listRowBackground(Color.gray.opacity(0.2))
           }
         }
         
-        else if (ingredientCase == IngredientType.malt) {
+        else if (ingredient == IngredientType.malt) {
           if let maltEntities = recipeEntity.malts?.allObjects as? [MaltEntity] {
             ForEach (maltEntities) { malt in
               if
@@ -99,6 +100,11 @@ struct AddIngredientView: View {
                 }
               }
             }
+            .onDelete(perform: { indexSet in
+              indexSet.forEach { index in
+                persistenceController.deleteMalt(recipeEntity: recipeEntity, index: index)
+              }
+            })
             .listRowBackground(Color.gray.opacity(0.2))
           }
         }
@@ -109,14 +115,14 @@ struct AddIngredientView: View {
       
       VStack (alignment: .center) {
         
-        if (ingredientCase == IngredientType.hop) {
+        if (ingredient == IngredientType.hop) {
           TextField_General(title: "Name:", text: "Type hop name here", bindingValue: $newHopName)
             .padding(.bottom)
           TextField_General(title: "Weight", text: "Type hop weight here", bindingValue: $newHopWeight_string)
             .keyboardType(.decimalPad)
             .padding(.bottom)
         }
-        else if (ingredientCase == IngredientType.malt) {
+        else if (ingredient == IngredientType.malt) {
           TextField_General(title: "Name:", text: "Type malt name here", bindingValue: $newMaltName)
             .padding(.bottom)
           TextField_General(title: "Weight", text: "Type malt weight here", bindingValue: $newMaltWeight_string)
@@ -125,7 +131,7 @@ struct AddIngredientView: View {
         }
         
         Button {
-          if (ingredientCase == IngredientType.hop) {
+          if (ingredient == IngredientType.hop) {
             convertHopWeight()
             if !(persistenceController.doesHopNameExist(recipe: recipeEntity, name: newHopName)) {
               persistenceController.addHopToRecipe(
@@ -136,7 +142,7 @@ struct AddIngredientView: View {
           }
             else { isAlertPresented = true }
           }
-          else if (ingredientCase == IngredientType.malt) {
+          else if (ingredient == IngredientType.malt) {
             convertMaltWeight()
             if !(persistenceController.doesMaltNameExist(recipe: recipeEntity, name: newMaltName)) {
               persistenceController.addMaltToRecipe(name: newMaltName, weight: newMaltWeight, recipeEntity: recipeEntity)
@@ -162,7 +168,7 @@ struct AddIngredientView: View {
         message: Text("Ingredient name already exist or fields are empty!"),
         dismissButton: .cancel())
     })
-    .navigationTitle(ingredientCase == IngredientType.hop ? "Add hops" : ingredientCase == IngredientType.malt ? "Add malts" : "error")
+    .navigationTitle(ingredient == IngredientType.hop ? "Add hops" : ingredient == IngredientType.malt ? "Add malts" : "error")
     .navigationViewStyle(StackNavigationViewStyle())
   }
 }
@@ -243,9 +249,9 @@ struct ModifyIngredientView: View {
 struct AddIngredientView_Previews: PreviewProvider {
   
   static var previews: some View {
-    AddIngredientView(recipeEntity_: PersistenceController.preview.allRecipes.first!, ingredientCase: IngredientType.hop)
+    AddIngredientView(recipeEntity_: PersistenceController.preview.allRecipes.first!, ingredient: IngredientType.hop)
     AddIngredientView(recipeEntity_: PersistenceController.preview.allRecipes.first!,
-                      ingredientCase: IngredientType.hop)
+                      ingredient: IngredientType.hop)
       .preferredColorScheme(.dark)
   }
 }

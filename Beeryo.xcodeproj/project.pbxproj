@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B747321926DD661400591CB0 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B747321826DD661400591CB0 /* SplashView.swift */; };
 		B747321B26DD664500591CB0 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B747321A26DD664500591CB0 /* MainMenuView.swift */; };
+		B74B1A62270396D600BC3FEA /* IngredientTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74B1A61270396D600BC3FEA /* IngredientTypeEnum.swift */; };
 		B75052F926DBFE660040887E /* BeeryoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75052F826DBFE660040887E /* BeeryoApp.swift */; };
 		B75052FB26DBFE660040887E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75052FA26DBFE660040887E /* ContentView.swift */; };
 		B75052FD26DBFE660040887E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B75052FC26DBFE660040887E /* Assets.xcassets */; };
@@ -23,15 +24,13 @@
 		B76F2DB026E1516100177B19 /* MaltClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F2DAF26E1516100177B19 /* MaltClass.swift */; };
 		B76F2DB426E152B700177B19 /* YeastClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F2DB326E152B700177B19 /* YeastClass.swift */; };
 		B76F2DB626E153A800177B19 /* YeastTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76F2DB526E153A800177B19 /* YeastTypeEnum.swift */; };
-		B774D54E270227CB00A97F20 /* AddHopsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B774D54D270227CB00A97F20 /* AddHopsView.swift */; };
 		B774D56127022D2B00A97F20 /* MaltEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B774D55B27022D2B00A97F20 /* MaltEntity+CoreDataClass.swift */; };
 		B774D56227022D2B00A97F20 /* MaltEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B774D55C27022D2B00A97F20 /* MaltEntity+CoreDataProperties.swift */; };
 		B774D56327022D2B00A97F20 /* HopsEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B774D55D27022D2B00A97F20 /* HopsEntity+CoreDataClass.swift */; };
 		B774D56427022D2B00A97F20 /* HopsEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B774D55E27022D2B00A97F20 /* HopsEntity+CoreDataProperties.swift */; };
 		B774D56527022D2B00A97F20 /* RecipeEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B774D55F27022D2B00A97F20 /* RecipeEntity+CoreDataClass.swift */; };
 		B774D56627022D2B00A97F20 /* RecipeEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B774D56027022D2B00A97F20 /* RecipeEntity+CoreDataProperties.swift */; };
-		B77ED4CE2702792800229AC5 /* AddIngredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77ED4CD2702792800229AC5 /* AddIngredient.swift */; };
-		B77EEDF926FFDD3D004F0B3D /* AddMaltsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77EEDF826FFDD3D004F0B3D /* AddMaltsView.swift */; };
+		B77ED4CE2702792800229AC5 /* AddIngredientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77ED4CD2702792800229AC5 /* AddIngredientView.swift */; };
 		B782145326DD887900BE916E /* RecipesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B782145226DD887900BE916E /* RecipesView.swift */; };
 		B7F759F326FA973B00EB1FF6 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F759F226FA973B00EB1FF6 /* Recipe.swift */; };
 /* End PBXBuildFile section */
@@ -39,6 +38,7 @@
 /* Begin PBXFileReference section */
 		B747321826DD661400591CB0 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		B747321A26DD664500591CB0 /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
+		B74B1A61270396D600BC3FEA /* IngredientTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientTypeEnum.swift; sourceTree = "<group>"; };
 		B75052F526DBFE660040887E /* Beeryo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beeryo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B75052F826DBFE660040887E /* BeeryoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeryoApp.swift; sourceTree = "<group>"; };
 		B75052FA26DBFE660040887E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -55,7 +55,6 @@
 		B76F2DAF26E1516100177B19 /* MaltClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaltClass.swift; sourceTree = "<group>"; };
 		B76F2DB326E152B700177B19 /* YeastClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YeastClass.swift; sourceTree = "<group>"; };
 		B76F2DB526E153A800177B19 /* YeastTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YeastTypeEnum.swift; sourceTree = "<group>"; };
-		B774D54D270227CB00A97F20 /* AddHopsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHopsView.swift; sourceTree = "<group>"; };
 		B774D55B27022D2B00A97F20 /* MaltEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MaltEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B774D55C27022D2B00A97F20 /* MaltEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MaltEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B774D55D27022D2B00A97F20 /* HopsEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HopsEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -64,10 +63,9 @@
 		B774D56027022D2B00A97F20 /* RecipeEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecipeEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B774D5672702391A00A97F20 /* Beeryo 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Beeryo 5.xcdatamodel"; sourceTree = "<group>"; };
 		B7754FA526F3D24D009BD414 /* Beeryo 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Beeryo 2.xcdatamodel"; sourceTree = "<group>"; };
-		B77ED4CD2702792800229AC5 /* AddIngredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredient.swift; sourceTree = "<group>"; };
+		B77ED4CD2702792800229AC5 /* AddIngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientView.swift; sourceTree = "<group>"; };
 		B77EE4EF27012922000B5AF5 /* Beeryo 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Beeryo 4.xcdatamodel"; sourceTree = "<group>"; };
 		B77EEDDD26FFD1DF004F0B3D /* Beeryo 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Beeryo 3.xcdatamodel"; sourceTree = "<group>"; };
-		B77EEDF826FFDD3D004F0B3D /* AddMaltsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMaltsView.swift; sourceTree = "<group>"; };
 		B782145226DD887900BE916E /* RecipesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesView.swift; sourceTree = "<group>"; };
 		B7F759F226FA973B00EB1FF6 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -90,18 +88,6 @@
 				B7618C7526F2837A000959EC /* PersistenceController.swift */,
 			);
 			path = CoreData;
-			sourceTree = "<group>";
-		};
-		B72595D526F11C6000C7E0C8 /* RecipesView */ = {
-			isa = PBXGroup;
-			children = (
-				B750531226DC051D0040887E /* RecipeEditView.swift */,
-				B774D54D270227CB00A97F20 /* AddHopsView.swift */,
-				B77EEDF826FFDD3D004F0B3D /* AddMaltsView.swift */,
-				B782145226DD887900BE916E /* RecipesView.swift */,
-				B77ED4CD2702792800229AC5 /* AddIngredient.swift */,
-			);
-			path = RecipesView;
 			sourceTree = "<group>";
 		};
 		B747321E26DD6A2800591CB0 /* Resources */ = {
@@ -170,8 +156,12 @@
 			isa = PBXGroup;
 			children = (
 				B75052FA26DBFE660040887E /* ContentView.swift */,
+				B747321A26DD664500591CB0 /* MainMenuView.swift */,
 				B747321826DD661400591CB0 /* SplashView.swift */,
-				B782145426DD88CE00BE916E /* MainMenu */,
+				B750531226DC051D0040887E /* RecipeEditView.swift */,
+				B782145226DD887900BE916E /* RecipesView.swift */,
+				B77ED4CD2702792800229AC5 /* AddIngredientView.swift */,
+				B74B1A61270396D600BC3FEA /* IngredientTypeEnum.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -195,23 +185,6 @@
 				B76F2DAD26E145FC00177B19 /* TimeUnitEnum.swift */,
 			);
 			path = Units;
-			sourceTree = "<group>";
-		};
-		B782145426DD88CE00BE916E /* MainMenu */ = {
-			isa = PBXGroup;
-			children = (
-				B747321A26DD664500591CB0 /* MainMenuView.swift */,
-				B782145526DD88E000BE916E /* 1 - Recipe */,
-			);
-			path = MainMenu;
-			sourceTree = "<group>";
-		};
-		B782145526DD88E000BE916E /* 1 - Recipe */ = {
-			isa = PBXGroup;
-			children = (
-				B72595D526F11C6000C7E0C8 /* RecipesView */,
-			);
-			path = "1 - Recipe";
 			sourceTree = "<group>";
 		};
 		B7F759F126FA972400EB1FF6 /* JSON Objects */ = {
@@ -291,11 +264,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B77ED4CE2702792800229AC5 /* AddIngredient.swift in Sources */,
+				B77ED4CE2702792800229AC5 /* AddIngredientView.swift in Sources */,
 				B774D56627022D2B00A97F20 /* RecipeEntity+CoreDataProperties.swift in Sources */,
 				B774D56127022D2B00A97F20 /* MaltEntity+CoreDataClass.swift in Sources */,
 				B76F2DAC26E1455300177B19 /* HopClass.swift in Sources */,
-				B774D54E270227CB00A97F20 /* AddHopsView.swift in Sources */,
 				B76F2DA826E1443E00177B19 /* IngredientClass.swift in Sources */,
 				B750531326DC051D0040887E /* RecipeEditView.swift in Sources */,
 				B747321B26DD664500591CB0 /* MainMenuView.swift in Sources */,
@@ -310,8 +282,8 @@
 				B774D56527022D2B00A97F20 /* RecipeEntity+CoreDataClass.swift in Sources */,
 				B782145326DD887900BE916E /* RecipesView.swift in Sources */,
 				B76F2DB426E152B700177B19 /* YeastClass.swift in Sources */,
-				B77EEDF926FFDD3D004F0B3D /* AddMaltsView.swift in Sources */,
 				B7618C7626F2837A000959EC /* PersistenceController.swift in Sources */,
+				B74B1A62270396D600BC3FEA /* IngredientTypeEnum.swift in Sources */,
 				B75052F926DBFE660040887E /* BeeryoApp.swift in Sources */,
 				B76F2DB026E1516100177B19 /* MaltClass.swift in Sources */,
 				B774D56427022D2B00A97F20 /* HopsEntity+CoreDataProperties.swift in Sources */,

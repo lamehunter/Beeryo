@@ -17,6 +17,7 @@ struct RecipesView: View {
   @State var isAlertPresented = false
   
   init(){
+    
   }
   
   //initizalizer just for preview purposes
@@ -25,15 +26,13 @@ struct RecipesView: View {
   }
   
   var body: some View {
-    
     VStack {
-      NavigationLink(
-        destination: RecipeEditView(),
-        isActive: $isNewRecipeVisible
-      ) {
-        EmptyView()
-      }
-      
+//      NavigationLink(
+//        destination: RecipeEditView(),
+//        isActive: $isNewRecipeVisible
+//      ) {
+//        //EmptyView()
+//      }
       List {
         ForEach(persistenceController.allRecipes) { item in
           if let item = item {
@@ -46,8 +45,6 @@ struct RecipesView: View {
             persistenceController.deleteRecipe(index: index)
           }
         })
-        //        NavigationLink("Recipe 1", destination: RecipeEditView(valueee: "Recipe1"))
-        //        NavigationLink("Recipe 2", destination: RecipeEditView(valueee: "Recip2"))
       }
       Spacer()
       HStack() {
