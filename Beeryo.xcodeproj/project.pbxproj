@@ -161,7 +161,6 @@
 				B750531226DC051D0040887E /* RecipeEditView.swift */,
 				B782145226DD887900BE916E /* RecipesView.swift */,
 				B77ED4CD2702792800229AC5 /* AddIngredientView.swift */,
-				B74B1A61270396D600BC3FEA /* IngredientTypeEnum.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -169,6 +168,7 @@
 		B76F2DB126E1525900177B19 /* Ingredients */ = {
 			isa = PBXGroup;
 			children = (
+				B74B1A61270396D600BC3FEA /* IngredientTypeEnum.swift */,
 				B76F2DA726E1443E00177B19 /* IngredientClass.swift */,
 				B76F2DAB26E1455300177B19 /* HopClass.swift */,
 				B76F2DB326E152B700177B19 /* YeastClass.swift */,

@@ -165,7 +165,7 @@ struct IngredientListView: View {
   
   var body: some View {
     HStack {
-      VStack (spacing: 20){
+      VStack (spacing: 10){
         Text(ingredient == IngredientType.malt ? "Malts" : ingredient == IngredientType.hop ? "Hops" : "error")
           .bold()
           .frame(width: 80,
@@ -182,7 +182,9 @@ struct IngredientListView: View {
                 if
                   let name = malt.name,
                   let weight = malt.weight {
-                //  NavigationLink(destination: ModifyIngredientView(maltEntity: malt)) {
+//                  NavigationLink(destination: AddIngredientView(
+//                    recipeEntity_: recipeEntity,
+//                    ingredient: IngredientType.malt)) {
                     HStack (alignment: .center){
                       Text("\(name), ")
                       Spacer()
@@ -192,7 +194,7 @@ struct IngredientListView: View {
                     .padding(.trailing, 10)
                     .padding(1)
                     .cornerRadius(5)
-                //  }
+               //  }
                 }
               }
           }
@@ -203,7 +205,9 @@ struct IngredientListView: View {
                 let name = hop.name,
                 let weight = hop.weight,
                 let duration = hop.duration {
-              //  NavigationLink(destination: ModifyIngredientView(hopEntity: hop)) {
+//              NavigationLink(destination: AddIngredientView(
+//                recipeEntity_: recipeEntity,
+//                ingredient: IngredientType.hop)) {
                   HStack {
                     Text("\(name), ")
                     Spacer()
@@ -222,7 +226,7 @@ struct IngredientListView: View {
       }
       .padding(.top, 5)
       .padding(.bottom, 5)
-      .frame(maxHeight: 120)
+      //.frame(maxHeight: 120)
       .background(RoundedRectangle(cornerRadius: 10)
                     .strokeBorder(Color("StrokeColor"), lineWidth: 1.0))
     }.padding(.top, 10)
@@ -230,7 +234,7 @@ struct IngredientListView: View {
 }
 
 struct AddIngredientButton: View {
-  let imageSystemName = "plus.circle"
+  let imageSystemName = "plusminus.circle"
   @State var isAddIngredientsViewActive = false
   
   var recipeEntity: RecipeEntity
