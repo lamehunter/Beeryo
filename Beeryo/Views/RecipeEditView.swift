@@ -72,7 +72,7 @@ struct RecipeEditView: View {
         }
       }
       .padding()
-      .navigationTitle("Recipe Details")
+      .navigationBarTitle("Recipe Details", displayMode: .inline)
       .navigationBarItems(trailing: Button(action: {
         if (recipeEntity?.name != recipeName && persistenceController.doesRecipeNameExist(name: recipeName)) {
           showAlert = true
@@ -157,7 +157,6 @@ struct IngredientListView: View {
   @StateObject var recipeEntity: RecipeEntity
   @ObservedObject var persistenceController = PersistenceController.shared
   
-  
   init(recipeEntity: RecipeEntity, ingredient: IngredientType) {
     _recipeEntity = StateObject(wrappedValue: recipeEntity)
     self.ingredient = ingredient
@@ -182,9 +181,6 @@ struct IngredientListView: View {
                 if
                   let name = malt.name,
                   let weight = malt.weight {
-//                  NavigationLink(destination: AddIngredientView(
-//                    recipeEntity_: recipeEntity,
-//                    ingredient: IngredientType.malt)) {
                     HStack (alignment: .center){
                       Text("\(name), ")
                       Spacer()
@@ -194,7 +190,6 @@ struct IngredientListView: View {
                     .padding(.trailing, 10)
                     .padding(1)
                     .cornerRadius(5)
-               //  }
                 }
               }
           }
@@ -205,16 +200,12 @@ struct IngredientListView: View {
                 let name = hop.name,
                 let weight = hop.weight,
                 let duration = hop.duration {
-//              NavigationLink(destination: AddIngredientView(
-//                recipeEntity_: recipeEntity,
-//                ingredient: IngredientType.hop)) {
                   HStack {
                     Text("\(name), ")
                     Spacer()
                     Text("\(weight) \(hopUnit)")
                     Text("@ \(duration) min")
                   }
-               // }
                 .padding(.leading, 10)
                 .padding(.trailing, 10)
                 .padding(1)
@@ -226,7 +217,6 @@ struct IngredientListView: View {
       }
       .padding(.top, 5)
       .padding(.bottom, 5)
-      //.frame(maxHeight: 120)
       .background(RoundedRectangle(cornerRadius: 10)
                     .strokeBorder(Color("StrokeColor"), lineWidth: 1.0))
     }.padding(.top, 10)

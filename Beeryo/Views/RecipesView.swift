@@ -67,7 +67,7 @@ struct RecipesView: View {
       .alert(isPresented: $isAlertPresented) {
         Alert(title: Text("Warning"), message: Text("Recipe already exist"), dismissButton: .cancel())
       }
-      .navigationTitle("My Recipes")
+      .navigationBarTitle("My Recipes", displayMode: .inline)
       .navigationViewStyle(StackNavigationViewStyle())
     }
   }
