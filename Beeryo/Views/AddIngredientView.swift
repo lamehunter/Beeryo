@@ -27,7 +27,7 @@ struct AddIngredientView: View {
   @ObservedObject var persistenceController = PersistenceController.shared
   
   @State var isAlertPresented = false
-  @State var showAddNewIngredientView = false
+  @State var showAddNewIngredientView = true
   
   var recipeEntity: RecipeEntity
   var ingredient: IngredientType
@@ -59,8 +59,8 @@ struct AddIngredientView: View {
                   HStack {
                     Text("\(name), ")
                     Spacer()
-                    Text("\(weight) \(hopUnit)")
-                    Text("@ \(duration) min")
+                    Text("\(weight)\(hopUnit)")
+                    Text("/ \(duration)min")
                   }
                 }
               }
@@ -101,16 +101,15 @@ struct AddIngredientView: View {
           }
         }
       }
+      .listStyle(.plain)
       .navigationBarItems(trailing:
                             Image(systemName: "plus")
                             .onTapGesture(perform: {
         showAddNewIngredientView = true
-        print("present sheet")
       })
       )
       
       ZStack (alignment: .topLeading) {
-        if (true) {
           Color(.white)
           Button (action: {
             showAddNewIngredientView.toggle()
@@ -122,20 +121,23 @@ struct AddIngredientView: View {
           })
           VStack (alignment: .center) {
             if (ingredient == IngredientType.hop) {
-              TextField_General(title: "Name:", text: "Type hop name here", bindingValue: $newHopName)
+              Text("Add new hop")
+                .bold()
+                .padding(.bottom, 10)
+                .multilineTextAlignment(.leading)
+              TextFieldGeneralView(title: "Name:", text: "Type hop name here", bindingValue: $newHopName)
                 .padding(.bottom)
-              TextField_General(title: "Weight", text: "Type hop weight here", bindingValue: $newHopWeight_string)
+              TextFieldGeneralView(title: "Weight:", text: "Type hop weight here", bindingValue: $newHopWeight_string)
                 .keyboardType(.decimalPad)
                 .padding(.bottom)
             }
             else if (ingredient == IngredientType.malt) {
-              TextField_General(title: "Name:", text: "Type malt name here", bindingValue: $newMaltName)
+              TextFieldGeneralView(title: "Name:", text: "Type malt name here", bindingValue: $newMaltName)
                 .padding(.bottom)
-              TextField_General(title: "Weight", text: "Type malt weight here", bindingValue: $newMaltWeight_string)
+              TextFieldGeneralView(title: "Weight", text: "Type malt weight here", bindingValue: $newMaltWeight_string)
                 .keyboardType(.decimalPad)
                 .padding(.bottom)
             }
-            
             Button {
               if (ingredient == IngredientType.hop) {
                 convertHopWeight()
@@ -167,21 +169,19 @@ struct AddIngredientView: View {
             } label: {
               Text("Add")
                 .frame(maxWidth: .infinity)
-                .padding()
-                .foregroundColor(.white)
-                .background(Color.blue)
+                .padding(10)
+                .foregroundColor(Color("TextColorInversed"))
+                .background(Color("TextColor"))
                 .cornerRadius(15.0)
             }
           }
-          .padding(20)
-          .overlay(RoundedRectangle(cornerRadius: 15)
-                    .stroke())
-          .padding(.top, 40)
-          .padding(20)
+          .padding()
+//          .overlay(RoundedRectangle(cornerRadius: 15)
+//                    .stroke())
+          .padding(.top, 50)
           .onAppear() {
             UITableView.appearance().backgroundColor = UIColor(Color("TextColorInversed"))
           }
-        }
       }
       .offset(y: showAddNewIngredientView ? 0 : UIScreen.main.bounds.height)
       .zIndex(2.0)
@@ -243,11 +243,11 @@ struct ModifyIngredientView: View {
     VStack {
       switch ingredient {
       case IngredientType.hop:
-        TextField_General(title: "Name:", text: "Type hop name here", bindingValue: $hopName)
-        TextField_General(title: "Weight:", text: "Type hop weight here", bindingValue: $hopWeight_string).keyboardType(.decimalPad)
+        TextFieldGeneralView(title: "Name:", text: "Type hop name here", bindingValue: $hopName)
+        TextFieldGeneralView(title: "Weight:", text: "Type hop weight here", bindingValue: $hopWeight_string).keyboardType(.decimalPad)
       case IngredientType.malt:
-        TextField_General(title: "Name:", text: "Type malt name here", bindingValue: $maltName)
-        TextField_General(title: "Weight:", text: "Type malt weight here", bindingValue: $maltWeight_string).keyboardType(.decimalPad)
+        TextFieldGeneralView(title: "Name:", text: "Type malt name here", bindingValue: $maltName)
+        TextFieldGeneralView(title: "Weight:", text: "Type malt weight here", bindingValue: $maltWeight_string).keyboardType(.decimalPad)
       }
       Button {
         if (ingredient == IngredientType.hop) {

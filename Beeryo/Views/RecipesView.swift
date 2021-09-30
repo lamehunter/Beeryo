@@ -11,6 +11,7 @@ struct RecipesView: View {
   @StateObject var persistenceController = PersistenceController.shared
   
   @Environment(\.managedObjectContext) private var viewContext
+  @Environment(\.colorScheme) private var colorScheme
   
   @State var isNewRecipeVisible = false
   @State var newRecipeName: String = ""
@@ -23,6 +24,7 @@ struct RecipesView: View {
   //initizalizer just for preview purposes
   init(previewController: PersistenceController) {
     _persistenceController = StateObject(wrappedValue: previewController)
+    
   }
   
   var body: some View {
@@ -46,9 +48,11 @@ struct RecipesView: View {
           }
         })
       }
+      .listStyle(.plain)
       Spacer()
       HStack() {
-        TextField("Name...", text: $newRecipeName)
+        TextField("New recipe name", text: $newRecipeName)
+        .padding()
         Spacer()
         Button {
           if persistenceController.doesRecipeNameExist(name: newRecipeName) {
@@ -60,15 +64,29 @@ struct RecipesView: View {
           }
         } label: {
           Text("Add New")
+            //.foregroundColor(Color("TextColor"))
+            .padding(10)
+            .foregroundColor(.white)
+            .background(Color.black)
+            .cornerRadius(10)
+            .padding()
         }
         .disabled(newRecipeName.isEmpty)
       }
-      .padding()
+      .background(Color.gray.opacity(0.2))
       .alert(isPresented: $isAlertPresented) {
         Alert(title: Text("Warning"), message: Text("Recipe already exist"), dismissButton: .cancel())
       }
       .navigationBarTitle("My Recipes", displayMode: .inline)
       .navigationViewStyle(StackNavigationViewStyle())
+      .onAppear() {
+        if (colorScheme == .light) {
+          UINavigationBar.appearance().tintColor = .black
+        }
+        else {
+          UINavigationBar.appearance().tintColor = .white
+        }
+      }
     }
   }
 }
