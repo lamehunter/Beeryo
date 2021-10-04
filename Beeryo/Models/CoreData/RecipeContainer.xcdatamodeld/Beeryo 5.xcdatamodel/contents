@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19206" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="AdditionEntity" representedClassName="AdditionEntity" syncable="YES">
+        <attribute name="name" attributeType="String"/>
+        <attribute name="note" optional="YES" attributeType="String"/>
+        <attribute name="weight" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="recipe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RecipeEntity" inverseName="additions" inverseEntity="RecipeEntity"/>
+    </entity>
+    <entity name="BoilEntity" representedClassName="BoilEntity" syncable="YES">
+        <attribute name="duration" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="note" optional="YES" attributeType="String"/>
+        <relationship name="recipe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RecipeEntity" inverseName="boilDetails" inverseEntity="RecipeEntity"/>
+    </entity>
     <entity name="HopsEntity" representedClassName="HopsEntity" syncable="YES">
         <attribute name="duration" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
@@ -16,19 +27,41 @@
         <attribute name="name" attributeType="String"/>
         <attribute name="og" optional="YES" attributeType="Float" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="style" optional="YES" attributeType="String"/>
+        <relationship name="additions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AdditionEntity" inverseName="recipe" inverseEntity="AdditionEntity"/>
+        <relationship name="boilDetails" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BoilEntity" inverseName="recipe" inverseEntity="BoilEntity"/>
         <relationship name="hops" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="HopsEntity" inverseName="recipe" inverseEntity="HopsEntity"/>
         <relationship name="malts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MaltEntity" inverseName="recipe" inverseEntity="MaltEntity"/>
+        <relationship name="stepsFermenting" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StepFermentationEntity" inverseName="recipe" inverseEntity="StepFermentationEntity"/>
+        <relationship name="stepsMashing" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StepMashingEntity" inverseName="recipe" inverseEntity="StepMashingEntity"/>
         <relationship name="yeasts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="YeastEntity" inverseName="recipe" inverseEntity="YeastEntity"/>
     </entity>
+    <entity name="StepFermentationEntity" representedClassName="StepFermentationEntity" syncable="YES">
+        <attribute name="duration" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="index" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="note" optional="YES" attributeType="String"/>
+        <attribute name="temperature" attributeType="Integer 16" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="recipe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RecipeEntity" inverseName="stepsFermenting" inverseEntity="RecipeEntity"/>
+    </entity>
+    <entity name="StepMashingEntity" representedClassName="StepMashingEntity" syncable="YES">
+        <attribute name="duration" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="index" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="note" optional="YES" attributeType="String"/>
+        <attribute name="temperature" attributeType="Integer 16" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="recipe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RecipeEntity" inverseName="stepsMashing" inverseEntity="RecipeEntity"/>
+    </entity>
     <entity name="YeastEntity" representedClassName="YeastEntity" syncable="YES">
-        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
         <relationship name="recipe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RecipeEntity" inverseName="yeasts" inverseEntity="RecipeEntity"/>
     </entity>
     <elements>
         <element name="HopsEntity" positionX="-12438.35546875" positionY="6799.892517089844" width="128" height="89"/>
-        <element name="MaltEntity" positionX="-12811.1953125" positionY="6899.548568725586" width="128" height="14"/>
-        <element name="RecipeEntity" positionX="-12544.38757324219" positionY="6948.121856689453" width="128" height="134"/>
-        <element name="YeastEntity" positionX="-12815.77404785156" positionY="7111.588623046875" width="128" height="74"/>
+        <element name="MaltEntity" positionX="-13155.24627685547" positionY="7036.820571899414" width="128" height="14"/>
+        <element name="RecipeEntity" positionX="-12544.38757324219" positionY="6948.121856689453" width="128" height="208"/>
+        <element name="YeastEntity" positionX="-12815.77404785156" positionY="7111.588623046875" width="128" height="88"/>
+        <element name="StepMashingEntity" positionX="-12817.75164794922" positionY="7219.33740234375" width="128" height="118"/>
+        <element name="StepFermentationEntity" positionX="-12315.95129394531" positionY="7059.796997070312" width="128" height="118"/>
+        <element name="BoilEntity" positionX="-12654.17816162109" positionY="6741.636596679688" width="128" height="88"/>
+        <element name="AdditionEntity" positionX="-12609" positionY="7065" width="128" height="89"/>
     </elements>
 </model>

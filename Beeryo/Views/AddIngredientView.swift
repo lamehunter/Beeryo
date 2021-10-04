@@ -10,6 +10,7 @@ import SwiftUI
 struct AddIngredientView: View {
   var hopUnit = "g"
   var maltUnit = "kg"
+  var additionUnit = "g"
   
   @Environment(\.presentationMode) var presentationMode
   
@@ -24,10 +25,19 @@ struct AddIngredientView: View {
   @State var newMaltWeight: Float = 0.0
   @State var newMaltWeight_string: String = ""
   
+  //state var for yeasts
+  @State var newYeastName: String = ""
+  @State var newYeastType: String = ""
+  
+  //state var for additions
+  @State var newAdditionName: String = ""
+  @State var newAdditionWeight: Int16 = 0
+  @State var newAdditionWeight_string: String = ""
+  
   @ObservedObject var persistenceController = PersistenceController.shared
   
   @State var isAlertPresented = false
-  @State var showAddNewIngredientView = true
+  @State var showAddNewIngredientView = false
   
   var recipeEntity: RecipeEntity
   var ingredient: IngredientType
@@ -45,10 +55,15 @@ struct AddIngredientView: View {
     newMaltWeight = Float(newMaltWeight_string) ?? 0.0
   }
   
+  func convertAdditionWeight() {
+    newAdditionWeight = Int16(newAdditionWeight_string) ?? 0
+  }
+  
   var body: some View {
     ZStack {
       List {
-        if (ingredient == IngredientType.hop) {
+        switch ingredient {
+        case .hop:
           if let hopEntities = recipeEntity.hops?.allObjects as? [HopsEntity] {
             ForEach (hopEntities) { hop in
               if
@@ -72,9 +87,8 @@ struct AddIngredientView: View {
             })
             .listRowBackground(Color.gray.opacity(0.2))
           }
-        }
-        
-        else if (ingredient == IngredientType.malt) {
+          
+        case .malt:
           if let maltEntities = recipeEntity.malts?.allObjects as? [MaltEntity] {
             ForEach (maltEntities) { malt in
               if
@@ -99,6 +113,56 @@ struct AddIngredientView: View {
             })
             .listRowBackground(Color.gray.opacity(0.2))
           }
+          
+        case .yeast:
+          if let yeastEntities = recipeEntity.yeasts?.allObjects as? [YeastEntity] {
+            ForEach (yeastEntities) { yeast in
+              if
+                let name = yeast.name,
+                let type = yeast.type {
+                NavigationLink(destination: ModifyIngredientView(yeastEntity: yeast)) {
+                  HStack {
+                    Text("\(name)")
+                      .foregroundColor(Color("TextColor"))
+                    Spacer()
+                    Text("\(type)")
+                      .foregroundColor(Color("TextColor"))
+                  }
+                }
+              }
+            }
+            .onDelete(perform: { indexSet in
+              indexSet.forEach { index in
+                persistenceController.deleteYeast(recipeEntity: recipeEntity, index: index)
+              }
+            })
+            .listRowBackground(Color.gray.opacity(0.2))
+          }
+        case .addition:
+          if let additionEntities = recipeEntity.additions?.allObjects as? [AdditionEntity] {
+            ForEach (additionEntities) { addition in
+              if
+                let name = addition.name,
+                let weight = addition.weight {
+                
+                NavigationLink(destination: ModifyIngredientView(additionEntity: addition)) {
+                  HStack {
+                    Text("\(name)")
+                      .foregroundColor(Color("TextColor"))
+                    Spacer()
+                    Text("\(weight)\(additionUnit)")
+                      .foregroundColor(Color("TextColor"))
+                  }
+                }
+              }
+            }
+            .onDelete(perform: { indexSet in
+              indexSet.forEach { index in
+                persistenceController.deleteAddition(recipeEntity: recipeEntity, index: index)
+              }
+            })
+            .listRowBackground(Color.gray.opacity(0.2))
+          }
         }
       }
       .listStyle(.plain)
@@ -110,78 +174,110 @@ struct AddIngredientView: View {
       )
       
       ZStack (alignment: .topLeading) {
-          Color(.white)
-          Button (action: {
+        Color(.white)
+        Button (action: {
+          showAddNewIngredientView.toggle()
+        }, label: {
+          Image(systemName: "xmark")
+            .foregroundColor(.black)
+            .font(.largeTitle)
+            .padding()
+        })
+        VStack (alignment: .center) {
+          switch ingredient {
+          case .hop:
+            TextFieldGeneralView(title: "Name:", text: "Type hop name here", bindingValue: $newHopName)
+              .padding(.bottom)
+            TextFieldGeneralView(title: "Weight:", text: "Type hop weight here", bindingValue: $newHopWeight_string)
+              .keyboardType(.decimalPad)
+              .padding(.bottom)
+            
+          case .malt:
+            TextFieldGeneralView(title: "Name:", text: "Type malt name here", bindingValue: $newMaltName)
+              .padding(.bottom)
+            TextFieldGeneralView(title: "Weight", text: "Type malt weight here", bindingValue: $newMaltWeight_string)
+              .keyboardType(.decimalPad)
+              .padding(.bottom)
+            
+          case .yeast:
+            TextFieldGeneralView(title: "Name:", text: "Type yeast name here", bindingValue: $newYeastName)
+              .padding(.bottom)
+            TextFieldGeneralView(title: "Type:", text: "Type yeast type here", bindingValue: $newYeastType)
+              .padding(.bottom)
+            
+          case .addition:
+            TextFieldGeneralView(title: "Name:", text: "Type addition name here", bindingValue: $newAdditionName)
+              .padding(.bottom)
+            TextFieldGeneralView(title: "Weight", text: "Type addition weight here", bindingValue: $newAdditionWeight_string)
+              .keyboardType(.decimalPad)
+              .padding(.bottom)
+          }
+          
+          Button {
+            switch ingredient {
+              
+            case .hop:
+              convertHopWeight()
+              if !(persistenceController.doesHopNameExist(recipe: recipeEntity, name: newHopName)) {
+                persistenceController.addHopToRecipe(
+                  name: newHopName,
+                  weight: newHopWeight,
+                  duration: newHopDuration,
+                  recipeEntity: recipeEntity)
+              }
+              else { isAlertPresented = true }
+              
+            case .malt:
+              convertMaltWeight()
+              if !(persistenceController.doesMaltNameExist(recipe: recipeEntity, name: newMaltName)) {
+                persistenceController.addMaltToRecipe(name: newMaltName, weight: newMaltWeight, recipeEntity: recipeEntity)
+              }
+              else { isAlertPresented = true }
+              
+            case .yeast:
+              if !(persistenceController.doesYeastNameExist(recipe: recipeEntity, name: newYeastName)) {
+                persistenceController.addYeastToRecipe(name: newYeastName, type: newYeastType, recipeEntity: recipeEntity)
+              }
+              else { isAlertPresented = true }
+              
+            case .addition:
+              convertAdditionWeight()
+              if !(persistenceController.doesAdditionNameExist(recipe: recipeEntity, name: newAdditionName)) {
+                persistenceController.addAdditionToRecipe(name: newAdditionName, weight: newAdditionWeight, recipeEntity: recipeEntity)
+              }
+              else { isAlertPresented = true }
+              
+            }
+            newHopName = ""
+            newHopWeight_string = ""
+            newHopWeight = 0
+            
+            newMaltName = ""
+            newMaltWeight = 0
+            newMaltWeight_string = ""
+            
+            newYeastName = ""
+            newYeastType = ""
+            
+            newAdditionName = ""
+            newAdditionWeight = 0
+            newAdditionWeight_string = ""
+            
             showAddNewIngredientView.toggle()
-          }, label: {
-            Image(systemName: "xmark")
-              .foregroundColor(.black)
-              .font(.largeTitle)
-              .padding()
-          })
-          VStack (alignment: .center) {
-            if (ingredient == IngredientType.hop) {
-              Text("Add new hop")
-                .bold()
-                .padding(.bottom, 10)
-                .multilineTextAlignment(.leading)
-              TextFieldGeneralView(title: "Name:", text: "Type hop name here", bindingValue: $newHopName)
-                .padding(.bottom)
-              TextFieldGeneralView(title: "Weight:", text: "Type hop weight here", bindingValue: $newHopWeight_string)
-                .keyboardType(.decimalPad)
-                .padding(.bottom)
-            }
-            else if (ingredient == IngredientType.malt) {
-              TextFieldGeneralView(title: "Name:", text: "Type malt name here", bindingValue: $newMaltName)
-                .padding(.bottom)
-              TextFieldGeneralView(title: "Weight", text: "Type malt weight here", bindingValue: $newMaltWeight_string)
-                .keyboardType(.decimalPad)
-                .padding(.bottom)
-            }
-            Button {
-              if (ingredient == IngredientType.hop) {
-                convertHopWeight()
-                if !(persistenceController.doesHopNameExist(recipe: recipeEntity, name: newHopName)) {
-                  persistenceController.addHopToRecipe(
-                    name: newHopName,
-                    weight: newHopWeight,
-                    duration: newHopDuration,
-                    recipeEntity: recipeEntity)
-                }
-                else { isAlertPresented = true }
-              }
-              else if (ingredient == IngredientType.malt) {
-                convertMaltWeight()
-                if !(persistenceController.doesMaltNameExist(recipe: recipeEntity, name: newMaltName)) {
-                  persistenceController.addMaltToRecipe(name: newMaltName, weight: newMaltWeight, recipeEntity: recipeEntity)
-                }
-                else { isAlertPresented = true }
-              }
-              newHopName = ""
-              newHopWeight_string = ""
-              newHopWeight = 0
-              
-              newMaltName = ""
-              newMaltWeight = 0
-              newMaltWeight_string = ""
-              
-              showAddNewIngredientView.toggle()
-            } label: {
-              Text("Add")
-                .frame(maxWidth: .infinity)
-                .padding(10)
-                .foregroundColor(Color("TextColorInversed"))
-                .background(Color("TextColor"))
-                .cornerRadius(15.0)
-            }
+          } label: {
+            Text("Add")
+              .frame(maxWidth: .infinity)
+              .padding(10)
+              .foregroundColor(Color("TextColorInversed"))
+              .background(Color("TextColor"))
+              .cornerRadius(15.0)
           }
-          .padding()
-//          .overlay(RoundedRectangle(cornerRadius: 15)
-//                    .stroke())
-          .padding(.top, 50)
-          .onAppear() {
-            UITableView.appearance().backgroundColor = UIColor(Color("TextColorInversed"))
-          }
+        }
+        .padding()
+        .padding(.top, 50)
+        .onAppear() {
+          UITableView.appearance().backgroundColor = UIColor(Color("TextColorInversed"))
+        }
       }
       .offset(y: showAddNewIngredientView ? 0 : UIScreen.main.bounds.height)
       .zIndex(2.0)
@@ -193,7 +289,12 @@ struct AddIngredientView: View {
         message: Text("Ingredient name already exist or fields are empty!"),
         dismissButton: .cancel())
     })
-    .navigationBarTitle(ingredient == IngredientType.hop ? "Add hops" : ingredient == IngredientType.malt ? "Add malts" : "error", displayMode: .inline)
+    .navigationBarTitle(
+      ingredient == IngredientType.hop ? "Add hops" :
+        ingredient == IngredientType.malt ? "Add malts" :
+        ingredient == IngredientType.yeast ? "Add yeasts" :
+        ingredient == IngredientType.addition ? "Add additions" :
+        "error", displayMode: .inline)
     .navigationViewStyle(StackNavigationViewStyle())
   }
 }
@@ -202,6 +303,9 @@ struct ModifyIngredientView: View {
   var ingredient: IngredientType
   var hopEntity: HopsEntity? = nil
   var maltEntity: MaltEntity? = nil
+  var yeastEntity: YeastEntity? = nil
+  var additionEntity: AdditionEntity? = nil
+  
   @Environment(\.presentationMode) var presentationMode
   @ObservedObject var persistenceController = PersistenceController.shared
   
@@ -215,12 +319,21 @@ struct ModifyIngredientView: View {
   @State var maltWeight: Float = 0.0
   @State var maltWeight_string: String = ""
   
+  //yeast state variables
+  @State var yeastName: String = ""
+  @State var yeastType: String = ""
+  
+  //addition state variables
+  @State var additionName: String = ""
+  @State var additionWeight: Int16 = 0
+  @State var additionWeight_string: String = ""
+  
   init(hopEntity: HopsEntity) {
     self.hopEntity = hopEntity
     _hopName = State(initialValue: hopEntity.name ?? "")
     _hopWeight = State(initialValue: hopEntity.weight)
     _hopWeight_string = State(initialValue: String(hopEntity.weight))
-    ingredient = IngredientType.hop
+    ingredient = .hop
   }
   
   init(maltEntity: MaltEntity) {
@@ -228,7 +341,22 @@ struct ModifyIngredientView: View {
     _maltName = State(initialValue: maltEntity.name ?? "")
     _maltWeight = State(initialValue: maltEntity.weight)
     _maltWeight_string = State(initialValue: String(maltEntity.weight))
-    ingredient = IngredientType.malt
+    ingredient = .malt
+  }
+  
+  init(yeastEntity: YeastEntity) {
+    self.yeastEntity = yeastEntity
+    _yeastName = State(initialValue: yeastEntity.name ?? "")
+    _yeastType = State(initialValue: yeastEntity.type ?? "")
+    ingredient = .yeast
+  }
+  
+  init(additionEntity: AdditionEntity) {
+    self.additionEntity = additionEntity
+    _additionName = State(initialValue: additionEntity.name ?? "")
+    _additionWeight = State(initialValue: additionEntity.weight)
+    _additionWeight_string = State(initialValue: String(additionEntity.weight))
+    ingredient = .addition
   }
   
   func convertHopWeight() {
@@ -239,32 +367,57 @@ struct ModifyIngredientView: View {
     maltWeight = Float(maltWeight_string) ?? 0.0
   }
   
+  func convertAdditionWeight() {
+    additionWeight = Int16(additionWeight_string) ?? 0
+  }
+  
   var body: some View {
     VStack {
       switch ingredient {
-      case IngredientType.hop:
+      case .hop:
         TextFieldGeneralView(title: "Name:", text: "Type hop name here", bindingValue: $hopName)
         TextFieldGeneralView(title: "Weight:", text: "Type hop weight here", bindingValue: $hopWeight_string).keyboardType(.decimalPad)
-      case IngredientType.malt:
+        
+      case .malt:
         TextFieldGeneralView(title: "Name:", text: "Type malt name here", bindingValue: $maltName)
         TextFieldGeneralView(title: "Weight:", text: "Type malt weight here", bindingValue: $maltWeight_string).keyboardType(.decimalPad)
+        
+      case .yeast:
+        TextFieldGeneralView(title: "Name:", text: "Type yest name here", bindingValue: $yeastName)
+        TextFieldGeneralView(title: "Type:", text: "Type yeast type here", bindingValue: $yeastType)
+        
+      case .addition:
+        TextFieldGeneralView(title: "Name:", text: "Type addition here", bindingValue: $additionName)
+        TextFieldGeneralView(title: "Weight:", text: "Type addition weight here", bindingValue: $additionWeight_string).keyboardType(.decimalPad)
       }
       Button {
-        if (ingredient == IngredientType.hop) {
+        switch ingredient {
+        case .hop:
           convertHopWeight()
           hopEntity?.name = hopName
           hopEntity?.weight = hopWeight
           persistenceController.saveData()
           presentationMode.wrappedValue.dismiss()
-        }
-        else if (ingredient == IngredientType.malt) {
+        case .malt:
           convertMaltWeight()
           maltEntity?.name = maltName
           maltEntity?.weight = maltWeight
           persistenceController.saveData()
           presentationMode.wrappedValue.dismiss()
+          
+        case .yeast:
+          yeastEntity?.name = yeastName
+          yeastEntity?.type = yeastType
+          persistenceController.saveData()
+          presentationMode.wrappedValue.dismiss()
+          
+        case .addition:
+          convertAdditionWeight()
+          additionEntity?.name = additionName
+          additionEntity?.weight = additionWeight
+          persistenceController.saveData()
+          presentationMode.wrappedValue.dismiss()
         }
-        
       } label: {
         Text("Modify")
           .padding()
@@ -272,7 +425,11 @@ struct ModifyIngredientView: View {
           .background(Color.blue)
           .cornerRadius(15.0)
       }
-      .disabled(ingredient == IngredientType.hop ? hopName.isEmpty : ingredient == IngredientType.malt ? maltName.isEmpty : false)
+      .disabled(ingredient == .hop ? hopName.isEmpty :
+                ingredient == .malt ? maltName.isEmpty :
+                ingredient == .yeast ? yeastName.isEmpty :
+                ingredient == .addition ? additionName.isEmpty :
+                false)
     }
   }
 }

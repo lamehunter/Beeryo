@@ -6,5 +6,5 @@
 //
 
 enum IngredientType {
-  case malt, hop
+  case malt, hop, yeast, addition
 }

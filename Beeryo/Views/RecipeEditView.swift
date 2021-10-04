@@ -65,9 +65,13 @@ struct RecipeEditView: View {
         }
         
         Section(header: SectionHeader(title: "Ingredients")){
-          IngredientListView(recipeEntity: recipeEntity!, ingredient: IngredientType.malt)
+          IngredientListView(recipeEntity: recipeEntity!, ingredient: .malt)
             .padding(.bottom, 10)
-          IngredientListView(recipeEntity: recipeEntity!, ingredient: IngredientType.hop)
+          IngredientListView(recipeEntity: recipeEntity!, ingredient: .hop)
+            .padding(.bottom, 10)
+          IngredientListView(recipeEntity: recipeEntity!, ingredient: .yeast)
+            .padding(.bottom, 10)
+          IngredientListView(recipeEntity: recipeEntity!, ingredient: .addition)
             .padding(.bottom, 10)
         }
       }
@@ -153,6 +157,7 @@ struct TextFieldGeneralView: View {
 struct IngredientListView: View {
   let maltUnit = "kg"
   let hopUnit = "g"
+  let additionUnit = "g"
   var ingredient: IngredientType
   
   @StateObject var recipeEntity: RecipeEntity
@@ -166,7 +171,10 @@ struct IngredientListView: View {
   var body: some View {
     HStack {
       VStack (spacing: 10){
-        Text(ingredient == IngredientType.malt ? "Malts" : ingredient == IngredientType.hop ? "Hops" : "error")
+        Text(ingredient == IngredientType.malt ? "Malts" :
+              ingredient == IngredientType.hop ? "Hops" :
+              ingredient == IngredientType.yeast ? "Yeasts" :
+              ingredient == IngredientType.addition ? "Additions" : "error")
           .bold()
           .frame(width: 80,
                  height: 20,
@@ -177,7 +185,6 @@ struct IngredientListView: View {
         switch ingredient {
         case IngredientType.malt:
           if let maltEntities = recipeEntity.malts?.allObjects as? [MaltEntity] {
-            
             ForEach (maltEntities) { malt in
               if
                 let name = malt.name,
@@ -196,9 +203,10 @@ struct IngredientListView: View {
               }
             }
           }
+          
         case IngredientType.hop:
-          if let hopEntity = recipeEntity.hops?.allObjects as? [HopsEntity] {
-            ForEach (hopEntity) { hop in
+          if let hopEntities = recipeEntity.hops?.allObjects as? [HopsEntity] {
+            ForEach (hopEntities) { hop in
               if
                 let name = hop.name,
                 let weight = hop.weight,
@@ -212,6 +220,47 @@ struct IngredientListView: View {
                   Text("\\")
                     .font(.footnote)
                   Text("\(duration)min")
+                    .font(.footnote)
+                }
+                .padding(.leading, 10)
+                .padding(.trailing, 10)
+                .padding(1)
+                .cornerRadius(5)
+              }
+            }
+          }
+        case IngredientType.yeast:
+          if let yeastEntities = recipeEntity.yeasts?.allObjects as? [YeastEntity] {
+            ForEach (yeastEntities) { yeast in
+              if
+                let name = yeast.name,
+                let type = yeast.type {
+                HStack {
+                  Text("\(name), ")
+                    .font(.footnote)
+                  Spacer()
+                  Text("\(type)")
+                    .font(.footnote)
+                }
+                .padding(.leading, 10)
+                .padding(.trailing, 10)
+                .padding(1)
+                .cornerRadius(5)
+              }
+            }
+          }
+          
+        case IngredientType.addition:
+          if let additionEntities = recipeEntity.additions?.allObjects as? [AdditionEntity] {
+            ForEach (additionEntities) { addition in
+              if
+                let name = addition.name,
+                let weight = addition.weight {
+                HStack {
+                  Text("\(name), ")
+                    .font(.footnote)
+                  Spacer()
+                  Text("\(weight)\(additionUnit)")
                     .font(.footnote)
                 }
                 .padding(.leading, 10)
@@ -270,10 +319,10 @@ struct SectionHeader: View {
   var body: some View {
     HStack  {
       Spacer()
-//      Image(systemName: "highlighter")
-//        .resizable()
-//        .frame(width: imageSize, height: imageSize)
-//        .foregroundColor(Color("TextColor"))
+      //      Image(systemName: "highlighter")
+      //        .resizable()
+      //        .frame(width: imageSize, height: imageSize)
+      //        .foregroundColor(Color("TextColor"))
       Text(title)
         .font(.body)
         .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
