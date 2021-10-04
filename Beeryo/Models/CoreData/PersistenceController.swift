@@ -25,13 +25,13 @@ final class PersistenceController: ObservableObject {
       controller.addRecipe(_recipe: recipe)
       
       let malt = MaltEntity(context: controller.container.viewContext)
-      controller.addMaltToRecipe(name: "Pilsner_Ent\(number)", weight: 1.0, recipeEntity: recipe)
+      controller.addMaltToRecipe(name: "Pilsner_Ent\(number)", weight: "1.0", recipeEntity: recipe)
       let hop = HopsEntity(context: controller.container.viewContext)
-      controller.addHopToRecipe(name: "Lubelski_Ent\(number)", weight: 12, duration: 50, recipeEntity: recipe)
+      controller.addHopToRecipe(name: "Lubelski_Ent\(number)", weight: "12", duration: "50", recipeEntity: recipe)
       let yeast = YeastEntity(context: controller.container.viewContext)
       controller.addYeastToRecipe(name: "SuperLagerYeast", type: "Lager", recipeEntity: recipe)
       let addition = AdditionEntity(context: controller.container.viewContext)
-      controller.addAdditionToRecipe(name: "IrishMoss", weight: 12, recipeEntity: recipe)
+      controller.addAdditionToRecipe(name: "IrishMoss", weight: "12", recipeEntity: recipe)
     }
     return controller
   }()
@@ -178,27 +178,27 @@ final class PersistenceController: ObservableObject {
     saveData()
   }
   
-  func addMaltToRecipe(name: String, weight: Float, recipeEntity: RecipeEntity){
+  func addMaltToRecipe(name: String, weight: String, recipeEntity: RecipeEntity){
     let malt = MaltEntity(context: container.viewContext)
     malt.name = name
-    malt.weight = weight
+    malt.weight = Float(weight) ?? 0.0
     malt.recipe = recipeEntity
     saveData()
   }
   
-  func addHopToRecipe(name: String, weight: Int32, duration: Int32, recipeEntity: RecipeEntity){
+  func addHopToRecipe(name: String, weight: String, duration: String, recipeEntity: RecipeEntity) {
     let hop = HopsEntity(context: container.viewContext)
     hop.name = name
-    hop.weight = weight
-    hop.duration = duration
+    hop.weight = Int32(weight) ?? 0
+    hop.duration = Int32(duration) ?? 0
     hop.recipe = recipeEntity
     saveData()
   }
   
-  func addAdditionToRecipe(name: String, weight: Int16, recipeEntity: RecipeEntity){
+  func addAdditionToRecipe(name: String, weight: String, recipeEntity: RecipeEntity){
     let addition = AdditionEntity(context: container.viewContext)
     addition.name = name
-    addition.weight = weight
+    addition.weight = Int16(weight) ?? 0
     addition.recipe = recipeEntity
     saveData()
   }
@@ -258,9 +258,4 @@ final class PersistenceController: ObservableObject {
     }
    return false
   }
-  
-//  func modifyMaltWeight(in maltEntity: MaltEntity, withValue weight: Float){
-//    maltEntity.weight = weight
-//    saveData()
-//  }
 }

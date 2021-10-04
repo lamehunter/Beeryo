@@ -16,14 +16,12 @@ struct AddIngredientView: View {
   
   //state var for hops
   @State var newHopName: String = ""
-  @State var newHopWeight: Int32 = 0
-  @State var newHopWeight_string: String = ""
-  @State var newHopDuration: Int32 = 0
+  @State var newHopWeight: String = ""
+  @State var newHopDuration: String = ""
   
   //state var for malts
   @State var newMaltName: String = ""
-  @State var newMaltWeight: Float = 0.0
-  @State var newMaltWeight_string: String = ""
+  @State var newMaltWeight: String = ""
   
   //state var for yeasts
   @State var newYeastName: String = ""
@@ -31,8 +29,7 @@ struct AddIngredientView: View {
   
   //state var for additions
   @State var newAdditionName: String = ""
-  @State var newAdditionWeight: Int16 = 0
-  @State var newAdditionWeight_string: String = ""
+  @State var newAdditionWeight: String = ""
   
   @ObservedObject var persistenceController = PersistenceController.shared
   
@@ -45,18 +42,6 @@ struct AddIngredientView: View {
   init(recipeEntity_: RecipeEntity, ingredient: IngredientType) {
     self.recipeEntity = recipeEntity_
     self.ingredient = ingredient
-  }
-  
-  func convertHopWeight() {
-    newHopWeight = Int32(newHopWeight_string) ?? 0
-  }
-  
-  func convertMaltWeight() {
-    newMaltWeight = Float(newMaltWeight_string) ?? 0.0
-  }
-  
-  func convertAdditionWeight() {
-    newAdditionWeight = Int16(newAdditionWeight_string) ?? 0
   }
   
   var body: some View {
@@ -188,14 +173,17 @@ struct AddIngredientView: View {
           case .hop:
             TextFieldGeneralView(title: "Name:", text: "Type hop name here", bindingValue: $newHopName)
               .padding(.bottom)
-            TextFieldGeneralView(title: "Weight:", text: "Type hop weight here", bindingValue: $newHopWeight_string)
+            TextFieldGeneralView(title: "Weight:", text: "Type hop weight here", bindingValue: $newHopWeight)
+              .keyboardType(.decimalPad)
+              .padding(.bottom)
+            TextFieldGeneralView(title: "Duration:", text: "Type duration", bindingValue: $newHopDuration)
               .keyboardType(.decimalPad)
               .padding(.bottom)
             
           case .malt:
             TextFieldGeneralView(title: "Name:", text: "Type malt name here", bindingValue: $newMaltName)
               .padding(.bottom)
-            TextFieldGeneralView(title: "Weight", text: "Type malt weight here", bindingValue: $newMaltWeight_string)
+            TextFieldGeneralView(title: "Weight", text: "Type malt weight here", bindingValue: $newMaltWeight)
               .keyboardType(.decimalPad)
               .padding(.bottom)
             
@@ -208,7 +196,7 @@ struct AddIngredientView: View {
           case .addition:
             TextFieldGeneralView(title: "Name:", text: "Type addition name here", bindingValue: $newAdditionName)
               .padding(.bottom)
-            TextFieldGeneralView(title: "Weight", text: "Type addition weight here", bindingValue: $newAdditionWeight_string)
+            TextFieldGeneralView(title: "Weight", text: "Type addition weight here", bindingValue: $newAdditionWeight)
               .keyboardType(.decimalPad)
               .padding(.bottom)
           }
@@ -217,7 +205,6 @@ struct AddIngredientView: View {
             switch ingredient {
               
             case .hop:
-              convertHopWeight()
               if !(persistenceController.doesHopNameExist(recipe: recipeEntity, name: newHopName)) {
                 persistenceController.addHopToRecipe(
                   name: newHopName,
@@ -228,7 +215,6 @@ struct AddIngredientView: View {
               else { isAlertPresented = true }
               
             case .malt:
-              convertMaltWeight()
               if !(persistenceController.doesMaltNameExist(recipe: recipeEntity, name: newMaltName)) {
                 persistenceController.addMaltToRecipe(name: newMaltName, weight: newMaltWeight, recipeEntity: recipeEntity)
               }
@@ -241,7 +227,6 @@ struct AddIngredientView: View {
               else { isAlertPresented = true }
               
             case .addition:
-              convertAdditionWeight()
               if !(persistenceController.doesAdditionNameExist(recipe: recipeEntity, name: newAdditionName)) {
                 persistenceController.addAdditionToRecipe(name: newAdditionName, weight: newAdditionWeight, recipeEntity: recipeEntity)
               }
@@ -249,19 +234,16 @@ struct AddIngredientView: View {
               
             }
             newHopName = ""
-            newHopWeight_string = ""
-            newHopWeight = 0
+            newHopWeight = ""
             
             newMaltName = ""
-            newMaltWeight = 0
-            newMaltWeight_string = ""
+            newMaltWeight = ""
             
             newYeastName = ""
             newYeastType = ""
             
             newAdditionName = ""
-            newAdditionWeight = 0
-            newAdditionWeight_string = ""
+            newAdditionWeight = ""
             
             showAddNewIngredientView.toggle()
           } label: {
@@ -311,13 +293,11 @@ struct ModifyIngredientView: View {
   
   //hop state variables
   @State var hopName: String = ""
-  @State var hopWeight: Int32 = 0
-  @State var hopWeight_string: String = ""
+  @State var hopWeight: String = ""
   
   //malt state variables
   @State var maltName: String = ""
-  @State var maltWeight: Float = 0.0
-  @State var maltWeight_string: String = ""
+  @State var maltWeight: String = ""
   
   //yeast state variables
   @State var yeastName: String = ""
@@ -325,22 +305,19 @@ struct ModifyIngredientView: View {
   
   //addition state variables
   @State var additionName: String = ""
-  @State var additionWeight: Int16 = 0
-  @State var additionWeight_string: String = ""
+  @State var additionWeight: String = ""
   
   init(hopEntity: HopsEntity) {
     self.hopEntity = hopEntity
     _hopName = State(initialValue: hopEntity.name ?? "")
-    _hopWeight = State(initialValue: hopEntity.weight)
-    _hopWeight_string = State(initialValue: String(hopEntity.weight))
+    _hopWeight = State(initialValue: String(hopEntity.weight))
     ingredient = .hop
   }
   
   init(maltEntity: MaltEntity) {
     self.maltEntity = maltEntity
     _maltName = State(initialValue: maltEntity.name ?? "")
-    _maltWeight = State(initialValue: maltEntity.weight)
-    _maltWeight_string = State(initialValue: String(maltEntity.weight))
+    _maltWeight = State(initialValue: String(maltEntity.weight))
     ingredient = .malt
   }
   
@@ -354,33 +331,20 @@ struct ModifyIngredientView: View {
   init(additionEntity: AdditionEntity) {
     self.additionEntity = additionEntity
     _additionName = State(initialValue: additionEntity.name ?? "")
-    _additionWeight = State(initialValue: additionEntity.weight)
-    _additionWeight_string = State(initialValue: String(additionEntity.weight))
+    _additionWeight = State(initialValue: String(additionEntity.weight))
     ingredient = .addition
   }
-  
-  func convertHopWeight() {
-    hopWeight = Int32(hopWeight_string) ?? 0
-  }
-  
-  func convertMaltWeight() {
-    maltWeight = Float(maltWeight_string) ?? 0.0
-  }
-  
-  func convertAdditionWeight() {
-    additionWeight = Int16(additionWeight_string) ?? 0
-  }
-  
+    
   var body: some View {
     VStack {
       switch ingredient {
       case .hop:
         TextFieldGeneralView(title: "Name:", text: "Type hop name here", bindingValue: $hopName)
-        TextFieldGeneralView(title: "Weight:", text: "Type hop weight here", bindingValue: $hopWeight_string).keyboardType(.decimalPad)
+        TextFieldGeneralView(title: "Weight:", text: "Type hop weight here", bindingValue: $hopWeight).keyboardType(.decimalPad)
         
       case .malt:
         TextFieldGeneralView(title: "Name:", text: "Type malt name here", bindingValue: $maltName)
-        TextFieldGeneralView(title: "Weight:", text: "Type malt weight here", bindingValue: $maltWeight_string).keyboardType(.decimalPad)
+        TextFieldGeneralView(title: "Weight:", text: "Type malt weight here", bindingValue: $maltWeight).keyboardType(.decimalPad)
         
       case .yeast:
         TextFieldGeneralView(title: "Name:", text: "Type yest name here", bindingValue: $yeastName)
@@ -388,20 +352,18 @@ struct ModifyIngredientView: View {
         
       case .addition:
         TextFieldGeneralView(title: "Name:", text: "Type addition here", bindingValue: $additionName)
-        TextFieldGeneralView(title: "Weight:", text: "Type addition weight here", bindingValue: $additionWeight_string).keyboardType(.decimalPad)
+        TextFieldGeneralView(title: "Weight:", text: "Type addition weight here", bindingValue: $additionWeight).keyboardType(.decimalPad)
       }
       Button {
         switch ingredient {
         case .hop:
-          convertHopWeight()
           hopEntity?.name = hopName
-          hopEntity?.weight = hopWeight
+          hopEntity?.weight = Int32(hopWeight) ?? 0
           persistenceController.saveData()
           presentationMode.wrappedValue.dismiss()
         case .malt:
-          convertMaltWeight()
           maltEntity?.name = maltName
-          maltEntity?.weight = maltWeight
+          maltEntity?.weight = Float(maltWeight) ?? 0.0
           persistenceController.saveData()
           presentationMode.wrappedValue.dismiss()
           
@@ -412,9 +374,8 @@ struct ModifyIngredientView: View {
           presentationMode.wrappedValue.dismiss()
           
         case .addition:
-          convertAdditionWeight()
           additionEntity?.name = additionName
-          additionEntity?.weight = additionWeight
+          additionEntity?.weight = Int16(additionWeight) ?? 0
           persistenceController.saveData()
           presentationMode.wrappedValue.dismiss()
         }
