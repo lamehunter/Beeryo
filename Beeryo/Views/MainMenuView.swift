@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct MainMenuView: View {
-  let vStackSpacing: CGFloat = 10
   let screenWidth = CGFloat(UIScreen.main.bounds.size.width)
   let screenHeight = CGFloat(UIScreen.main.bounds.size.height)
   lazy var backgroundImageSize = screenWidth < screenHeight ? screenWidth : screenHeight
@@ -16,8 +15,9 @@ struct MainMenuView: View {
   var body: some View {
     NavigationView {
       ZStack {
-        VStack (alignment: .leading, spacing: vStackSpacing){
+        VStack (alignment: .leading, spacing: 10){
           TitleRow(text: "Let's start ...", textPosition: "left")
+          
           Button(action: {
           }) {
             NavigationLink(
@@ -26,24 +26,29 @@ struct MainMenuView: View {
             }
           }
           .buttonStyle(MainMenuButtonStyle())
-          MenuRowView(imageSystemName: "archivebox", text: "Ingredients storage")
-          Button(action: {
-          }) {
-            NavigationLink(
-              destination: RecipesView()){
-              MenuRowView(imageSystemName: "doc.text", text: "Upload recipes")
-            }
-          }
-          .buttonStyle(MainMenuButtonStyle())
-          Button(action: {
-          }) {
-            NavigationLink(
-              destination: RecipesView()){
-              MenuRowView(imageSystemName: "doc.text", text: "Download recipes")
-            }
-          }
-          .buttonStyle(MainMenuButtonStyle())
+          
+          // MenuRowView(imageSystemName: "archivebox", text: "Ingredients storage")
+          
+//          Button(action: {
+//          }) {
+//            NavigationLink(
+//              destination: RecipesView()){
+//              MenuRowView(imageSystemName: "doc.text", text: "Upload recipes")
+//            }
+//          }
+//          .buttonStyle(MainMenuButtonStyle())
+//
+//          Button(action: {
+//          }) {
+//            NavigationLink(
+//              destination: RecipesView()){
+//              MenuRowView(imageSystemName: "doc.text", text: "Download recipes")
+//            }
+//          }
+//          .buttonStyle(MainMenuButtonStyle())
+          
           Spacer()
+          
           TitleRow(text: "... brewing!", textPosition: "right")
         }
         .navigationBarHidden(true)
@@ -64,7 +69,6 @@ struct MainMenuButtonStyle: ButtonStyle {
         configuration.label
         .background(Color.clear)
             .foregroundColor(Color("TextColor"))
-            
     }
 }
 

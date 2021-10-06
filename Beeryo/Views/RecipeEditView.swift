@@ -16,6 +16,7 @@ struct RecipeEditView: View {
                 animation: .default) private var recipeEntities: FetchedResults<RecipeEntity>
   
   @ObservedObject private var persistenceController = PersistenceController.shared
+  
   private var recipeEntity: RecipeEntity? = nil
   
   @State var recipeName: String = ""
@@ -36,11 +37,12 @@ struct RecipeEditView: View {
   }
   
   init() {
+    
   }
   
   var body: some View {
-    VStack {
-      VStack (alignment: .center){
+   
+      ScrollView (showsIndicators: false){
         Section(header: SectionHeader(title: "General")){
           TextFieldGeneralView(title: "Name:",
                                text: "Type name here",
@@ -74,8 +76,18 @@ struct RecipeEditView: View {
           IngredientListView(recipeEntity: recipeEntity!, ingredient: .addition)
             .padding(.bottom, 10)
         }
+        Section(header: SectionHeader(title: "Mashing")){
+          Text("SectionInDevelopment")
+        }
+        Section(header: SectionHeader(title: "Boiling")){
+          Text("SectionInDevelopment")
+        }
+        Section(header: SectionHeader(title: "Fermenting")){
+          Text("SectionInDevelopment")
+        }
       }
       .padding()
+      .navigationBarHidden(false)
       .navigationBarTitle("Recipe Details", displayMode: .inline)
       .navigationBarItems(trailing: Button(action: {
         if (recipeEntity?.name != recipeName && persistenceController.doesRecipeNameExist(name: recipeName)) {
@@ -96,10 +108,8 @@ struct RecipeEditView: View {
           title: Text("Warning!"),
           message: Text("Recipe name already exist!"),
           dismissButton: .cancel())
-      })
-      )
-      Spacer()
-    }
+      }))
+      
   }
 }
 
@@ -127,32 +137,6 @@ struct TextFieldGeneralView: View {
     }
   }
 }
-
-//struct GeneralSectionRowNumeric: View {
-//  var title: String
-//  var textFieldContent: String
-//
-//  @Binding var bindingValue: Float
-//  var titleTextFrameSizeH: CGFloat = 80
-//  var titleTextFrameSizeV: CGFloat = 20
-//
-//  var body: some View {
-//    HStack{
-//      Text(title)
-//        .frame(width: titleTextFrameSizeH,
-//               height: titleTextFrameSizeV,
-//               alignment: .leading)
-//      TextField(textFieldContent,
-//                value: $bindingValue,
-//                formatter: NumberFormatter())
-//        .keyboardType(.decimalPad)
-//        .overlay(VStack{
-//          Divider()
-//            .background(Color.red)
-//          .offset(x: 0, y: 15)})
-//    }
-//  }
-//}
 
 struct IngredientListView: View {
   let maltUnit = "kg"
@@ -272,11 +256,15 @@ struct IngredientListView: View {
           }
         }
       }
+      .frame(minHeight: 60)
       .padding(.top, 5)
       .padding(.bottom, 5)
-      .background(RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(Color("StrokeColor"), lineWidth: 1.0))
-    }.padding(.top, 10)
+      .background(
+        RoundedRectangle(cornerRadius: 10)
+                    .strokeBorder(Color("StrokeColor"), lineWidth: 1.0)
+      )
+    }
+    .padding(.top, 10)
   }
 }
 
