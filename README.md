@@ -18,7 +18,6 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
 
 
 <!-- PROJECT LOGO -->
@@ -119,6 +118,4 @@ Project Link: [https://github.com/lamehunter/Beeryo](https://github.com/lamehunt
 [stars-url]: https://github.com/lamehunter/Beeryo/stargazers
 [issues-shield]: https://img.shields.io/github/issues/lamehunter/Beeryo.svg?style=for-the-badge
 [issues-url]: https://github.com/lamehunter/Beeryo/issues
-[license-shield]: https://img.shields.io/github/license/lamehunter/Beeryo.svg?style=for-the-badge
-[license-url]: https://github.com/lamehunter/Beeryo/blob/master/LICENSE.txt
 [product-screenshot]: readMeLogo.png
