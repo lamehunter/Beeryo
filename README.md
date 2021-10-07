@@ -50,6 +50,7 @@
     <li>
       <a href="#about-the-project">About The Project</a>
     </li>
+      <li><a href="#getting-started">Contributing</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -70,6 +71,15 @@ CoreData might be an overkill for such an app but this was only done to learn so
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
+<!-- GETTING STARTED -->
+## Getting Started
+
+Build and run in XCode 13 on selected iOS device
+
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
 <!-- CONTRIBUTING -->
 ## Contributing
 
@@ -86,8 +96,6 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
 ## License
 
@@ -96,13 +104,10 @@ See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- CONTACT -->
 ## Contact
 
 lamehunter@gmail.com
-
 Project Link: [https://github.com/lamehunter/Beeryo](https://github.com/lamehunter/Beeryo)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
