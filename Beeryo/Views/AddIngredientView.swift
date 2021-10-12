@@ -294,6 +294,7 @@ struct ModifyIngredientView: View {
   //hop state variables
   @State var hopName: String = ""
   @State var hopWeight: String = ""
+  @State var hopDuration: String = ""
   
   //malt state variables
   @State var maltName: String = ""
@@ -311,6 +312,7 @@ struct ModifyIngredientView: View {
     self.hopEntity = hopEntity
     _hopName = State(initialValue: hopEntity.name ?? "")
     _hopWeight = State(initialValue: String(hopEntity.weight))
+    _hopDuration = State(initialValue: String(hopEntity.duration))
     ingredient = .hop
   }
   
@@ -341,6 +343,8 @@ struct ModifyIngredientView: View {
       case .hop:
         TextFieldGeneralView(title: "Name:", text: "Type hop name here", bindingValue: $hopName)
         TextFieldGeneralView(title: "Weight:", text: "Type hop weight here", bindingValue: $hopWeight).keyboardType(.decimalPad)
+        TextFieldGeneralView(title: "Duration:", text: "Type duration", bindingValue: $hopDuration)
+          .keyboardType(.decimalPad)
         
       case .malt:
         TextFieldGeneralView(title: "Name:", text: "Type malt name here", bindingValue: $maltName)
@@ -359,6 +363,7 @@ struct ModifyIngredientView: View {
         case .hop:
           hopEntity?.name = hopName
           hopEntity?.weight = Int32(hopWeight) ?? 0
+          hopEntity?.duration = Int32(hopDuration) ?? 0
           persistenceController.saveData()
           presentationMode.wrappedValue.dismiss()
         case .malt:
@@ -392,6 +397,7 @@ struct ModifyIngredientView: View {
                 ingredient == .addition ? additionName.isEmpty :
                 false)
     }
+    .padding()
   }
 }
 
@@ -403,6 +409,6 @@ struct AddIngredientView_Previews: PreviewProvider {
                       ingredient: IngredientType.hop)
       .preferredColorScheme(.dark)
     
-    ModifyIngredientView(maltEntity: (PersistenceController.preview.allRecipes.first?.malts?.allObjects as? [MaltEntity])!.first!)
+    ModifyIngredientView(hopEntity: (PersistenceController.preview.allRecipes.first?.hops?.allObjects as? [HopsEntity])!.first!)
   }
 }

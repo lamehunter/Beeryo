@@ -35,6 +35,7 @@
 		B7A5E8AC270B84A40024C7C4 /* MaltEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A5E89C270B84A40024C7C4 /* MaltEntity+CoreDataProperties.swift */; };
 		B7A5E8AD270B84A40024C7C4 /* StepFermentationEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A5E89D270B84A40024C7C4 /* StepFermentationEntity+CoreDataClass.swift */; };
 		B7A5E8AE270B84A40024C7C4 /* StepFermentationEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A5E89E270B84A40024C7C4 /* StepFermentationEntity+CoreDataProperties.swift */; };
+		B7FFFC1A2715C709009C1059 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FFFC192715C709009C1059 /* Recipe.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +73,8 @@
 		B7A5E89C270B84A40024C7C4 /* MaltEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MaltEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B7A5E89D270B84A40024C7C4 /* StepFermentationEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StepFermentationEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B7A5E89E270B84A40024C7C4 /* StepFermentationEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StepFermentationEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B7FFFC192715C709009C1059 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
+		B7FFFC1B2715C8C2009C1059 /* Beeryo 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Beeryo 6.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +168,7 @@
 		B750530C26DBFE750040887E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B7FFFC182715C6E8009C1059 /* Firebase */,
 				B7618C7526F2837A000959EC /* PersistenceController.swift */,
 				B74B1A61270396D600BC3FEA /* IngredientTypeEnum.swift */,
 				B72595C826F1197400C7E0C8 /* CoreData */,
@@ -183,6 +187,14 @@
 				B77ED4CD2702792800229AC5 /* AddIngredientView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		B7FFFC182715C6E8009C1059 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				B7FFFC192715C709009C1059 /* Recipe.swift */,
+			);
+			path = Firebase;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,6 +290,7 @@
 				B7A5E89F270B84A40024C7C4 /* YeastEntity+CoreDataClass.swift in Sources */,
 				B7A5E8A7270B84A40024C7C4 /* BoilEntity+CoreDataClass.swift in Sources */,
 				B7A5E8A1270B84A40024C7C4 /* StepMashingEntity+CoreDataClass.swift in Sources */,
+				B7FFFC1A2715C709009C1059 /* Recipe.swift in Sources */,
 				B75052F926DBFE660040887E /* BeeryoApp.swift in Sources */,
 				B7A5E8A0270B84A40024C7C4 /* YeastEntity+CoreDataProperties.swift in Sources */,
 			);
@@ -473,6 +486,7 @@
 		B750530326DBFE660040887E /* RecipeContainer.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				B7FFFC1B2715C8C2009C1059 /* Beeryo 6.xcdatamodel */,
 				B774D5672702391A00A97F20 /* Beeryo 5.xcdatamodel */,
 				B77EE4EF27012922000B5AF5 /* Beeryo 4.xcdatamodel */,
 				B77EEDDD26FFD1DF004F0B3D /* Beeryo 3.xcdatamodel */,
