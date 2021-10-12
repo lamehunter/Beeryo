@@ -11,6 +11,7 @@ struct AddIngredientView: View {
   var hopUnit = "g"
   var maltUnit = "kg"
   var additionUnit = "g"
+  var timeUnit = "min"
   
   @Environment(\.presentationMode) var presentationMode
   
@@ -60,7 +61,7 @@ struct AddIngredientView: View {
                     Text("\(name), ")
                     Spacer()
                     Text("\(weight)\(hopUnit)")
-                    Text("/ \(duration)min")
+                    Text("/ \(duration)\(timeUnit)")
                   }
                 }
               }

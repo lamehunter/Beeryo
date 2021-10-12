@@ -126,7 +126,7 @@ struct TextFieldGeneralView: View {
   var titleTextFrameSizeV: CGFloat = 20
   
   var body: some View {
-    HStack{
+    HStack {
       Text(title)
         .bold()
         .frame(width: titleTextFrameSizeH,
@@ -146,6 +146,7 @@ struct IngredientListView: View {
   let maltUnit = "kg"
   let hopUnit = "g"
   let additionUnit = "g"
+  let timeUnit = "min"
   var ingredient: IngredientType
   
   @StateObject var recipeEntity: RecipeEntity
@@ -207,7 +208,7 @@ struct IngredientListView: View {
                     .font(.footnote)
                   Text("\\")
                     .font(.footnote)
-                  Text("\(duration)min")
+                  Text("\(duration)\(timeUnit)")
                     .font(.footnote)
                 }
                 .padding(.leading, 10)

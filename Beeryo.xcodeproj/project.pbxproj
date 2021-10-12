@@ -39,6 +39,7 @@
 		B7FFFC1D2715CF78009C1059 /* BoilView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FFFC1C2715CF78009C1059 /* BoilView.swift */; };
 		B7FFFC1F2715DAF0009C1059 /* MashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FFFC1E2715DAF0009C1059 /* MashView.swift */; };
 		B7FFFC212715DAFC009C1059 /* FermentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FFFC202715DAFC009C1059 /* FermentView.swift */; };
+		B7FFFC23271603BE009C1059 /* HopTimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FFFC22271603BE009C1059 /* HopTimeManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +82,7 @@
 		B7FFFC1C2715CF78009C1059 /* BoilView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoilView.swift; sourceTree = "<group>"; };
 		B7FFFC1E2715DAF0009C1059 /* MashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MashView.swift; sourceTree = "<group>"; };
 		B7FFFC202715DAFC009C1059 /* FermentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FermentView.swift; sourceTree = "<group>"; };
+		B7FFFC22271603BE009C1059 /* HopTimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HopTimeManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +179,7 @@
 				B7FFFC182715C6E8009C1059 /* Firebase */,
 				B7618C7526F2837A000959EC /* PersistenceController.swift */,
 				B74B1A61270396D600BC3FEA /* IngredientTypeEnum.swift */,
+				B7FFFC22271603BE009C1059 /* HopTimeManager.swift */,
 				B72595C826F1197400C7E0C8 /* CoreData */,
 			);
 			path = Models;
@@ -296,6 +299,7 @@
 				B7A5E8AA270B84A40024C7C4 /* AdditionEntity+CoreDataProperties.swift in Sources */,
 				B7A5E8A3270B84A40024C7C4 /* RecipeEntity+CoreDataClass.swift in Sources */,
 				B7618C7626F2837A000959EC /* PersistenceController.swift in Sources */,
+				B7FFFC23271603BE009C1059 /* HopTimeManager.swift in Sources */,
 				B74B1A62270396D600BC3FEA /* IngredientTypeEnum.swift in Sources */,
 				B7A5E8A5270B84A40024C7C4 /* HopsEntity+CoreDataClass.swift in Sources */,
 				B7A5E89F270B84A40024C7C4 /* YeastEntity+CoreDataClass.swift in Sources */,

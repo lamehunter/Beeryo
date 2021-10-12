@@ -24,13 +24,15 @@ final class PersistenceController: ObservableObject {
       recipe.name = "MyBrewRecipe_\(number)"
       controller.addRecipe(_recipe: recipe)
       
-      let malt = MaltEntity(context: controller.container.viewContext)
+      //let malt = MaltEntity(context: controller.container.viewContext)
       controller.addMaltToRecipe(name: "Pilsner_Ent\(number)", weight: "1.0", recipeEntity: recipe)
-      let hop = HopsEntity(context: controller.container.viewContext)
-      controller.addHopToRecipe(name: "Lubelski_Ent\(number)", weight: "12", duration: "50", recipeEntity: recipe)
-      let yeast = YeastEntity(context: controller.container.viewContext)
+      //let hop = HopsEntity(context: controller.container.viewContext)
+      controller.addHopToRecipe(name: "Lubelski_no_\(number)", weight: "12", duration: "50", recipeEntity: recipe)
+      controller.addHopToRecipe(name: "Lubelski_no_\(number)", weight: "11", duration: "70", recipeEntity: recipe)
+      controller.addHopToRecipe(name: "Lubelski_no_\(number)", weight: "15", duration: "80", recipeEntity: recipe)
+      //let yeast = YeastEntity(context: controller.container.viewContext)
       controller.addYeastToRecipe(name: "SuperLagerYeast", type: "Lager", recipeEntity: recipe)
-      let addition = AdditionEntity(context: controller.container.viewContext)
+      //let addition = AdditionEntity(context: controller.container.viewContext)
       controller.addAdditionToRecipe(name: "IrishMoss", weight: "12", recipeEntity: recipe)
     }
     return controller
