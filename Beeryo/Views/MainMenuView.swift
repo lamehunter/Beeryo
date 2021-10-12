@@ -8,10 +8,6 @@
 import SwiftUI
 
 struct MainMenuView: View {
-  let screenWidth = CGFloat(UIScreen.main.bounds.size.width)
-  let screenHeight = CGFloat(UIScreen.main.bounds.size.height)
-  lazy var backgroundImageSize = screenWidth < screenHeight ? screenWidth : screenHeight
-  
   var body: some View {
     NavigationView {
       ZStack {
@@ -55,12 +51,12 @@ struct MainMenuView: View {
         Image("beerSplashScreenLogo")
           .resizable()
           .renderingMode(.template)
+          .scaledToFit()
           .foregroundColor(Color("TextColor"))
           .opacity(0.05)
-          .frame(width: screenWidth < screenHeight ? screenWidth : screenHeight,
-                 height: screenWidth < screenHeight ? screenWidth : screenHeight)
       }
     }
+    .navigationViewStyle(StackNavigationViewStyle())
   }
 }
 
