@@ -41,7 +41,7 @@ struct RecipeEditView: View {
   }
   
   var body: some View {
-   
+    VStack {
       ScrollView (showsIndicators: false){
         Section(header: SectionHeader(title: "General")){
           TextFieldGeneralView(title: "Name:",
@@ -76,15 +76,17 @@ struct RecipeEditView: View {
           IngredientListView(recipeEntity: recipeEntity!, ingredient: .addition)
             .padding(.bottom, 10)
         }
-        Section(header: SectionHeader(title: "Mashing")){
-          Text("SectionInDevelopment")
-        }
-        Section(header: SectionHeader(title: "Boiling")){
-          Text("SectionInDevelopment")
-        }
-        Section(header: SectionHeader(title: "Fermenting")){
-          Text("SectionInDevelopment")
-        }
+  //      Section(header: SectionHeader(title: "Mashing")){
+  //        Text("SectionInDevelopment")
+  //      }
+  //      Section(header: SectionHeader(title: "Boiling")){
+  //        Text("SectionInDevelopment")
+  //        BoilView(recipeEntity: recipeEntity!)
+  //      }
+  //      Section(header: SectionHeader(title: "Fermenting")){
+  //        Text("SectionInDevelopment")
+  //      }
+        
       }
       .padding()
       .navigationBarHidden(false)
@@ -109,7 +111,9 @@ struct RecipeEditView: View {
           message: Text("Recipe name already exist!"),
           dismissButton: .cancel())
       }))
-      
+      ProcessBar(recipeEntity: recipeEntity!)
+    }
+    
   }
 }
 
@@ -261,7 +265,7 @@ struct IngredientListView: View {
       .padding(.bottom, 5)
       .background(
         RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(Color("StrokeColor"), lineWidth: 1.0)
+          .strokeBorder(Color("StrokeColor"), lineWidth: 1.0)
       )
     }
     .padding(.top, 10)
@@ -321,6 +325,121 @@ struct SectionHeader: View {
     .foregroundColor(fontColor)
     .background(RoundedRectangle(cornerRadius: 10)
                   .strokeBorder(Color("StrokeColor"), lineWidth: 1.0))
+  }
+}
+
+struct ProcessTitle: View {
+  let title: String
+  let imageSize: CGFloat = 20
+  let fontColor = Color.black
+  let backgroundColor = Color("BackgroundRectangleColor")
+  let headerPadding: CGFloat = 5
+  
+  var body: some View {
+    HStack  {
+      Text(title)
+        .font(.body)
+        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+        .foregroundColor(Color("TextColor"))
+    }
+    .padding(headerPadding)
+    .foregroundColor(fontColor)
+    .background(RoundedRectangle(cornerRadius: 10)
+                  .strokeBorder(Color("StrokeColor"), lineWidth: 1.0))
+  }
+}
+
+struct ProcessBar: View {
+  var recipeEntity: RecipeEntity
+  
+  init(recipeEntity: RecipeEntity) {
+    self.recipeEntity = recipeEntity
+  }
+  
+  var body: some View {
+      HStack  {
+        VStack {
+          ProcessTitle(title: "Mashing")
+          ProcessButton(recipeEntity: recipeEntity, destination: .mash)
+        }
+        Spacer()
+        VStack {
+          ProcessTitle(title: "Boiling")
+          ProcessButton(recipeEntity: recipeEntity, destination: .boil)
+        }
+        Spacer()
+        VStack {
+          ProcessTitle(title: "Fermentation")
+          ProcessButton(recipeEntity: recipeEntity, destination: .ferment)
+        }
+      }
+      .padding()
+    }
+}
+
+
+enum ProcessType {
+  case boil, mash, ferment
+}
+
+struct ProcessButton: View {
+  let imageSystemName = "doc.plaintext"
+  @State var isProcessWindowActive = false
+  
+  var recipeEntity: RecipeEntity
+  var destination: ProcessType
+  
+  init(recipeEntity: RecipeEntity, destination: ProcessType) {
+    self.recipeEntity = recipeEntity
+    self.destination = destination
+  }
+  
+  var body: some View {
+    switch destination {
+    case .mash:
+      NavigationLink(
+        destination: MashView(recipeEntity: recipeEntity),
+        isActive: $isProcessWindowActive
+      ) {
+        Button(action: {
+          isProcessWindowActive = true
+        }) {
+          Image(systemName: imageSystemName)
+            .resizable()
+            .frame(width: 35, height: 35)
+        }
+        .foregroundColor(Color("TextColor"))
+      }
+    case .boil:
+      NavigationLink(
+        destination: BoilView(recipeEntity: recipeEntity),
+        isActive: $isProcessWindowActive
+      ) {
+        Button(action: {
+          isProcessWindowActive = true
+        }) {
+          Image(systemName: imageSystemName)
+            .resizable()
+            .frame(width: 35, height: 35)
+        }
+        .foregroundColor(Color("TextColor"))
+      }
+    
+  case .ferment:
+    NavigationLink(
+      destination: FermentView(recipeEntity: recipeEntity),
+      isActive: $isProcessWindowActive
+    ) {
+      Button(action: {
+        isProcessWindowActive = true
+      }) {
+        Image(systemName: imageSystemName)
+          .resizable()
+          .frame(width: 35, height: 35)
+      }
+      .foregroundColor(Color("TextColor"))
+    }
+    }
   }
 }
 

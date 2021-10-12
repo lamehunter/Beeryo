@@ -36,6 +36,9 @@
 		B7A5E8AD270B84A40024C7C4 /* StepFermentationEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A5E89D270B84A40024C7C4 /* StepFermentationEntity+CoreDataClass.swift */; };
 		B7A5E8AE270B84A40024C7C4 /* StepFermentationEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A5E89E270B84A40024C7C4 /* StepFermentationEntity+CoreDataProperties.swift */; };
 		B7FFFC1A2715C709009C1059 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FFFC192715C709009C1059 /* Recipe.swift */; };
+		B7FFFC1D2715CF78009C1059 /* BoilView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FFFC1C2715CF78009C1059 /* BoilView.swift */; };
+		B7FFFC1F2715DAF0009C1059 /* MashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FFFC1E2715DAF0009C1059 /* MashView.swift */; };
+		B7FFFC212715DAFC009C1059 /* FermentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FFFC202715DAFC009C1059 /* FermentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +78,9 @@
 		B7A5E89E270B84A40024C7C4 /* StepFermentationEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StepFermentationEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B7FFFC192715C709009C1059 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
 		B7FFFC1B2715C8C2009C1059 /* Beeryo 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Beeryo 6.xcdatamodel"; sourceTree = "<group>"; };
+		B7FFFC1C2715CF78009C1059 /* BoilView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoilView.swift; sourceTree = "<group>"; };
+		B7FFFC1E2715DAF0009C1059 /* MashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MashView.swift; sourceTree = "<group>"; };
+		B7FFFC202715DAFC009C1059 /* FermentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FermentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +191,9 @@
 				B750531226DC051D0040887E /* RecipeEditView.swift */,
 				B782145226DD887900BE916E /* RecipesView.swift */,
 				B77ED4CD2702792800229AC5 /* AddIngredientView.swift */,
+				B7FFFC1C2715CF78009C1059 /* BoilView.swift */,
+				B7FFFC1E2715DAF0009C1059 /* MashView.swift */,
+				B7FFFC202715DAFC009C1059 /* FermentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -276,7 +285,9 @@
 				B750531326DC051D0040887E /* RecipeEditView.swift in Sources */,
 				B747321B26DD664500591CB0 /* MainMenuView.swift in Sources */,
 				B747321926DD661400591CB0 /* SplashView.swift in Sources */,
+				B7FFFC1F2715DAF0009C1059 /* MashView.swift in Sources */,
 				B7A5E8A9270B84A40024C7C4 /* AdditionEntity+CoreDataClass.swift in Sources */,
+				B7FFFC212715DAFC009C1059 /* FermentView.swift in Sources */,
 				B7A5E8AD270B84A40024C7C4 /* StepFermentationEntity+CoreDataClass.swift in Sources */,
 				B7A5E8A6270B84A40024C7C4 /* HopsEntity+CoreDataProperties.swift in Sources */,
 				B750530526DBFE660040887E /* RecipeContainer.xcdatamodeld in Sources */,
@@ -288,6 +299,7 @@
 				B74B1A62270396D600BC3FEA /* IngredientTypeEnum.swift in Sources */,
 				B7A5E8A5270B84A40024C7C4 /* HopsEntity+CoreDataClass.swift in Sources */,
 				B7A5E89F270B84A40024C7C4 /* YeastEntity+CoreDataClass.swift in Sources */,
+				B7FFFC1D2715CF78009C1059 /* BoilView.swift in Sources */,
 				B7A5E8A7270B84A40024C7C4 /* BoilEntity+CoreDataClass.swift in Sources */,
 				B7A5E8A1270B84A40024C7C4 /* StepMashingEntity+CoreDataClass.swift in Sources */,
 				B7FFFC1A2715C709009C1059 /* Recipe.swift in Sources */,
