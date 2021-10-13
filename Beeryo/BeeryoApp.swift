@@ -9,12 +9,18 @@ import SwiftUI
 
 @main
 struct BeeryoApp: App {
+  
+  //line needed for foreground notifications
+  @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+  
   let persistenceContainer = PersistenceController.shared
+  let boilNotifications = BoilNotifications.shared
   
   var body: some Scene {
     WindowGroup {
       ContentView()
         .environment(\.managedObjectContext, persistenceContainer.container.viewContext)}
+      
   }
 }
 

@@ -17,6 +17,8 @@
 		B750530526DBFE660040887E /* RecipeContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B750530326DBFE660040887E /* RecipeContainer.xcdatamodeld */; };
 		B750531326DC051D0040887E /* RecipeEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750531226DC051D0040887E /* RecipeEditView.swift */; };
 		B7618C7626F2837A000959EC /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7618C7526F2837A000959EC /* PersistenceController.swift */; };
+		B76B92BA2717599C00365F93 /* BoilNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76B92B92717599C00365F93 /* BoilNotifications.swift */; };
+		B76B92BC271774EB00365F93 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76B92BB271774EB00365F93 /* AppDelegate.swift */; };
 		B77ED4CE2702792800229AC5 /* AddIngredientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77ED4CD2702792800229AC5 /* AddIngredientView.swift */; };
 		B782145326DD887900BE916E /* RecipesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B782145226DD887900BE916E /* RecipesView.swift */; };
 		B7A5E89F270B84A40024C7C4 /* YeastEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A5E88F270B84A40024C7C4 /* YeastEntity+CoreDataClass.swift */; };
@@ -55,6 +57,8 @@
 		B750530626DBFE660040887E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B750531226DC051D0040887E /* RecipeEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeEditView.swift; sourceTree = "<group>"; };
 		B7618C7526F2837A000959EC /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		B76B92B92717599C00365F93 /* BoilNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoilNotifications.swift; sourceTree = "<group>"; };
+		B76B92BB271774EB00365F93 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B774D5672702391A00A97F20 /* Beeryo 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Beeryo 5.xcdatamodel"; sourceTree = "<group>"; };
 		B7754FA526F3D24D009BD414 /* Beeryo 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Beeryo 2.xcdatamodel"; sourceTree = "<group>"; };
 		B77ED4CD2702792800229AC5 /* AddIngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientView.swift; sourceTree = "<group>"; };
@@ -158,6 +162,7 @@
 				B750531126DC04F50040887E /* Views */,
 				B750530C26DBFE750040887E /* Models */,
 				B75052F826DBFE660040887E /* BeeryoApp.swift */,
+				B76B92BB271774EB00365F93 /* AppDelegate.swift */,
 				B75052FC26DBFE660040887E /* Assets.xcassets */,
 				B750530626DBFE660040887E /* Info.plist */,
 				B75052FE26DBFE660040887E /* Preview Content */,
@@ -181,6 +186,7 @@
 				B74B1A61270396D600BC3FEA /* IngredientTypeEnum.swift */,
 				B7FFFC22271603BE009C1059 /* HopTimeManager.swift */,
 				B72595C826F1197400C7E0C8 /* CoreData */,
+				B76B92B92717599C00365F93 /* BoilNotifications.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -278,6 +284,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B76B92BC271774EB00365F93 /* AppDelegate.swift in Sources */,
 				B7A5E8A8270B84A40024C7C4 /* BoilEntity+CoreDataProperties.swift in Sources */,
 				B7A5E8AB270B84A40024C7C4 /* MaltEntity+CoreDataClass.swift in Sources */,
 				B7A5E8A4270B84A40024C7C4 /* RecipeEntity+CoreDataProperties.swift in Sources */,
@@ -296,6 +303,7 @@
 				B750530526DBFE660040887E /* RecipeContainer.xcdatamodeld in Sources */,
 				B75052FB26DBFE660040887E /* ContentView.swift in Sources */,
 				B782145326DD887900BE916E /* RecipesView.swift in Sources */,
+				B76B92BA2717599C00365F93 /* BoilNotifications.swift in Sources */,
 				B7A5E8AA270B84A40024C7C4 /* AdditionEntity+CoreDataProperties.swift in Sources */,
 				B7A5E8A3270B84A40024C7C4 /* RecipeEntity+CoreDataClass.swift in Sources */,
 				B7618C7626F2837A000959EC /* PersistenceController.swift in Sources */,

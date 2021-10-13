@@ -13,6 +13,10 @@ struct ContentView: View {
   var body: some View {
     SplashView()
       .onAppear(perform: {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+          //error handling
+        }
       })
   }
   

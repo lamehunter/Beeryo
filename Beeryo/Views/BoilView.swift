@@ -16,6 +16,7 @@ struct BoilView: View {
   @State var timerIsActive = false
   @State var boilLength: String = "60"
   @State var hopAddDates: [Date] = []
+  var boilNot = BoilNotifications.shared
   
   init(recipeEntity: RecipeEntity) {
     self.recipeEntity = recipeEntity
@@ -39,7 +40,19 @@ struct BoilView: View {
     })
   }
   
-  func setEndDate(minutes: String) -> Date {
+  func GetHopsNameAndDuration() -> [(String, Date)] {
+    var array: [(String, Date)] = []
+    
+    if let hopEntities = recipeEntity.hops?.allObjects as? [HopsEntity] {for hop in
+        hopEntities.sorted(by: {$0.duration > $1.duration}) {
+          let hopEndDate: Date = SetEndDate(minutes: String(hop.duration))
+          array.append((hop.name ?? "", hopEndDate))
+      }
+    }
+    return array
+  }
+  
+  func SetEndDate(minutes: String) -> Date {
     let minutesInt: Int = Int(minutes) ?? 0
     let endDate = Calendar.current.date(byAdding: DateComponents(minute: minutesInt), to: startDate)
     return endDate!
@@ -67,10 +80,10 @@ struct BoilView: View {
           Spacer()
           Text("End: \(timeString(date: endDate))")
             .onAppear {
-              endDate = setEndDate(minutes: boilLength)
+              endDate = SetEndDate(minutes: boilLength)
               if let hopEntities = recipeEntity.hops?.allObjects as? [HopsEntity] {
                 for hop in hopEntities.sorted(by: {$0.duration > $1.duration}) {
-                  let hopEndDate: Date = setEndDate(minutes: String(hop.duration))
+                  let hopEndDate: Date = SetEndDate(minutes: String(hop.duration))
                   hopAddDates.append(hopEndDate)
                 }
               }
@@ -109,6 +122,7 @@ struct BoilView: View {
         
         Button(action: {
           timerIsActive = true
+          boilNot.AddNotification(title: "sometit", body: "somBody", _date: 8)
         }) {
           Image(systemName: "play")
             .resizable()
@@ -120,6 +134,7 @@ struct BoilView: View {
         
         Button(action: {
           timerIsActive = false
+          boilNot.AddNotification(title: "sometitSTOPE", body: "somBodySTOPE", _date: 8)
         }) {
           Image(systemName: "stop")
             .resizable()
