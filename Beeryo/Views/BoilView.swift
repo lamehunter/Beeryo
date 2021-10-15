@@ -121,13 +121,12 @@ struct BoilView: View {
         Button(action: {
           if IsBoilTimeValidValue() {
             timerIsActive = true
-            
           }
           else {
             isBoilValidationAlertVisible = true
           }
         }) {
-          Image(systemName: "play")
+          Image(systemName: timerIsActive ? "play.fill" : "play")
             .resizable()
             .frame(width: 20, height: 20)
         }
@@ -139,13 +138,16 @@ struct BoilView: View {
           timerIsActive = false
           
         }) {
-          Image(systemName: "stop")
+          Image(systemName: timerIsActive ? "stop" : "stop.fill")
             .resizable()
             .frame(width: 20, height: 20)
         }
         .foregroundColor(Color("TextColor"))
         
         Spacer()
+      }
+      .alert(isPresented: $isBoilValidationAlertVisible) {
+        return Alert(title: Text("Alert"), message: Text("Boil duration must be greater or equal longest hopping duration"), dismissButton: .cancel())
       }
       
       SectionHeader(title: "Additions")
@@ -173,6 +175,7 @@ struct BoilView: View {
           }
         }
       }
+      Spacer()
     }
     .padding()
     
