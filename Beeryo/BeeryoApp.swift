@@ -14,7 +14,7 @@ struct BeeryoApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   
   let persistenceContainer = PersistenceController.shared
-  let boilNotifications = BoilNotifications.shared
+  //let notification = Notification.shared
   
   var body: some Scene {
     WindowGroup {

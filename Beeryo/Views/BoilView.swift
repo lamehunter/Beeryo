@@ -15,8 +15,9 @@ struct BoilView: View {
   @State var endDate = Date()
   @State var timerIsActive = false
   @State var boilLength: String = "60"
-  @State var hopAddDates: [Date] = []
-  var boilNot = BoilNotifications.shared
+  @State var hopsWithSetTime: [(String, String, Date)] = []
+  var notification = Notification.shared
+  @State var isBoilValidationAlertVisible: Bool = false
   
   init(recipeEntity: RecipeEntity) {
     self.recipeEntity = recipeEntity
@@ -33,21 +34,21 @@ struct BoilView: View {
     return time
   }
   
-  var updateTimer: Timer {
-    Timer.scheduledTimer(withTimeInterval: 1, repeats: true,
-                         block: {_ in
-      startDate = Date()
-    })
-  }
+//  var updateTimer: Timer {
+//    Timer.scheduledTimer(withTimeInterval: 1, repeats: true,
+//                         block: {_ in
+//      startDate = Date()
+//    })
+//  }
   
-  func GetHopsNameAndDuration() -> [(String, Date)] {
-    var array: [(String, Date)] = []
-    
+  func GetHopNameAndTime() -> [(String, String, Date)] {
+    var array: [(String, String, Date)] = []
     if let hopEntities = recipeEntity.hops?.allObjects as? [HopsEntity] {for hop in
-        hopEntities.sorted(by: {$0.duration > $1.duration}) {
-          let hopEndDate: Date = SetEndDate(minutes: String(hop.duration))
-          array.append((hop.name ?? "", hopEndDate))
-      }
+                                                                              hopEntities.sorted(by: {$0.duration > $1.duration}) {
+      let difference: Int = (Int(boilLength) ?? 0) - Int(hop.duration)
+      let hopEndDate: Date = SetEndDate(minutes: String(difference))
+      array.append((hop.name ?? "", String(hop.weight), hopEndDate))
+    }
     }
     return array
   }
@@ -56,6 +57,19 @@ struct BoilView: View {
     let minutesInt: Int = Int(minutes) ?? 0
     let endDate = Calendar.current.date(byAdding: DateComponents(minute: minutesInt), to: startDate)
     return endDate!
+  }
+  
+  func IsBoilTimeValidValue() -> Bool {
+    if let hopEntities = recipeEntity.hops?.allObjects as? [HopsEntity] {
+      let hopEntitiesSorted = hopEntities.sorted(by: {$0.duration > $1.duration})
+      if (hopEntitiesSorted[0].duration > (Int32(boilLength) ?? 0)) {
+        return false
+      }
+      else {
+        return true
+      }
+    }
+    return false
   }
   
   var body: some View {
@@ -79,41 +93,25 @@ struct BoilView: View {
           Text("Start: \(timeString(date: startDate))")
           Spacer()
           Text("End: \(timeString(date: endDate))")
-            .onAppear {
-              endDate = SetEndDate(minutes: boilLength)
-              if let hopEntities = recipeEntity.hops?.allObjects as? [HopsEntity] {
-                for hop in hopEntities.sorted(by: {$0.duration > $1.duration}) {
-                  let hopEndDate: Date = SetEndDate(minutes: String(hop.duration))
-                  hopAddDates.append(hopEndDate)
-                }
-              }
-              updateTimer
-            }
         }
-        if let hopEntities = recipeEntity.hops?.allObjects as? [HopsEntity] {
-          ForEach (hopEntities.sorted(by: {$0.duration > $1.duration})) { hop in
-            
-            if
-              let name = hop.name,
-              let weight = hop.weight,
-              let duration = hop.duration {
-              HStack {
-                Text("\(name), ")
-                  .font(.footnote)
-                Spacer()
-                Text("\(weight)\(hopUnit)")
-                  .font(.footnote)
-                Text("\\")
-                  .font(.footnote)
-                Text("\(duration)min")
-                  .font(.footnote)
-              }
-              .padding(.leading, 10)
-              .padding(.trailing, 10)
-              .padding(1)
-              .cornerRadius(5)
-            }
+        .onAppear {
+          startDate = Date()
+          endDate = SetEndDate(minutes: boilLength)
+          hopsWithSetTime = GetHopNameAndTime()
+        }
+        
+        ForEach(Array(hopsWithSetTime), id: \.0) { item in
+          HStack {
+            Text("Add \(item.0) - \(item.1)g @ \(timeString(date: item.2))")
+            Spacer()
           }
+            .onAppear() {
+              notification.AddNotification(title: "Add hop to wort", body: "Add \(item.0) - \(item.1)g @ \(item.2)", exactDate: item.2)
+            }
+            .padding(.leading, 10)
+            .padding(.trailing, 10)
+            .padding(1)
+            .cornerRadius(5)
         }
       }
       
@@ -121,8 +119,13 @@ struct BoilView: View {
         Spacer()
         
         Button(action: {
-          timerIsActive = true
-          boilNot.AddNotification(title: "sometit", body: "somBody", _date: 8)
+          if IsBoilTimeValidValue() {
+            timerIsActive = true
+            
+          }
+          else {
+            isBoilValidationAlertVisible = true
+          }
         }) {
           Image(systemName: "play")
             .resizable()
@@ -134,7 +137,7 @@ struct BoilView: View {
         
         Button(action: {
           timerIsActive = false
-          boilNot.AddNotification(title: "sometitSTOPE", body: "somBodySTOPE", _date: 8)
+          
         }) {
           Image(systemName: "stop")
             .resizable()
