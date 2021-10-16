@@ -16,8 +16,11 @@ struct BoilView: View {
   @State var endDate = Date()
   @State var timerIsActive = false
   @State var boilLength: String = ""
+  
   @State var hopsWithSetTime: [(String, String, Date)] = []
   @State var additionsWithSetTime: [(String, String, Date)] = []
+  @State var combinedHopsAndAdditions: [(String, String, Date)] = []
+  
   var notification = Notification.shared
   @State var isBoilValidationAlertVisible: Bool = false
   @ObservedObject var persistenceController = PersistenceController.shared
@@ -62,13 +65,23 @@ struct BoilView: View {
   func GetAdditionNameAndTime() -> [(String, String, Date)] {
     var array: [(String, String, Date)] = []
     if let additionEntities = recipeEntity.additions?.allObjects as? [AdditionEntity] {for addition in
-                                                                              additionEntities.sorted(by: {$0.duration > $1.duration}) {
+                                                                                            additionEntities.sorted(by: {$0.duration > $1.duration}) {
       let difference: Int = (Int(boilLength) ?? 0) - Int(addition.duration)
       let additionEndDate: Date = SetEndDate(minutes: String(difference))
       array.append((addition.name ?? "", String(addition.weight), additionEndDate))
     }
     }
     return array
+  }
+  
+  func GetAdditionsAndHopsCombined() -> [(String, String, Date)] {
+    var array: [(String, String, Date)] = []
+    array.append(contentsOf: GetHopNameAndTime())
+    array.append(contentsOf: GetAdditionNameAndTime())
+    let arraySorted = array.sorted { t1, t2 -> Bool in
+      return t1.2 < t2.2
+    }
+    return arraySorted
   }
   
   func SetEndDate(minutes: String) -> Date {
@@ -94,6 +107,7 @@ struct BoilView: View {
   
   var body: some View {
     VStack {
+      Spacer()
       SectionHeader(title: "Boil Duration & Timer")
       
       HStack {
@@ -113,8 +127,8 @@ struct BoilView: View {
           recipeEntity.boilDetails?.duration = Int16(boilLength) ?? 0
           persistenceController.saveData()
         }
-            else {
-              persistenceController.addBoilEntityToRecipe(duration: boilLength, note: "", recipeEntity: recipeEntity)
+        else {
+          persistenceController.addBoilEntityToRecipe(duration: boilLength, note: "", recipeEntity: recipeEntity)
         }
       }, label: {
         Text("Save")
@@ -140,46 +154,28 @@ struct BoilView: View {
           endDate = SetEndDate(minutes: boilLength)
           hopsWithSetTime = GetHopNameAndTime()
           additionsWithSetTime = GetAdditionNameAndTime()
+          combinedHopsAndAdditions = GetAdditionsAndHopsCombined()
         }
         
         HStack {
-          Text("Hops schedule: ")
-          .bold()
+          Text("Schedule of additions")
+            .bold()
           Spacer()
         }
-        ForEach(Array(hopsWithSetTime), id: \.0) { item in
+        ForEach(Array(combinedHopsAndAdditions), id: \.0) { item in
           HStack {
-            Text("Add \(item.0) - \(item.1)g @ \(timeString(date: item.2))")
+            Text("Add \(item.0) - \(item.1)g")
             Spacer()
+            Text("@ \(timeString(date: item.2))")
           }
-            .onAppear() {
-              let delayedDate = Calendar.current.date(byAdding: .second, value: 5, to: item.2)
-              notification.AddNotification(title: "Alert (Hopping)", body: "Add \(item.0) - \(item.1)g @ \(item.2)", exactDate: delayedDate ?? item.2)
-            }
-            .padding(.leading, 10)
-            .padding(.trailing, 10)
-            .padding(1)
-            .cornerRadius(5)
-        }
-        
-        HStack {
-          Text("Addition schedule: ")
-          .bold()
-          Spacer()
-        }
-        ForEach(Array(additionsWithSetTime), id: \.0) { item in
-          HStack {
-            Text("Add \(item.0) - \(item.1)g @ \(timeString(date: item.2))")
-            Spacer()
+          .onAppear() {
+            let delayedDate = Calendar.current.date(byAdding: .second, value: 5, to: item.2)
+            notification.AddNotification(title: "Alert (Addition)", body: "Add \(item.0) - \(item.1)g", exactDate: delayedDate ?? item.2)
           }
-            .onAppear() {
-              let delayedDate = Calendar.current.date(byAdding: .second, value: 5, to: item.2)
-              notification.AddNotification(title: "Alert (Addition)", body: "Add \(item.0) - \(item.1)g @ \(item.2)", exactDate: delayedDate ?? item.2)
-            }
-            .padding(.leading, 10)
-            .padding(.trailing, 10)
-            .padding(1)
-            .cornerRadius(5)
+          .padding(.leading, 10)
+          .padding(.trailing, 10)
+          .padding(1)
+          .cornerRadius(5)
         }
       }
       
@@ -218,31 +214,6 @@ struct BoilView: View {
         return Alert(title: Text("Alert"), message: Text("Boil duration must be greater or equal longest hopping duration"), dismissButton: .cancel())
       }
       
-      SectionHeader(title: "Hop additions")
-      if let hopEntities = recipeEntity.hops?.allObjects as? [HopsEntity] {
-        ForEach (hopEntities.sorted(by: {$0.duration > $1.duration})) { hop in
-          if
-            let name = hop.name,
-            let weight = hop.weight,
-            let duration = hop.duration {
-            HStack {
-              Text("\(name), ")
-                .font(.footnote)
-              Spacer()
-              Text("\(weight)\(hopUnit)")
-                .font(.footnote)
-              Text("\\")
-                .font(.footnote)
-              Text("\(duration)min")
-                .font(.footnote)
-            }
-            .padding(.leading, 10)
-            .padding(.trailing, 10)
-            .padding(1)
-            .cornerRadius(5)
-          }
-        }
-      }
       Spacer()
     }
     .padding()
