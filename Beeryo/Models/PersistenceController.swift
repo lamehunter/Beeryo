@@ -34,6 +34,8 @@ final class PersistenceController: ObservableObject {
       controller.addYeastToRecipe(name: "SuperLagerYeast", type: "Lager", recipeEntity: recipe)
       //let addition = AdditionEntity(context: controller.container.viewContext)
       controller.addAdditionToRecipe(name: "IrishMoss", weight: "12", duration: "5",  recipeEntity: recipe)
+      controller.addMashStepToRecipe(temp: "65", duration: "60", note: "", recipeEntity: recipe)
+      controller.addMashStepToRecipe(temp: "70", duration: "30", note: "", recipeEntity: recipe)
     }
     return controller
   }()
@@ -161,6 +163,13 @@ final class PersistenceController: ObservableObject {
     }
   }
   
+  func deleteMashStep(recipeEntity: RecipeEntity, index: IndexSet.Element) {
+    if let stepEntities = recipeEntity.stepsMashing?.allObjects as? [StepMashingEntity] {
+      container.viewContext.delete(stepEntities[index])
+      saveData()
+    }
+  }
+  
   func saveData() {
     do {
       try container.viewContext.save()
@@ -204,6 +213,18 @@ final class PersistenceController: ObservableObject {
     boilEntity.recipe = recipeEntity
     saveData()
   }
+  
+  func addMashStepToRecipe(temp: String, duration: String, note: String, recipeEntity: RecipeEntity) {
+    let index = recipeEntity.stepsMashing?.count ?? 0
+    let mashEntity = StepMashingEntity(context: container.viewContext)
+    mashEntity.note = note
+    mashEntity.duration = Int16(duration) ?? 0
+    mashEntity.temperature = Int16(temp) ?? 0
+    mashEntity.recipe = recipeEntity
+    mashEntity.index = Int16(index)
+    saveData()
+  }
+  
   
   func addAdditionToRecipe(name: String, weight: String, duration: String, recipeEntity: RecipeEntity){
     let addition = AdditionEntity(context: container.viewContext)
