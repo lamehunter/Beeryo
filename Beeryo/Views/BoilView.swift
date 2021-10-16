@@ -181,7 +181,6 @@ struct BoilView: View {
       
       HStack {
         Spacer()
-        
         Button(action: {
           if IsBoilTimeValidValue() {
             timerIsActive = true
@@ -195,23 +194,20 @@ struct BoilView: View {
             .frame(width: 20, height: 20)
         }
         .foregroundColor(Color("TextColor"))
-        
         Spacer()
-        
         Button(action: {
           timerIsActive = false
-          
+          notification.RemoveAllNotifications()
         }) {
           Image(systemName: timerIsActive ? "stop" : "stop.fill")
             .resizable()
             .frame(width: 20, height: 20)
         }
         .foregroundColor(Color("TextColor"))
-        
         Spacer()
       }
       .alert(isPresented: $isBoilValidationAlertVisible) {
-        return Alert(title: Text("Alert"), message: Text("Boil duration must be greater or equal longest hopping duration"), dismissButton: .cancel())
+        return Alert(title: Text("Alert"), message: Text("Note - Boil duration must be greater or equal longest hopping duration. Hops/additions must be added before start of boil!"), dismissButton: .cancel())
       }
       
       Spacer()

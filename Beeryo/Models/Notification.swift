@@ -39,4 +39,8 @@ class Notification {
     let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
     center.add(request)
   }
+  
+  func RemoveAllNotifications() {
+    UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+  }
 }
