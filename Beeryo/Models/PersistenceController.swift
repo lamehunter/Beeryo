@@ -197,6 +197,14 @@ final class PersistenceController: ObservableObject {
     saveData()
   }
   
+  func addBoilEntityToRecipe(duration: String, note: String, recipeEntity: RecipeEntity) {
+    let boilEntity = BoilEntity(context: container.viewContext)
+    boilEntity.note = note
+    boilEntity.duration = Int16(duration) ?? 0
+    boilEntity.recipe = recipeEntity
+    saveData()
+  }
+  
   func addAdditionToRecipe(name: String, weight: String, recipeEntity: RecipeEntity){
     let addition = AdditionEntity(context: container.viewContext)
     addition.name = name
@@ -259,5 +267,16 @@ final class PersistenceController: ObservableObject {
       }
     }
    return false
+  }
+  
+  func doesBoilEntityExist(recipe: RecipeEntity) -> Bool {
+    if (recipe.boilDetails != nil) {
+      print("boil entity is not nil")
+      return true
+    }
+    else {
+      print("boil entity is NIL")
+      return false
+    }
   }
 }

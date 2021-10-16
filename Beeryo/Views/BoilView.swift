@@ -10,17 +10,21 @@ import SwiftUI
 struct BoilView: View {
   let hopUnit = "g"
   let timeUnit = "min"
-  var recipeEntity: RecipeEntity
+  @StateObject var recipeEntity: RecipeEntity
   @State var startDate = Date()
   @State var endDate = Date()
   @State var timerIsActive = false
-  @State var boilLength: String = "60"
+  @State var boilLength: String = ""
   @State var hopsWithSetTime: [(String, String, Date)] = []
   var notification = Notification.shared
   @State var isBoilValidationAlertVisible: Bool = false
+  @ObservedObject var persistenceController = PersistenceController.shared
   
   init(recipeEntity: RecipeEntity) {
-    self.recipeEntity = recipeEntity
+    _recipeEntity = StateObject(wrappedValue: recipeEntity)
+    let duration = recipeEntity.boilDetails?.duration ?? 0
+    let durationString = String(duration)
+    _boilLength = State(initialValue: durationString)
   }
   
   var timeFormat: DateFormatter {
@@ -87,6 +91,18 @@ struct BoilView: View {
             .offset(x: 0, y: 15)})
         Text("\(timeUnit)")
       }
+      .navigationBarItems(trailing: Button(action: {
+        if (persistenceController.doesBoilEntityExist(recipe: recipeEntity) == true) {
+          recipeEntity.boilDetails?.recipe = recipeEntity
+          recipeEntity.boilDetails?.duration = Int16(boilLength) ?? 0
+          persistenceController.saveData()
+        }
+            else {
+              persistenceController.addBoilEntityToRecipe(duration: boilLength, note: "", recipeEntity: recipeEntity)
+        }
+      }, label: {
+        Text("Save")
+      }))
       
       if timerIsActive {
         HStack {
@@ -98,6 +114,7 @@ struct BoilView: View {
           startDate = Date()
           endDate = SetEndDate(minutes: boilLength)
           hopsWithSetTime = GetHopNameAndTime()
+          
         }
         
         ForEach(Array(hopsWithSetTime), id: \.0) { item in
@@ -106,7 +123,8 @@ struct BoilView: View {
             Spacer()
           }
             .onAppear() {
-              notification.AddNotification(title: "Add hop to wort", body: "Add \(item.0) - \(item.1)g @ \(item.2)", exactDate: item.2)
+              let delayedDate = Calendar.current.date(byAdding: .second, value: 5, to: item.2)
+              notification.AddNotification(title: "Alert", body: "Add \(item.0) - \(item.1)g @ \(item.2)", exactDate: delayedDate ?? item.2)
             }
             .padding(.leading, 10)
             .padding(.trailing, 10)

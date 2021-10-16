@@ -351,10 +351,10 @@ struct ProcessTitle: View {
 }
 
 struct ProcessBar: View {
-  var recipeEntity: RecipeEntity
+  @StateObject var recipeEntity: RecipeEntity
   
   init(recipeEntity: RecipeEntity) {
-    self.recipeEntity = recipeEntity
+    _recipeEntity = StateObject(wrappedValue: recipeEntity)
   }
   
   var body: some View {
@@ -386,12 +386,12 @@ enum ProcessType {
 struct ProcessButton: View {
   let imageSystemName = "doc.plaintext"
   @State var isProcessWindowActive = false
-  
-  var recipeEntity: RecipeEntity
+  @ObservedObject var persistenceController = PersistenceController.shared
+  @StateObject var recipeEntity: RecipeEntity
   var destination: ProcessType
   
   init(recipeEntity: RecipeEntity, destination: ProcessType) {
-    self.recipeEntity = recipeEntity
+    _recipeEntity = StateObject(wrappedValue: recipeEntity)
     self.destination = destination
   }
   

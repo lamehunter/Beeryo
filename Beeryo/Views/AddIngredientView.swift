@@ -372,13 +372,11 @@ struct ModifyIngredientView: View {
           maltEntity?.weight = Float(maltWeight) ?? 0.0
           persistenceController.saveData()
           presentationMode.wrappedValue.dismiss()
-          
         case .yeast:
           yeastEntity?.name = yeastName
           yeastEntity?.type = yeastType
           persistenceController.saveData()
           presentationMode.wrappedValue.dismiss()
-          
         case .addition:
           additionEntity?.name = additionName
           additionEntity?.weight = Int16(additionWeight) ?? 0
