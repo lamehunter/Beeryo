@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19206" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AdditionEntity" representedClassName="AdditionEntity" syncable="YES">
+        <attribute name="duration" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="note" optional="YES" attributeType="String"/>
         <attribute name="weight" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -55,13 +56,13 @@
         <relationship name="recipe" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RecipeEntity" inverseName="yeasts" inverseEntity="RecipeEntity"/>
     </entity>
     <elements>
+        <element name="AdditionEntity" positionX="-12609" positionY="7065" width="128" height="104"/>
+        <element name="BoilEntity" positionX="-12654.17816162109" positionY="6741.636596679688" width="128" height="88"/>
         <element name="HopsEntity" positionX="-12438.35546875" positionY="6799.892517089844" width="128" height="89"/>
         <element name="MaltEntity" positionX="-13155.24627685547" positionY="7036.820571899414" width="128" height="14"/>
         <element name="RecipeEntity" positionX="-12544.38757324219" positionY="6948.121856689453" width="128" height="208"/>
-        <element name="YeastEntity" positionX="-12815.77404785156" positionY="7111.588623046875" width="128" height="88"/>
-        <element name="StepMashingEntity" positionX="-12817.75164794922" positionY="7219.33740234375" width="128" height="118"/>
         <element name="StepFermentationEntity" positionX="-12315.95129394531" positionY="7059.796997070312" width="128" height="118"/>
-        <element name="BoilEntity" positionX="-12654.17816162109" positionY="6741.636596679688" width="128" height="88"/>
-        <element name="AdditionEntity" positionX="-12609" positionY="7065" width="128" height="89"/>
+        <element name="StepMashingEntity" positionX="-12817.75164794922" positionY="7219.33740234375" width="128" height="118"/>
+        <element name="YeastEntity" positionX="-12815.77404785156" positionY="7111.588623046875" width="128" height="88"/>
     </elements>
 </model>

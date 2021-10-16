@@ -2,7 +2,7 @@
 //  AdditionEntity+CoreDataProperties.swift
 //  Beeryo
 //
-//  Created by Jacek K on 04/10/2021.
+//  Created by Jacek K on 16/10/2021.
 //
 //
 
@@ -19,6 +19,7 @@ extension AdditionEntity {
     @NSManaged public var name: String?
     @NSManaged public var note: String?
     @NSManaged public var weight: Int16
+    @NSManaged public var duration: Int32
     @NSManaged public var recipe: RecipeEntity?
 
 }

@@ -244,12 +244,17 @@ struct IngredientListView: View {
             ForEach (additionEntities) { addition in
               if
                 let name = addition.name,
-                let weight = addition.weight {
+                let weight = addition.weight,
+                let duration = addition.duration {
                 HStack {
                   Text("\(name), ")
                     .font(.footnote)
                   Spacer()
                   Text("\(weight)\(additionUnit)")
+                    .font(.footnote)
+                  Text("\\")
+                    .font(.footnote)
+                  Text("\(duration)\(timeUnit)")
                     .font(.footnote)
                 }
                 .padding(.leading, 10)

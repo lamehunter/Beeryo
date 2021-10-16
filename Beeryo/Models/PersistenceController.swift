@@ -33,7 +33,7 @@ final class PersistenceController: ObservableObject {
       //let yeast = YeastEntity(context: controller.container.viewContext)
       controller.addYeastToRecipe(name: "SuperLagerYeast", type: "Lager", recipeEntity: recipe)
       //let addition = AdditionEntity(context: controller.container.viewContext)
-      controller.addAdditionToRecipe(name: "IrishMoss", weight: "12", recipeEntity: recipe)
+      controller.addAdditionToRecipe(name: "IrishMoss", weight: "12", duration: "5",  recipeEntity: recipe)
     }
     return controller
   }()
@@ -205,10 +205,11 @@ final class PersistenceController: ObservableObject {
     saveData()
   }
   
-  func addAdditionToRecipe(name: String, weight: String, recipeEntity: RecipeEntity){
+  func addAdditionToRecipe(name: String, weight: String, duration: String, recipeEntity: RecipeEntity){
     let addition = AdditionEntity(context: container.viewContext)
     addition.name = name
     addition.weight = Int16(weight) ?? 0
+    addition.duration = Int32(duration) ?? 0
     addition.recipe = recipeEntity
     saveData()
   }

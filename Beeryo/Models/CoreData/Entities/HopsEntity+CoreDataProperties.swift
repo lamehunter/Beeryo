@@ -2,7 +2,7 @@
 //  HopsEntity+CoreDataProperties.swift
 //  Beeryo
 //
-//  Created by Jacek K on 04/10/2021.
+//  Created by Jacek K on 16/10/2021.
 //
 //
 

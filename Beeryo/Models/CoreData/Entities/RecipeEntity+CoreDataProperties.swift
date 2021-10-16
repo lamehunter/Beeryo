@@ -2,7 +2,7 @@
 //  RecipeEntity+CoreDataProperties.swift
 //  Beeryo
 //
-//  Created by Jacek K on 04/10/2021.
+//  Created by Jacek K on 16/10/2021.
 //
 //
 
@@ -20,13 +20,30 @@ extension RecipeEntity {
     @NSManaged public var name: String?
     @NSManaged public var og: Float
     @NSManaged public var style: String?
+    @NSManaged public var additions: NSSet?
+    @NSManaged public var boilDetails: BoilEntity?
     @NSManaged public var hops: NSSet?
     @NSManaged public var malts: NSSet?
-    @NSManaged public var yeasts: NSSet?
-    @NSManaged public var boilDetails: BoilEntity?
     @NSManaged public var stepsFermenting: NSSet?
     @NSManaged public var stepsMashing: NSSet?
-    @NSManaged public var additions: NSSet?
+    @NSManaged public var yeasts: NSSet?
+
+}
+
+// MARK: Generated accessors for additions
+extension RecipeEntity {
+
+    @objc(addAdditionsObject:)
+    @NSManaged public func addToAdditions(_ value: AdditionEntity)
+
+    @objc(removeAdditionsObject:)
+    @NSManaged public func removeFromAdditions(_ value: AdditionEntity)
+
+    @objc(addAdditions:)
+    @NSManaged public func addToAdditions(_ values: NSSet)
+
+    @objc(removeAdditions:)
+    @NSManaged public func removeFromAdditions(_ values: NSSet)
 
 }
 
@@ -64,23 +81,6 @@ extension RecipeEntity {
 
 }
 
-// MARK: Generated accessors for yeasts
-extension RecipeEntity {
-
-    @objc(addYeastsObject:)
-    @NSManaged public func addToYeasts(_ value: YeastEntity)
-
-    @objc(removeYeastsObject:)
-    @NSManaged public func removeFromYeasts(_ value: YeastEntity)
-
-    @objc(addYeasts:)
-    @NSManaged public func addToYeasts(_ values: NSSet)
-
-    @objc(removeYeasts:)
-    @NSManaged public func removeFromYeasts(_ values: NSSet)
-
-}
-
 // MARK: Generated accessors for stepsFermenting
 extension RecipeEntity {
 
@@ -115,20 +115,20 @@ extension RecipeEntity {
 
 }
 
-// MARK: Generated accessors for additions
+// MARK: Generated accessors for yeasts
 extension RecipeEntity {
 
-    @objc(addAdditionsObject:)
-    @NSManaged public func addToAdditions(_ value: AdditionEntity)
+    @objc(addYeastsObject:)
+    @NSManaged public func addToYeasts(_ value: YeastEntity)
 
-    @objc(removeAdditionsObject:)
-    @NSManaged public func removeFromAdditions(_ value: AdditionEntity)
+    @objc(removeYeastsObject:)
+    @NSManaged public func removeFromYeasts(_ value: YeastEntity)
 
-    @objc(addAdditions:)
-    @NSManaged public func addToAdditions(_ values: NSSet)
+    @objc(addYeasts:)
+    @NSManaged public func addToYeasts(_ values: NSSet)
 
-    @objc(removeAdditions:)
-    @NSManaged public func removeFromAdditions(_ values: NSSet)
+    @objc(removeYeasts:)
+    @NSManaged public func removeFromYeasts(_ values: NSSet)
 
 }
 

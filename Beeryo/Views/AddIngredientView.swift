@@ -31,6 +31,7 @@ struct AddIngredientView: View {
   //state var for additions
   @State var newAdditionName: String = ""
   @State var newAdditionWeight: String = ""
+  @State var newAdditionDuration: String = ""
   
   @ObservedObject var persistenceController = PersistenceController.shared
   
@@ -160,7 +161,7 @@ struct AddIngredientView: View {
       )
       
       ZStack (alignment: .topLeading) {
-        Color(.white)
+        Color("TextColorInversed")
         Button (action: {
           showAddNewIngredientView.toggle()
         }, label: {
@@ -200,6 +201,9 @@ struct AddIngredientView: View {
             TextFieldGeneralView(title: "Weight", text: "Type addition weight here", bindingValue: $newAdditionWeight)
               .keyboardType(.decimalPad)
               .padding(.bottom)
+            TextFieldGeneralView(title: "Duration", text: "Type addition duration here", bindingValue: $newAdditionDuration)
+              .keyboardType(.decimalPad)
+              .padding(.bottom)
           }
           
           Button {
@@ -229,7 +233,7 @@ struct AddIngredientView: View {
               
             case .addition:
               if !(persistenceController.doesAdditionNameExist(recipe: recipeEntity, name: newAdditionName)) {
-                persistenceController.addAdditionToRecipe(name: newAdditionName, weight: newAdditionWeight, recipeEntity: recipeEntity)
+                persistenceController.addAdditionToRecipe(name: newAdditionName, weight: newAdditionWeight, duration: newAdditionDuration, recipeEntity: recipeEntity)
               }
               else { isAlertPresented = true }
               
@@ -308,6 +312,7 @@ struct ModifyIngredientView: View {
   //addition state variables
   @State var additionName: String = ""
   @State var additionWeight: String = ""
+  @State var additionDuration: String = ""
   
   init(hopEntity: HopsEntity) {
     self.hopEntity = hopEntity
@@ -335,6 +340,7 @@ struct ModifyIngredientView: View {
     self.additionEntity = additionEntity
     _additionName = State(initialValue: additionEntity.name ?? "")
     _additionWeight = State(initialValue: String(additionEntity.weight))
+    _additionDuration = State(initialValue: String(additionEntity.duration))
     ingredient = .addition
   }
     
@@ -358,7 +364,9 @@ struct ModifyIngredientView: View {
       case .addition:
         TextFieldGeneralView(title: "Name:", text: "Type addition here", bindingValue: $additionName)
         TextFieldGeneralView(title: "Weight:", text: "Type addition weight here", bindingValue: $additionWeight).keyboardType(.decimalPad)
+        TextFieldGeneralView(title: "Duration:", text: "Type addition duration here", bindingValue: $additionDuration).keyboardType(.decimalPad)
       }
+      
       Button {
         switch ingredient {
         case .hop:

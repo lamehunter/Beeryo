@@ -2,7 +2,7 @@
 //  StepMashingEntity+CoreDataProperties.swift
 //  Beeryo
 //
-//  Created by Jacek K on 04/10/2021.
+//  Created by Jacek K on 16/10/2021.
 //
 //
 
@@ -16,10 +16,10 @@ extension StepMashingEntity {
         return NSFetchRequest<StepMashingEntity>(entityName: "StepMashingEntity")
     }
 
-    @NSManaged public var index: Int16
-    @NSManaged public var temperature: Int16
     @NSManaged public var duration: Int16
+    @NSManaged public var index: Int16
     @NSManaged public var note: String?
+    @NSManaged public var temperature: Int16
     @NSManaged public var recipe: RecipeEntity?
 
 }
