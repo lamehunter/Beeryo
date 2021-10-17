@@ -20,26 +20,28 @@ struct MashView: View {
   var body: some View {
     VStack {
       List {
-        if let mashSteps = recipeEntity.stepsMashing?.allObjects as? [StepMashingEntity] {
-          ForEach (mashSteps.sorted(by: {$0.index < $1.index})) { step in
+        if let mashSteps = recipeEntity.stepsMashing?.allObjects as? [StepMashingEntity],
+            let mashStepsSorted = mashSteps.sorted(by: {$0.index < $1.index}) {
+          ForEach (mashStepsSorted, id: \.index) { step in
             if
-              let index = step.index,
+              let no = step.index,
               let temp = step.temperature,
               let duration = step.duration {
                 HStack {
-                  Text("No. \(index+1)")
+                  Text("No. \(no+1)")
                     .foregroundColor(Color("TextColor"))
                   Spacer()
-                  Text("\(temp)C")
-                    .foregroundColor(Color("TextColor"))
-                  Text("\(duration)min")
+                  Text("\(temp)°C for \(duration)min")
                     .foregroundColor(Color("TextColor"))
                 }
             }
           }
           .onDelete(perform: { indexSet in
             indexSet.forEach { index in
-              persistenceController.deleteMashStep(recipeEntity: recipeEntity, index: index)
+              if let mashSteps = recipeEntity.stepsMashing?.allObjects as? [StepMashingEntity] {
+                let mashStepsSorted = mashSteps.sorted(by: {$0.index < $1.index})
+                persistenceController.deleteMashStep(mashStepEntities: mashStepsSorted, index: index)
+              }
             }
           })
           .listRowBackground(Color.gray.opacity(0.2))
@@ -50,7 +52,9 @@ struct MashView: View {
       
       Text("Set infusion mashing step")
       TextFieldGeneralView(title: "Temp", text: "", bindingValue: $stepTemp)
+        .keyboardType(.decimalPad)
       TextFieldGeneralView(title: "Duration", text: "", bindingValue: $stepDuration)
+        .keyboardType(.decimalPad)
         .padding(.bottom, 10)
       Button {
         persistenceController.addMashStepToRecipe(temp: stepTemp, duration: stepDuration, note: "", recipeEntity: recipeEntity)
@@ -64,6 +68,9 @@ struct MashView: View {
       .disabled(stepTemp.isEmpty && stepDuration.isEmpty)
     }
     .padding()
+    .onTapGesture(perform: {
+      UIApplication.shared.endEditing()
+    })
   }
 }
 

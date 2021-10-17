@@ -8,14 +8,14 @@
 import CoreData
 
 final class PersistenceController: ObservableObject {
-   static let shared = PersistenceController()
+  static let shared = PersistenceController()
   
   @Published var container: NSPersistentContainer
   @Published var allRecipes: [RecipeEntity] = []
-//  @Published var allMalts: [MaltEntity] = []
-//  @Published var allHops: [HopsEntity] = []
-//  @Published var allAdditions: [AdditionEntity] = []
-//  @Published var allYeasts: [YeastEntity] = []
+  //  @Published var allMalts: [MaltEntity] = []
+  //  @Published var allHops: [HopsEntity] = []
+  //  @Published var allAdditions: [AdditionEntity] = []
+  //  @Published var allYeasts: [YeastEntity] = []
   
   static var preview: PersistenceController = {
     let controller = PersistenceController(inMemory: true)
@@ -59,8 +59,8 @@ final class PersistenceController: ObservableObject {
       }
     }
     getAllRecipes()
-   // getAllMalts()
-   // getAllHops()
+    // getAllMalts()
+    // getAllHops()
   }
   
   static var managedObjectModel: NSManagedObjectModel = {
@@ -78,26 +78,26 @@ final class PersistenceController: ObservableObject {
     }
   }
   
-//  func getAllMalts() {
-//    let request = NSFetchRequest<MaltEntity>(entityName: "MaltEntity")
-//    do {
-//      allMalts = try container.viewContext.fetch(request)
-//      print("All malts no. is \(allMalts.count)")
-//    }
-//    catch let error {
-//      print("Error to fetch all malts: \(error)")
-//    }
-//  }
-//
-//  func getAllHops() {
-//    let request = NSFetchRequest<HopsEntity>(entityName: "HopsEntity")
-//    do {
-//      allHops = try container.viewContext.fetch(request)
-//    }
-//    catch let error {
-//      print("Error to fetch all Hops: \(error)")
-//    }
-//  }
+  //  func getAllMalts() {
+  //    let request = NSFetchRequest<MaltEntity>(entityName: "MaltEntity")
+  //    do {
+  //      allMalts = try container.viewContext.fetch(request)
+  //      print("All malts no. is \(allMalts.count)")
+  //    }
+  //    catch let error {
+  //      print("Error to fetch all malts: \(error)")
+  //    }
+  //  }
+  //
+  //  func getAllHops() {
+  //    let request = NSFetchRequest<HopsEntity>(entityName: "HopsEntity")
+  //    do {
+  //      allHops = try container.viewContext.fetch(request)
+  //    }
+  //    catch let error {
+  //      print("Error to fetch all Hops: \(error)")
+  //    }
+  //  }
   
   func addRecipe(_recipe: RecipeEntity) {
     getAllRecipes()
@@ -163,19 +163,27 @@ final class PersistenceController: ObservableObject {
     }
   }
   
-  func deleteMashStep(recipeEntity: RecipeEntity, index: IndexSet.Element) {
-    if let stepEntities = recipeEntity.stepsMashing?.allObjects as? [StepMashingEntity] {
-      container.viewContext.delete(stepEntities[index])
+  func deleteMashStep(mashStepEntities: [StepMashingEntity], index: IndexSet.Element) {
+      container.viewContext.delete(mashStepEntities[index])
       saveData()
+      setNewIndexesAfterRemoval(mashStepEntities: mashStepEntities, afterIndex: index)
+  }
+  
+  func setNewIndexesAfterRemoval(mashStepEntities: [StepMashingEntity], afterIndex index: IndexSet.Element) {
+    for step in mashStepEntities {
+      if (step.index > index) {
+        step.index -= 1
+      }
     }
+    saveData()
   }
   
   func saveData() {
     do {
       try container.viewContext.save()
       getAllRecipes()
-    //  getAllMalts()
-     // getAllHops()
+      //  getAllMalts()
+      // getAllHops()
     }
     catch let error {
       print("Error to save recipe: \(error)")
@@ -252,7 +260,7 @@ final class PersistenceController: ObservableObject {
         return false
       }
     }
-   return false
+    return false
   }
   
   func doesHopNameExist(recipe: RecipeEntity, name: String) -> Bool {
@@ -264,7 +272,7 @@ final class PersistenceController: ObservableObject {
         return false
       }
     }
-   return false
+    return false
   }
   
   func doesYeastNameExist(recipe: RecipeEntity, name: String) -> Bool {
@@ -276,7 +284,7 @@ final class PersistenceController: ObservableObject {
         return false
       }
     }
-   return false
+    return false
   }
   
   func doesAdditionNameExist(recipe: RecipeEntity, name: String) -> Bool {
@@ -288,7 +296,7 @@ final class PersistenceController: ObservableObject {
         return false
       }
     }
-   return false
+    return false
   }
   
   func doesBoilEntityExist(recipe: RecipeEntity) -> Bool {

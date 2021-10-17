@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+//closing keyboard
+extension UIApplication {
+    func endEditing() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+
 struct AddIngredientView: View {
   var hopUnit = "g"
   var maltUnit = "kg"
@@ -14,6 +21,7 @@ struct AddIngredientView: View {
   var timeUnit = "min"
   
   @Environment(\.presentationMode) var presentationMode
+  @Environment(\.colorScheme) var colorScheme
   
   //state var for hops
   @State var newHopName: String = ""
@@ -166,7 +174,7 @@ struct AddIngredientView: View {
           showAddNewIngredientView.toggle()
         }, label: {
           Image(systemName: "xmark")
-            .foregroundColor(.black)
+            .foregroundColor(colorScheme == .dark ? .white : .black)
             .font(.largeTitle)
             .padding()
         })
@@ -283,6 +291,9 @@ struct AddIngredientView: View {
         ingredient == IngredientType.addition ? "Add additions" :
         "error", displayMode: .inline)
     .navigationViewStyle(StackNavigationViewStyle())
+    .onTapGesture(perform: {
+      UIApplication.shared.endEditing()
+    })
   }
 }
 
@@ -417,5 +428,7 @@ struct AddIngredientView_Previews: PreviewProvider {
       .preferredColorScheme(.dark)
     
     ModifyIngredientView(hopEntity: (PersistenceController.preview.allRecipes.first?.hops?.allObjects as? [HopsEntity])!.first!)
+    ModifyIngredientView(hopEntity: (PersistenceController.preview.allRecipes.first?.hops?.allObjects as? [HopsEntity])!.first!)
+      .preferredColorScheme(.dark)
   }
 }
