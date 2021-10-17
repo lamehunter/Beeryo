@@ -113,7 +113,6 @@ struct RecipeEditView: View {
       }))
       ProcessBar(recipeEntity: recipeEntity!)
     }
-    
   }
 }
 

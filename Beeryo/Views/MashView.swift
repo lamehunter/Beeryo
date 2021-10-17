@@ -19,6 +19,17 @@ struct MashView: View {
   
   var body: some View {
     VStack {
+      HStack {
+        Text("Infusion mashing")
+          .bold()
+        Spacer()
+      }
+      .padding(.bottom, 5)
+      HStack {
+        Text("Step list:")
+          .bold()
+        Spacer()
+      }
       List {
         if let mashSteps = recipeEntity.stepsMashing?.allObjects as? [StepMashingEntity],
             let mashStepsSorted = mashSteps.sorted(by: {$0.index < $1.index}) {
@@ -48,9 +59,7 @@ struct MashView: View {
           .padding(.bottom, 10)
         }
       }
-     
       
-      Text("Set infusion mashing step")
       TextFieldGeneralView(title: "Temp", text: "", bindingValue: $stepTemp)
         .keyboardType(.decimalPad)
       TextFieldGeneralView(title: "Duration", text: "", bindingValue: $stepDuration)
@@ -59,10 +68,11 @@ struct MashView: View {
       Button {
         persistenceController.addMashStepToRecipe(temp: stepTemp, duration: stepDuration, note: "", recipeEntity: recipeEntity)
       } label: {
-        Text("Add")
+        Text("Add step")
+          .frame(maxWidth: .infinity)
           .padding()
           .foregroundColor(.white)
-          .background(Color.blue)
+          .background(Color.black)
           .cornerRadius(15.0)
       }
       .disabled(stepTemp.isEmpty && stepDuration.isEmpty)

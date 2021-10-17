@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct BoilView: View {
+  @Environment(\.presentationMode) var presentationMode
+  
   let hopUnit = "g"
   let timeUnit = "min"
   @StateObject var recipeEntity: RecipeEntity
@@ -130,8 +132,10 @@ struct BoilView: View {
         else {
           persistenceController.addBoilEntityToRecipe(duration: boilLength, note: "", recipeEntity: recipeEntity)
         }
+        presentationMode.wrappedValue.dismiss()
       }, label: {
         Text("Save")
+          .foregroundColor(Color("TextColor"))
       }))
       
       if timerIsActive {
@@ -213,7 +217,6 @@ struct BoilView: View {
       Spacer()
     }
     .padding()
-    
   }
 }
 

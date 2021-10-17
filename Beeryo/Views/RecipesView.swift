@@ -29,12 +29,6 @@ struct RecipesView: View {
   
   var body: some View {
     VStack {
-//      NavigationLink(
-//        destination: RecipeEditView(),
-//        isActive: $isNewRecipeVisible
-//      ) {
-//        //EmptyView()
-//      }
       List {
         ForEach(persistenceController.allRecipes) { item in
           if let item = item {
@@ -64,7 +58,6 @@ struct RecipesView: View {
           }
         } label: {
           Text("Add New")
-            //.foregroundColor(Color("TextColor"))
             .padding(10)
             .foregroundColor(.white)
             .background(Color.black)
@@ -88,6 +81,7 @@ struct RecipesView: View {
         }
       }
     }
+    .dismissKeyboardOnTap()
   }
 }
 

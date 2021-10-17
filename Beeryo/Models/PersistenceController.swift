@@ -301,11 +301,9 @@ final class PersistenceController: ObservableObject {
   
   func doesBoilEntityExist(recipe: RecipeEntity) -> Bool {
     if (recipe.boilDetails != nil) {
-      print("boil entity is not nil")
       return true
     }
     else {
-      print("boil entity is NIL")
       return false
     }
   }
