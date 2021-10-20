@@ -173,7 +173,7 @@ struct BoilView: View {
             Text("@ \(timeString(date: item.2))")
           }
           .onAppear() {
-            let delayedDate = Calendar.current.date(byAdding: .second, value: 5, to: item.2)
+            let delayedDate = Calendar.current.date(byAdding: .second, value: 3, to: item.2)
             notification.AddNotification(title: "Alert (Addition)", body: "Add \(item.0) - \(item.1)g", exactDate: delayedDate ?? item.2)
           }
           .padding(.leading, 10)
