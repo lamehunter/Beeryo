@@ -17,6 +17,7 @@
 		B750530526DBFE660040887E /* RecipeContainer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B750530326DBFE660040887E /* RecipeContainer.xcdatamodeld */; };
 		B750531326DC051D0040887E /* RecipeEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750531226DC051D0040887E /* RecipeEditView.swift */; };
 		B7618C7626F2837A000959EC /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7618C7526F2837A000959EC /* PersistenceController.swift */; };
+		B76B358B2721FAE600C2E38D /* BoilImageRandomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76B358A2721FAE600C2E38D /* BoilImageRandomizer.swift */; };
 		B76B92BA2717599C00365F93 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76B92B92717599C00365F93 /* Notification.swift */; };
 		B76B92BC271774EB00365F93 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76B92BB271774EB00365F93 /* AppDelegate.swift */; };
 		B76E3FC9271B536100E9F14A /* StepMashingEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76E3FB9271B536100E9F14A /* StepMashingEntity+CoreDataClass.swift */; };
@@ -57,6 +58,7 @@
 		B750530626DBFE660040887E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B750531226DC051D0040887E /* RecipeEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeEditView.swift; sourceTree = "<group>"; };
 		B7618C7526F2837A000959EC /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		B76B358A2721FAE600C2E38D /* BoilImageRandomizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoilImageRandomizer.swift; sourceTree = "<group>"; };
 		B76B92B92717599C00365F93 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		B76B92BB271774EB00365F93 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B76E3FB9271B536100E9F14A /* StepMashingEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StepMashingEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				B7FFFC22271603BE009C1059 /* HopTimeManager.swift */,
 				B72595C826F1197400C7E0C8 /* CoreData */,
 				B76B92B92717599C00365F93 /* Notification.swift */,
+				B76B358A2721FAE600C2E38D /* BoilImageRandomizer.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 				B750530526DBFE660040887E /* RecipeContainer.xcdatamodeld in Sources */,
 				B76E3FCD271B536100E9F14A /* AdditionEntity+CoreDataClass.swift in Sources */,
 				B76E3FCF271B536100E9F14A /* HopsEntity+CoreDataClass.swift in Sources */,
+				B76B358B2721FAE600C2E38D /* BoilImageRandomizer.swift in Sources */,
 				B75052FB26DBFE660040887E /* ContentView.swift in Sources */,
 				B782145326DD887900BE916E /* RecipesView.swift in Sources */,
 				B76E3FC9271B536100E9F14A /* StepMashingEntity+CoreDataClass.swift in Sources */,

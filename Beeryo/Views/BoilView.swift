@@ -24,6 +24,12 @@ struct BoilView: View {
   @State var combinedHopsAndAdditions: [(String, String, Date)] = []
   
   var notification = Notification.shared
+  var boilImageRandomizer = BoilImageRandomizer()
+  
+  @State var boilDynamicImage: Image = Image("boil_image_noBubble")
+  
+  @State var timerBoil: Timer? = nil
+  @State var timerImage: Timer? = nil
   
   @State var isBoilValidationAlertVisible: Bool = false
   @State var isBoilProcessActiveAlert: Bool = false
@@ -48,11 +54,34 @@ struct BoilView: View {
     return time
   }
   
-  var updateTimer: Timer {
-    Timer.scheduledTimer(withTimeInterval: 1, repeats: true,
-                         block: {_ in
+  func setBoilTimer() {
+    timerBoil = Timer.scheduledTimer(withTimeInterval: 1, repeats: true,
+                                 block: {_ in
       realtimeDateDisplayed = Date()
+      print(realtimeDateDisplayed)
     })
+    print("Boil timer was set")
+  }
+  
+  func setImageTimer() {
+    timerImage = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true,
+                                 block: {_ in
+      boilDynamicImage = boilImageRandomizer.getRandomImage()
+    })
+    print("Image timer was set")
+  }
+  
+  func disableBoilTimer() {
+    timerBoil?.invalidate()
+    print("timer disabled")
+    timerBoil = nil
+  }
+  
+  func disableImageTimer() {
+    timerImage?.invalidate()
+    print("timer disabled")
+    timerImage = nil
+    boilDynamicImage = Image("boil_image_noBubble")
   }
   
   func GetHopNameAndTime() -> [(String, String, Date)] {
@@ -112,9 +141,15 @@ struct BoilView: View {
   
   var body: some View {
     VStack {
-      Spacer()
-      SectionHeader(title: "Boil Duration & Timer")
+      //Spacer()
+      boilDynamicImage
+        .resizable()
+        .scaledToFit()
+        .frame(maxWidth: 100)
+        .foregroundColor(Color("TextColor"))
+        .padding()
       
+      SectionHeader(title: "Boil Duration & Timer")
       HStack {
         TextField("",
                   text: $boilLength)
@@ -147,19 +182,19 @@ struct BoilView: View {
                          message: Text("Boil process was started. Stop the process before you go back"),
                          dismissButton: .cancel())
           }), trailing: Button(action: {
-          if (persistenceController.doesBoilEntityExist(recipe: recipeEntity) == true) {
-            recipeEntity.boilDetails?.recipe = recipeEntity
-            recipeEntity.boilDetails?.duration = Int16(boilLength) ?? 0
-            persistenceController.saveData()
-          }
-          else {
-            persistenceController.addBoilEntityToRecipe(duration: boilLength, note: "", recipeEntity: recipeEntity)
-          }
-          presentationMode.wrappedValue.dismiss()
-        }, label: {
-          Text("Save")
-            .foregroundColor(Color("TextColor"))
-        })
+            if (persistenceController.doesBoilEntityExist(recipe: recipeEntity) == true) {
+              recipeEntity.boilDetails?.recipe = recipeEntity
+              recipeEntity.boilDetails?.duration = Int16(boilLength) ?? 0
+              persistenceController.saveData()
+            }
+            else {
+              persistenceController.addBoilEntityToRecipe(duration: boilLength, note: "", recipeEntity: recipeEntity)
+            }
+            presentationMode.wrappedValue.dismiss()
+          }, label: {
+            Text("Save")
+              .foregroundColor(Color("TextColor"))
+          })
       )
       
       if timerIsActive {
@@ -177,7 +212,8 @@ struct BoilView: View {
         }
         .padding(.bottom, 10)
         .onAppear {
-          let _ = updateTimer
+          setBoilTimer()
+          setImageTimer()
           startDate = Date()
           endDate = SetEndDate(minutes: boilLength)
           hopsWithSetTime = GetHopNameAndTime()
@@ -190,28 +226,32 @@ struct BoilView: View {
             .bold()
           Spacer()
         }
-        ForEach(Array(combinedHopsAndAdditions), id: \.0) { item in
-          HStack {
-            Text("Add \(item.0) - \(item.1)g")
-            Spacer()
-            Text("@ \(timeString(date: item.2))")
+        ScrollView {
+          ForEach(Array(combinedHopsAndAdditions), id: \.0) { item in
+            HStack {
+              Text("Add \(item.0) - \(item.1)g")
+              Spacer()
+              Text("@ \(timeString(date: item.2))")
+            }
+            .onAppear() {
+              let delayedDate = Calendar.current.date(byAdding: .second, value: 3, to: item.2)
+              notification.AddNotification(title: "Alert (Addition)", body: "Add \(item.0) - \(item.1)g", exactDate: delayedDate ?? item.2)
+            }
+            .padding(.leading, 10)
+            .padding(.trailing, 10)
+            .padding(1)
+            .cornerRadius(5)
           }
-          .onAppear() {
-            let delayedDate = Calendar.current.date(byAdding: .second, value: 3, to: item.2)
-            notification.AddNotification(title: "Alert (Addition)", body: "Add \(item.0) - \(item.1)g", exactDate: delayedDate ?? item.2)
-          }
-          .padding(.leading, 10)
-          .padding(.trailing, 10)
-          .padding(1)
-          .cornerRadius(5)
+          
         }
       }
-      
+      Spacer()
       HStack {
         Spacer()
         Button(action: {
           if IsBoilTimeValidValue() {
             timerIsActive = true
+            hideKeyboard()
           }
           else {
             isBoilValidationAlertVisible = true
@@ -226,6 +266,8 @@ struct BoilView: View {
         Button(action: {
           timerIsActive = false
           notification.RemoveAllNotifications()
+          disableBoilTimer()
+          disableImageTimer()
         }) {
           Image(systemName: timerIsActive ? "stop" : "stop.fill")
             .resizable()
@@ -237,12 +279,10 @@ struct BoilView: View {
       .alert(isPresented: $isBoilValidationAlertVisible) {
         return Alert(title: Text("Alert"), message: Text("Note - Boil duration must be greater or equal longest hopping duration."), dismissButton: .cancel())
       }
-      Spacer()
     }
     .padding()
   }
 }
-
 
 struct BoilView_Previews: PreviewProvider {
   static var previews: some View {
