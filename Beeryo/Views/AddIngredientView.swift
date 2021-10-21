@@ -224,24 +224,28 @@ struct AddIngredientView: View {
                   weight: newHopWeight,
                   duration: newHopDuration,
                   recipeEntity: recipeEntity)
+                hideKeyboard()
               }
               else { isAlertPresented = true }
               
             case .malt:
               if !(persistenceController.doesMaltNameExist(recipe: recipeEntity, name: newMaltName)) {
                 persistenceController.addMaltToRecipe(name: newMaltName, weight: newMaltWeight, recipeEntity: recipeEntity)
+                hideKeyboard()
               }
               else { isAlertPresented = true }
               
             case .yeast:
               if !(persistenceController.doesYeastNameExist(recipe: recipeEntity, name: newYeastName)) {
                 persistenceController.addYeastToRecipe(name: newYeastName, type: newYeastType, recipeEntity: recipeEntity)
+                hideKeyboard()
               }
               else { isAlertPresented = true }
               
             case .addition:
               if !(persistenceController.doesAdditionNameExist(recipe: recipeEntity, name: newAdditionName)) {
                 persistenceController.addAdditionToRecipe(name: newAdditionName, weight: newAdditionWeight, duration: newAdditionDuration, recipeEntity: recipeEntity)
+                hideKeyboard()
               }
               else { isAlertPresented = true }
               
@@ -291,9 +295,6 @@ struct AddIngredientView: View {
         ingredient == IngredientType.addition ? "Add additions" :
         "error", displayMode: .inline)
     .navigationViewStyle(StackNavigationViewStyle())
-    .onTapGesture(perform: {
-      UIApplication.shared.endEditing()
-    })
   }
 }
 
@@ -385,21 +386,25 @@ struct ModifyIngredientView: View {
           hopEntity?.weight = Int32(hopWeight) ?? 0
           hopEntity?.duration = Int32(hopDuration) ?? 0
           persistenceController.saveData()
+          hideKeyboard()
           presentationMode.wrappedValue.dismiss()
         case .malt:
           maltEntity?.name = maltName
           maltEntity?.weight = Float(maltWeight) ?? 0.0
           persistenceController.saveData()
+          hideKeyboard()
           presentationMode.wrappedValue.dismiss()
         case .yeast:
           yeastEntity?.name = yeastName
           yeastEntity?.type = yeastType
           persistenceController.saveData()
+          hideKeyboard()
           presentationMode.wrappedValue.dismiss()
         case .addition:
           additionEntity?.name = additionName
           additionEntity?.weight = Int16(additionWeight) ?? 0
           persistenceController.saveData()
+          hideKeyboard()
           presentationMode.wrappedValue.dismiss()
         }
       } label: {

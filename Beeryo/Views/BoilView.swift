@@ -24,7 +24,10 @@ struct BoilView: View {
   @State var combinedHopsAndAdditions: [(String, String, Date)] = []
   
   var notification = Notification.shared
+  
   @State var isBoilValidationAlertVisible: Bool = false
+  @State var isBoilProcessActiveAlert: Bool = false
+  
   @ObservedObject var persistenceController = PersistenceController.shared
   
   init(recipeEntity: RecipeEntity) {
@@ -123,20 +126,41 @@ struct BoilView: View {
             .offset(x: 0, y: 15)})
         Text("\(timeUnit)")
       }
-      .navigationBarItems(trailing: Button(action: {
-        if (persistenceController.doesBoilEntityExist(recipe: recipeEntity) == true) {
-          recipeEntity.boilDetails?.recipe = recipeEntity
-          recipeEntity.boilDetails?.duration = Int16(boilLength) ?? 0
-          persistenceController.saveData()
-        }
-        else {
-          persistenceController.addBoilEntityToRecipe(duration: boilLength, note: "", recipeEntity: recipeEntity)
-        }
-        presentationMode.wrappedValue.dismiss()
-      }, label: {
-        Text("Save")
-          .foregroundColor(Color("TextColor"))
-      }))
+      .navigationBarBackButtonHidden(true)
+      .navigationBarItems(
+        leading: Button(action: {
+          if (timerIsActive) {
+            isBoilProcessActiveAlert = true
+          }
+          else {
+            presentationMode.wrappedValue.dismiss()
+          }
+        }, label: {
+          HStack {
+            Image(systemName: "chevron.backward")
+            Text("Recipe Details")
+              .foregroundColor(Color("TextColor"))
+          }
+        })
+          .alert(isPresented: $isBoilProcessActiveAlert, content: {
+            return Alert(title: Text("Alert"),
+                         message: Text("Boil process was started. Stop the process before you go back"),
+                         dismissButton: .cancel())
+          }), trailing: Button(action: {
+          if (persistenceController.doesBoilEntityExist(recipe: recipeEntity) == true) {
+            recipeEntity.boilDetails?.recipe = recipeEntity
+            recipeEntity.boilDetails?.duration = Int16(boilLength) ?? 0
+            persistenceController.saveData()
+          }
+          else {
+            persistenceController.addBoilEntityToRecipe(duration: boilLength, note: "", recipeEntity: recipeEntity)
+          }
+          presentationMode.wrappedValue.dismiss()
+        }, label: {
+          Text("Save")
+            .foregroundColor(Color("TextColor"))
+        })
+      )
       
       if timerIsActive {
         VStack {
@@ -211,9 +235,8 @@ struct BoilView: View {
         Spacer()
       }
       .alert(isPresented: $isBoilValidationAlertVisible) {
-        return Alert(title: Text("Alert"), message: Text("Note - Boil duration must be greater or equal longest hopping duration. Hops/additions must be added before start of boil!"), dismissButton: .cancel())
+        return Alert(title: Text("Alert"), message: Text("Note - Boil duration must be greater or equal longest hopping duration."), dismissButton: .cancel())
       }
-      
       Spacer()
     }
     .padding()

@@ -307,4 +307,15 @@ final class PersistenceController: ObservableObject {
       return false
     }
   }
+  
+  func getHopAndAdditionsQuantity(for recipe: RecipeEntity) -> Int {
+    var quantity: Int = 0
+    if let recipeHops = recipe.hops?.allObjects as? [HopsEntity] {
+      quantity += recipeHops.count
+    }
+    if let recipeAdditions = recipe.additions?.allObjects as? [AdditionEntity] {
+      quantity += recipeAdditions.count
+    }
+    return quantity
+  }
 }

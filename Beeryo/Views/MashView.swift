@@ -67,6 +67,7 @@ struct MashView: View {
         .padding(.bottom, 10)
       Button {
         persistenceController.addMashStepToRecipe(temp: stepTemp, duration: stepDuration, note: "", recipeEntity: recipeEntity)
+        hideKeyboard()
       } label: {
         Text("Add step")
           .frame(maxWidth: .infinity)
@@ -78,9 +79,6 @@ struct MashView: View {
       .disabled(stepTemp.isEmpty && stepDuration.isEmpty)
     }
     .padding()
-    .onTapGesture(perform: {
-      UIApplication.shared.endEditing()
-    })
   }
 }
 

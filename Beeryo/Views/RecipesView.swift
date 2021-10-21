@@ -81,7 +81,6 @@ struct RecipesView: View {
         }
       }
     }
-    .dismissKeyboardOnTap()
   }
 }
 

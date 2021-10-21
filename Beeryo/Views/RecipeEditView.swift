@@ -389,9 +389,14 @@ enum ProcessType {
 
 struct ProcessButton: View {
   let imageSystemName = "doc.plaintext"
-  @State var isProcessWindowActive = false
+  
   @ObservedObject var persistenceController = PersistenceController.shared
+  
   @StateObject var recipeEntity: RecipeEntity
+  
+  @State var isProcessWindowActive = false
+  @State var isBoilValidationAlertPresented = false
+  
   var destination: ProcessType
   
   init(recipeEntity: RecipeEntity, destination: ProcessType) {
@@ -421,12 +426,20 @@ struct ProcessButton: View {
         isActive: $isProcessWindowActive
       ) {
         Button(action: {
-          isProcessWindowActive = true
+          if (persistenceController.getHopAndAdditionsQuantity(for: recipeEntity) > 0) {
+            isProcessWindowActive = true
+          }
+          else {
+            isBoilValidationAlertPresented = true
+          }
         }) {
           Image(systemName: imageSystemName)
             .resizable()
             .frame(width: 35, height: 35)
         }
+        .alert(isPresented: $isBoilValidationAlertPresented, content: {
+          return Alert(title: Text("Alert"), message: Text("You need at least 1 hop or addition to progress with boiling"), dismissButton: .default(Text("OK")))
+        })
         .foregroundColor(Color("TextColor"))
       }
     
