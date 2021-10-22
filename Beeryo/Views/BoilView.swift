@@ -139,6 +139,23 @@ struct BoilView: View {
     return false
   }
   
+  func playActions() {
+    if IsBoilTimeValidValue() {
+      timerIsActive = true
+      hideKeyboard()
+    }
+    else {
+      isBoilValidationAlertVisible = true
+    }
+  }
+  
+  func stopActions() {
+    timerIsActive = false
+    notification.RemoveAllNotifications()
+    disableBoilTimer()
+    disableImageTimer()
+  }
+  
   var body: some View {
     VStack {
       //Spacer()
@@ -196,6 +213,27 @@ struct BoilView: View {
               .foregroundColor(Color("TextColor"))
           })
       )
+      HStack {
+        Spacer()
+        Button(action: {
+          if (!timerIsActive) {
+            playActions()
+          }
+          else {
+            stopActions()
+          }
+        }) {
+            Image(systemName: timerIsActive ? "stop.fill" : "play.fill")
+              .resizable()
+              .frame(width: 20, height: 20)
+              .padding()
+        }
+        .foregroundColor(Color("TextColor"))
+        Spacer()
+      }
+      .alert(isPresented: $isBoilValidationAlertVisible) {
+        return Alert(title: Text("Alert"), message: Text("Note - Boil duration must be greater or equal longest hopping duration."), dismissButton: .cancel())
+      }
       
       if timerIsActive {
         VStack {
@@ -242,45 +280,11 @@ struct BoilView: View {
             .padding(1)
             .cornerRadius(5)
           }
-          
         }
-      }
-      Spacer()
-      HStack {
-        Spacer()
-        Button(action: {
-          if IsBoilTimeValidValue() {
-            timerIsActive = true
-            hideKeyboard()
-          }
-          else {
-            isBoilValidationAlertVisible = true
-          }
-        }) {
-          Image(systemName: timerIsActive ? "play.fill" : "play")
-            .resizable()
-            .frame(width: 20, height: 20)
-        }
-        .foregroundColor(Color("TextColor"))
-        Spacer()
-        Button(action: {
-          timerIsActive = false
-          notification.RemoveAllNotifications()
-          disableBoilTimer()
-          disableImageTimer()
-        }) {
-          Image(systemName: timerIsActive ? "stop" : "stop.fill")
-            .resizable()
-            .frame(width: 20, height: 20)
-        }
-        .foregroundColor(Color("TextColor"))
-        Spacer()
-      }
-      .alert(isPresented: $isBoilValidationAlertVisible) {
-        return Alert(title: Text("Alert"), message: Text("Note - Boil duration must be greater or equal longest hopping duration."), dismissButton: .cancel())
       }
     }
     .padding()
+    .offset(x: 0, y: -40)
   }
 }
 
