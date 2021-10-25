@@ -121,7 +121,7 @@ struct TextFieldGeneralView: View {
   var text: String
   
   @Binding var bindingValue: String
-  var titleTextFrameSizeH: CGFloat = 75
+  var titleTextFrameSizeH: CGFloat = 150
   var titleTextFrameSizeV: CGFloat = 20
   
   var body: some View {

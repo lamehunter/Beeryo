@@ -8,18 +8,109 @@
 import SwiftUI
 
 struct FermentView: View {
-  
   var recipeEntity: RecipeEntity
+  
+  let unitsTemp = "°C"
+  let unitsDuration = "days"
+  
+  @ObservedObject var persistenceController = PersistenceController.shared
+  @State var stepTemp: String = ""
+  @State var stepDuration: String = ""
+  @State var isValidationAlertShown: Bool = false
   
   init(recipeEntity: RecipeEntity) {
     self.recipeEntity = recipeEntity
   }
   
+  func validationIsPassed() -> Bool {
+    if (!stepTemp.isEmpty &&
+        !stepDuration.isEmpty &&
+        Int(stepTemp) ?? 0 > 0 &&
+        Int(stepDuration) ?? 0 > 0) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
+  
   var body: some View {
     VStack {
+      HStack {
+        Spacer()
+        Text("Fermentation log")
+          .bold()
+        Spacer()
+      }
+      .padding(.bottom, 5)
       
+      List {
+        if let fermentationSteps = recipeEntity.stepsFermenting?.allObjects as? [StepFermentationEntity],
+           let fermentationStepsSorted = fermentationSteps.sorted(by: {$0.index < $1.index}) {
+          if fermentationSteps.count > 0 {
+            HStack {
+              Spacer()
+              Text("Step list:")
+                .bold()
+              Spacer()
+            }
+          }
+          ForEach (fermentationStepsSorted, id: \.index) { step in
+            if
+              let no = step.index,
+              let temp = step.temperature,
+              let duration = step.duration {
+              HStack {
+                Text("No. \(no+1)")
+                  .foregroundColor(Color("TextColor"))
+                Spacer()
+                Text("\(temp)\(unitsTemp) for \(duration) \(unitsDuration)")
+                  .foregroundColor(Color("TextColor"))
+              }
+            }
+          }
+          .onDelete(perform: { indexSet in
+            indexSet.forEach { index in
+              if let fermentationSteps = recipeEntity.stepsFermenting?.allObjects as? [StepFermentationEntity] {
+                let fermentationStepsSorted = fermentationSteps.sorted(by: {$0.index < $1.index})
+                persistenceController.deleteFermentationStep(fermentationStepEntities: fermentationStepsSorted, index: index)
+              }
+            }
+          })
+          .listRowBackground(Color.gray.opacity(0.2))
+          .padding(.bottom, 10)
+        }
+      }
+      .listStyle(PlainListStyle())
+      
+      TextFieldGeneralView(title: "Temp (\(unitsTemp))", text: "", bindingValue: $stepTemp)
+        .keyboardType(.decimalPad)
+      TextFieldGeneralView(title: "Duration (\(unitsDuration))", text: "", bindingValue: $stepDuration)
+        .keyboardType(.decimalPad)
+        .padding(.bottom, 10)
+      Button {
+        if validationIsPassed() {
+          persistenceController.addFermentationStepToRecipe(temp: stepTemp, duration: stepDuration, note: "", recipeEntity: recipeEntity)
+          hideKeyboard()
+        }
+        else {
+          isValidationAlertShown = true
+        }
+      } label: {
+        Text("Add step")
+          .frame(maxWidth: .infinity)
+          .padding()
+          .foregroundColor(.white)
+          .background(Color.black)
+          .cornerRadius(15.0)
+      }
+      .alert(isPresented: $isValidationAlertShown, content: {
+        return Alert(title: Text("Field Validation Alert"),
+                     message: Text("Fields can't be empty & temperature and duration greater than zero"),
+                     dismissButton: .cancel())
+      })
     }
-    
+    .padding()
   }
 }
 

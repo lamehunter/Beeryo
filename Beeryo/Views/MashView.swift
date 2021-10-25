@@ -14,6 +14,9 @@ struct MashView: View {
   @State var stepDuration: String = ""
   @State var isValidationAlertShown: Bool = false
   
+  let unitsTemp = "°C"
+  let unitsDuration = "min"
+  
   init(recipeEntity: RecipeEntity) {
     self.recipeEntity = recipeEntity
   }
@@ -60,7 +63,7 @@ struct MashView: View {
                 Text("No. \(no+1)")
                   .foregroundColor(Color("TextColor"))
                 Spacer()
-                Text("\(temp)°C for \(duration)min")
+                Text("\(temp)\(unitsTemp) for \(duration)\(unitsDuration)")
                   .foregroundColor(Color("TextColor"))
               }
             }
@@ -79,9 +82,9 @@ struct MashView: View {
       }
       .listStyle(PlainListStyle())
       
-      TextFieldGeneralView(title: "Temp", text: "", bindingValue: $stepTemp)
+      TextFieldGeneralView(title: "Temp (\(unitsTemp))", text: "", bindingValue: $stepTemp)
         .keyboardType(.decimalPad)
-      TextFieldGeneralView(title: "Duration", text: "", bindingValue: $stepDuration)
+      TextFieldGeneralView(title: "Duration (\(unitsDuration))", text: "", bindingValue: $stepDuration)
         .keyboardType(.decimalPad)
         .padding(.bottom, 10)
       Button {

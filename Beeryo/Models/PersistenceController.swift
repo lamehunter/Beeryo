@@ -36,6 +36,8 @@ final class PersistenceController: ObservableObject {
       controller.addAdditionToRecipe(name: "IrishMoss", weight: "12", duration: "5",  recipeEntity: recipe)
       controller.addMashStepToRecipe(temp: "65", duration: "60", note: "", recipeEntity: recipe)
       controller.addMashStepToRecipe(temp: "70", duration: "30", note: "", recipeEntity: recipe)
+      controller.addFermentationStepToRecipe(temp: "10", duration: "21", note: "", recipeEntity: recipe)
+      controller.addFermentationStepToRecipe(temp: "4", duration: "7", note: "", recipeEntity: recipe)
     }
     return controller
   }()
@@ -169,8 +171,23 @@ final class PersistenceController: ObservableObject {
       setNewIndexesAfterRemoval(mashStepEntities: mashStepEntities, afterIndex: index)
   }
   
+  func deleteFermentationStep(fermentationStepEntities: [StepFermentationEntity], index: IndexSet.Element) {
+      container.viewContext.delete(fermentationStepEntities[index])
+      saveData()
+      setNewIndexesAfterRemoval(fermentationStepEntities: fermentationStepEntities, afterIndex: index)
+  }
+  
   func setNewIndexesAfterRemoval(mashStepEntities: [StepMashingEntity], afterIndex index: IndexSet.Element) {
     for step in mashStepEntities {
+      if (step.index > index) {
+        step.index -= 1
+      }
+    }
+    saveData()
+  }
+  
+  func setNewIndexesAfterRemoval(fermentationStepEntities: [StepFermentationEntity], afterIndex index: IndexSet.Element) {
+    for step in fermentationStepEntities {
       if (step.index > index) {
         step.index -= 1
       }
@@ -233,6 +250,16 @@ final class PersistenceController: ObservableObject {
     saveData()
   }
   
+  func addFermentationStepToRecipe(temp: String, duration: String, note: String, recipeEntity: RecipeEntity) {
+    let index = recipeEntity.stepsFermenting?.count ?? 0
+    let fermentationEntity = StepFermentationEntity(context: container.viewContext)
+    fermentationEntity.note = note
+    fermentationEntity.duration = Int16(duration) ?? 0
+    fermentationEntity.temperature = Int16(temp) ?? 0
+    fermentationEntity.recipe = recipeEntity
+    fermentationEntity.index = Int16(index)
+    saveData()
+  }
   
   func addAdditionToRecipe(name: String, weight: String, duration: String, recipeEntity: RecipeEntity){
     let addition = AdditionEntity(context: container.viewContext)
