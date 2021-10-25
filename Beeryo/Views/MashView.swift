@@ -32,19 +32,19 @@ struct MashView: View {
       }
       List {
         if let mashSteps = recipeEntity.stepsMashing?.allObjects as? [StepMashingEntity],
-            let mashStepsSorted = mashSteps.sorted(by: {$0.index < $1.index}) {
+           let mashStepsSorted = mashSteps.sorted(by: {$0.index < $1.index}) {
           ForEach (mashStepsSorted, id: \.index) { step in
             if
               let no = step.index,
               let temp = step.temperature,
               let duration = step.duration {
-                HStack {
-                  Text("No. \(no+1)")
-                    .foregroundColor(Color("TextColor"))
-                  Spacer()
-                  Text("\(temp)°C for \(duration)min")
-                    .foregroundColor(Color("TextColor"))
-                }
+              HStack {
+                Text("No. \(no+1)")
+                  .foregroundColor(Color("TextColor"))
+                Spacer()
+                Text("\(temp)°C for \(duration)min")
+                  .foregroundColor(Color("TextColor"))
+              }
             }
           }
           .onDelete(perform: { indexSet in
@@ -59,6 +59,7 @@ struct MashView: View {
           .padding(.bottom, 10)
         }
       }
+      .listStyle(PlainListStyle())
       
       TextFieldGeneralView(title: "Temp", text: "", bindingValue: $stepTemp)
         .keyboardType(.decimalPad)

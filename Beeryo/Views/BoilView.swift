@@ -57,8 +57,15 @@ struct BoilView: View {
   func setBoilTimer() {
     timerBoil = Timer.scheduledTimer(withTimeInterval: 1, repeats: true,
                                  block: {_ in
+      print("Date update")
       realtimeDateDisplayed = Date()
-      print(realtimeDateDisplayed)
+      if (realtimeDateDisplayed >= endDate) {
+        print("boiling is finished")
+        notification.AddNotification(title: "Alert", body: "Boiling process finished", exactDate: Date().advanced(by: 5))
+        timerIsActive = false
+        disableBoilTimer()
+        disableImageTimer()
+      }
     })
     print("Boil timer was set")
   }
@@ -73,13 +80,13 @@ struct BoilView: View {
   
   func disableBoilTimer() {
     timerBoil?.invalidate()
-    print("timer disabled")
+    print("Timer invalidated")
     timerBoil = nil
   }
   
   func disableImageTimer() {
     timerImage?.invalidate()
-    print("timer disabled")
+    print("Timer invalidated")
     timerImage = nil
     boilDynamicImage = Image("boil_image_noBubble")
   }
@@ -272,7 +279,7 @@ struct BoilView: View {
               Text("@ \(timeString(date: item.2))")
             }
             .onAppear() {
-              let delayedDate = Calendar.current.date(byAdding: .second, value: 3, to: item.2)
+              let delayedDate = Calendar.current.date(byAdding: .second, value: 5, to: item.2)
               notification.AddNotification(title: "Alert (Addition)", body: "Add \(item.0) - \(item.1)g", exactDate: delayedDate ?? item.2)
             }
             .padding(.leading, 10)
