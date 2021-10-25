@@ -17,7 +17,7 @@ struct BoilImageRandomizer {
   }
   
   func getRandomImage() -> Image {
-    var random = Int.random(in: 0...6)
+    let random = Int.random(in: 0...6)
     return imageCollection[random]
   }
 }

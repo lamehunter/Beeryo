@@ -76,16 +76,16 @@ struct RecipeEditView: View {
           IngredientListView(recipeEntity: recipeEntity!, ingredient: .addition)
             .padding(.bottom, 10)
         }
-  //      Section(header: SectionHeader(title: "Mashing")){
-  //        Text("SectionInDevelopment")
-  //      }
-  //      Section(header: SectionHeader(title: "Boiling")){
-  //        Text("SectionInDevelopment")
-  //        BoilView(recipeEntity: recipeEntity!)
-  //      }
-  //      Section(header: SectionHeader(title: "Fermenting")){
-  //        Text("SectionInDevelopment")
-  //      }
+        //      Section(header: SectionHeader(title: "Mashing")){
+        //        Text("SectionInDevelopment")
+        //      }
+        //      Section(header: SectionHeader(title: "Boiling")){
+        //        Text("SectionInDevelopment")
+        //        BoilView(recipeEntity: recipeEntity!)
+        //      }
+        //      Section(header: SectionHeader(title: "Fermenting")){
+        //        Text("SectionInDevelopment")
+        //      }
         
       }
       .padding()
@@ -362,24 +362,24 @@ struct ProcessBar: View {
   }
   
   var body: some View {
-      HStack  {
-        VStack {
-          ProcessTitle(title: "Mashing")
-          ProcessButton(recipeEntity: recipeEntity, destination: .mash)
-        }
-        Spacer()
-        VStack {
-          ProcessTitle(title: "Boiling")
-          ProcessButton(recipeEntity: recipeEntity, destination: .boil)
-        }
-        Spacer()
-        VStack {
-          ProcessTitle(title: "Fermentation")
-          ProcessButton(recipeEntity: recipeEntity, destination: .ferment)
-        }
+    HStack  {
+      VStack {
+        ProcessTitle(title: "Mashing")
+        ProcessButton(recipeEntity: recipeEntity, destination: .mash)
       }
-      .padding()
+      Spacer()
+      VStack {
+        ProcessTitle(title: "Boiling")
+        ProcessButton(recipeEntity: recipeEntity, destination: .boil)
+      }
+      Spacer()
+      VStack {
+        ProcessTitle(title: "Fermentation")
+        ProcessButton(recipeEntity: recipeEntity, destination: .ferment)
+      }
     }
+    .padding()
+  }
 }
 
 
@@ -442,21 +442,21 @@ struct ProcessButton: View {
         })
         .foregroundColor(Color("TextColor"))
       }
-    
-  case .ferment:
-    NavigationLink(
-      destination: FermentView(recipeEntity: recipeEntity),
-      isActive: $isProcessWindowActive
-    ) {
-      Button(action: {
-        isProcessWindowActive = true
-      }) {
-        Image(systemName: imageSystemName)
-          .resizable()
-          .frame(width: 35, height: 35)
+      
+    case .ferment:
+      NavigationLink(
+        destination: FermentView(recipeEntity: recipeEntity),
+        isActive: $isProcessWindowActive
+      ) {
+        Button(action: {
+          isProcessWindowActive = true
+        }) {
+          Image(systemName: imageSystemName)
+            .resizable()
+            .frame(width: 35, height: 35)
+        }
+        .foregroundColor(Color("TextColor"))
       }
-      .foregroundColor(Color("TextColor"))
-    }
     }
   }
 }

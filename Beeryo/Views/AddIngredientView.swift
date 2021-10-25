@@ -9,9 +9,9 @@ import SwiftUI
 
 //closing keyboard
 extension UIApplication {
-    func endEditing() {
-        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
+  func endEditing() {
+    sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+  }
 }
 
 struct AddIngredientView: View {
@@ -355,7 +355,7 @@ struct ModifyIngredientView: View {
     _additionDuration = State(initialValue: String(additionEntity.duration))
     ingredient = .addition
   }
-    
+  
   var body: some View {
     VStack {
       switch ingredient {
@@ -415,10 +415,10 @@ struct ModifyIngredientView: View {
           .cornerRadius(15.0)
       }
       .disabled(ingredient == .hop ? hopName.isEmpty :
-                ingredient == .malt ? maltName.isEmpty :
-                ingredient == .yeast ? yeastName.isEmpty :
-                ingredient == .addition ? additionName.isEmpty :
-                false)
+                  ingredient == .malt ? maltName.isEmpty :
+                  ingredient == .yeast ? yeastName.isEmpty :
+                  ingredient == .addition ? additionName.isEmpty :
+                  false)
     }
     .padding()
   }

@@ -56,7 +56,7 @@ struct BoilView: View {
   
   func setBoilTimer() {
     timerBoil = Timer.scheduledTimer(withTimeInterval: 1, repeats: true,
-                                 block: {_ in
+                                     block: {_ in
       print("Date update")
       realtimeDateDisplayed = Date()
       if (realtimeDateDisplayed >= endDate) {
@@ -72,7 +72,7 @@ struct BoilView: View {
   
   func setImageTimer() {
     timerImage = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true,
-                                 block: {_ in
+                                      block: {_ in
       boilDynamicImage = boilImageRandomizer.getRandomImage()
     })
     print("Image timer was set")
@@ -230,10 +230,10 @@ struct BoilView: View {
             stopActions()
           }
         }) {
-            Image(systemName: timerIsActive ? "stop.fill" : "play.fill")
-              .resizable()
-              .frame(width: 20, height: 20)
-              .padding()
+          Image(systemName: timerIsActive ? "stop.fill" : "play.fill")
+            .resizable()
+            .frame(width: 20, height: 20)
+            .padding()
         }
         .foregroundColor(Color("TextColor"))
         Spacer()

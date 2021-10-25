@@ -18,30 +18,30 @@ struct MainMenuView: View {
           }) {
             NavigationLink(
               destination: RecipesView()){
-              MenuRowView(imageSystemName: "doc.text", text: "My Recipes")
-            }
+                MenuRowView(imageSystemName: "doc.text", text: "My Recipes")
+              }
           }
           .buttonStyle(MainMenuButtonStyle())
           
           // MenuRowView(imageSystemName: "archivebox", text: "Ingredients storage")
           
-//          Button(action: {
-//          }) {
-//            NavigationLink(
-//              destination: RecipesView()){
-//              MenuRowView(imageSystemName: "doc.text", text: "Upload recipes")
-//            }
-//          }
-//          .buttonStyle(MainMenuButtonStyle())
-//
-//          Button(action: {
-//          }) {
-//            NavigationLink(
-//              destination: RecipesView()){
-//              MenuRowView(imageSystemName: "doc.text", text: "Download recipes")
-//            }
-//          }
-//          .buttonStyle(MainMenuButtonStyle())
+          //          Button(action: {
+          //          }) {
+          //            NavigationLink(
+          //              destination: RecipesView()){
+          //              MenuRowView(imageSystemName: "doc.text", text: "Upload recipes")
+          //            }
+          //          }
+          //          .buttonStyle(MainMenuButtonStyle())
+          //
+          //          Button(action: {
+          //          }) {
+          //            NavigationLink(
+          //              destination: RecipesView()){
+          //              MenuRowView(imageSystemName: "doc.text", text: "Download recipes")
+          //            }
+          //          }
+          //          .buttonStyle(MainMenuButtonStyle())
           
           Spacer()
           
@@ -61,11 +61,11 @@ struct MainMenuView: View {
 }
 
 struct MainMenuButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-        .background(Color.clear)
-            .foregroundColor(Color("TextColor"))
-    }
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .background(Color.clear)
+      .foregroundColor(Color("TextColor"))
+  }
 }
 
 struct TitleRow : View {

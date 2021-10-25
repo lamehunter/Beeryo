@@ -12,27 +12,45 @@ struct MashView: View {
   @ObservedObject var persistenceController = PersistenceController.shared
   @State var stepTemp: String = ""
   @State var stepDuration: String = ""
+  @State var isValidationAlertShown: Bool = false
   
   init(recipeEntity: RecipeEntity) {
     self.recipeEntity = recipeEntity
   }
   
+  func validationIsPassed() -> Bool {
+    if (!stepTemp.isEmpty &&
+        !stepDuration.isEmpty &&
+        Int(stepTemp) ?? 0 > 0 &&
+        Int(stepDuration) ?? 0 > 0) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
+  
   var body: some View {
     VStack {
       HStack {
+        Spacer()
         Text("Infusion mashing")
           .bold()
         Spacer()
       }
       .padding(.bottom, 5)
-      HStack {
-        Text("Step list:")
-          .bold()
-        Spacer()
-      }
+      
       List {
         if let mashSteps = recipeEntity.stepsMashing?.allObjects as? [StepMashingEntity],
            let mashStepsSorted = mashSteps.sorted(by: {$0.index < $1.index}) {
+          if mashSteps.count > 0 {
+            HStack {
+              Spacer()
+              Text("Step list:")
+                .bold()
+              Spacer()
+            }
+          }
           ForEach (mashStepsSorted, id: \.index) { step in
             if
               let no = step.index,
@@ -67,8 +85,13 @@ struct MashView: View {
         .keyboardType(.decimalPad)
         .padding(.bottom, 10)
       Button {
-        persistenceController.addMashStepToRecipe(temp: stepTemp, duration: stepDuration, note: "", recipeEntity: recipeEntity)
-        hideKeyboard()
+        if validationIsPassed() {
+          persistenceController.addMashStepToRecipe(temp: stepTemp, duration: stepDuration, note: "", recipeEntity: recipeEntity)
+          hideKeyboard()
+        }
+        else {
+          isValidationAlertShown = true
+        }
       } label: {
         Text("Add step")
           .frame(maxWidth: .infinity)
@@ -77,7 +100,11 @@ struct MashView: View {
           .background(Color.black)
           .cornerRadius(15.0)
       }
-      .disabled(stepTemp.isEmpty && stepDuration.isEmpty)
+      .alert(isPresented: $isValidationAlertShown, content: {
+        return Alert(title: Text("Field Validation Alert"),
+                     message: Text("Fields can't be empty & temperature and duration greater than zero"),
+                     dismissButton: .cancel())
+      })
     }
     .padding()
   }

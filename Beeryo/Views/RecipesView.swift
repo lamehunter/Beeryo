@@ -46,7 +46,7 @@ struct RecipesView: View {
       Spacer()
       HStack() {
         TextField("New recipe name", text: $newRecipeName)
-        .padding()
+          .padding()
         Spacer()
         Button {
           if persistenceController.doesRecipeNameExist(name: newRecipeName) {
