@@ -54,6 +54,18 @@ struct AddIngredientView: View {
     self.ingredient = ingredient
   }
   
+  func resetFieldsAndDissmissView() {
+    showAddNewIngredientView.toggle()
+    newHopName = ""
+    newHopWeight = ""
+    newMaltName = ""
+    newMaltWeight = ""
+    newYeastName = ""
+    newYeastType = ""
+    newAdditionName = ""
+    newAdditionWeight = ""
+  }
+  
   var body: some View {
     ZStack {
       List {
@@ -215,54 +227,60 @@ struct AddIngredientView: View {
           }
           
           Button {
+            hideKeyboard()
             switch ingredient {
-              
             case .hop:
-              if !(persistenceController.doesHopNameExist(recipe: recipeEntity, name: newHopName)) {
+              if (newHopName.isEmpty ||
+                  persistenceController.doesHopNameExist(recipe: recipeEntity, name: newHopName)) {
+                isAlertPresented = true
+              }
+              else {
                 persistenceController.addHopToRecipe(
                   name: newHopName,
                   weight: newHopWeight,
                   duration: newHopDuration,
                   recipeEntity: recipeEntity)
-                hideKeyboard()
+                resetFieldsAndDissmissView()
               }
-              else { isAlertPresented = true }
-              
             case .malt:
-              if !(persistenceController.doesMaltNameExist(recipe: recipeEntity, name: newMaltName)) {
-                persistenceController.addMaltToRecipe(name: newMaltName, weight: newMaltWeight, recipeEntity: recipeEntity)
-                hideKeyboard()
+              if (newMaltName.isEmpty ||
+                  persistenceController.doesMaltNameExist(recipe: recipeEntity,
+                                                          name: newMaltName) ) {
+                isAlertPresented = true
               }
-              else { isAlertPresented = true }
-              
+              else {
+                persistenceController.addMaltToRecipe(name: newMaltName,
+                                                      weight: newMaltWeight,
+                                                      recipeEntity: recipeEntity)
+                resetFieldsAndDissmissView()
+              }
             case .yeast:
-              if !(persistenceController.doesYeastNameExist(recipe: recipeEntity, name: newYeastName)) {
-                persistenceController.addYeastToRecipe(name: newYeastName, type: newYeastType, recipeEntity: recipeEntity)
-                hideKeyboard()
+              if (newYeastName.isEmpty ||
+                  persistenceController.doesYeastNameExist(recipe: recipeEntity,
+                                                           name: newYeastName)) {
+                isAlertPresented = true
               }
-              else { isAlertPresented = true }
-              
+              else {
+                persistenceController.addYeastToRecipe(name: newYeastName,
+                                                       type: newYeastType,
+                                                       recipeEntity: recipeEntity)
+                resetFieldsAndDissmissView()
+              }
             case .addition:
-              if !(persistenceController.doesAdditionNameExist(recipe: recipeEntity, name: newAdditionName)) {
-                persistenceController.addAdditionToRecipe(name: newAdditionName, weight: newAdditionWeight, duration: newAdditionDuration, recipeEntity: recipeEntity)
-                hideKeyboard()
+              if (newAdditionName.isEmpty ||
+                  persistenceController.doesAdditionNameExist(recipe: recipeEntity,
+                                                              name: newAdditionName)) {
+                isAlertPresented = true
               }
-              else { isAlertPresented = true }
-              
+              else {
+                persistenceController.addAdditionToRecipe(name: newAdditionName,
+                                                          weight: newAdditionWeight,
+                                                          duration: newAdditionDuration,
+                                                          recipeEntity: recipeEntity)
+                resetFieldsAndDissmissView()
+              }
             }
-            newHopName = ""
-            newHopWeight = ""
             
-            newMaltName = ""
-            newMaltWeight = ""
-            
-            newYeastName = ""
-            newYeastType = ""
-            
-            newAdditionName = ""
-            newAdditionWeight = ""
-            
-            showAddNewIngredientView.toggle()
           } label: {
             Text("Add")
               .frame(maxWidth: .infinity)
@@ -284,8 +302,8 @@ struct AddIngredientView: View {
     }
     .alert(isPresented: $isAlertPresented, content: {
       Alert(
-        title: Text("Warning!"),
-        message: Text("Ingredient name already exist or fields are empty!"),
+        title: Text("Warning"),
+        message: Text("Ingredient name is empty, or name already exist!"),
         dismissButton: .cancel())
     })
     .navigationBarTitle(
@@ -304,6 +322,8 @@ struct ModifyIngredientView: View {
   var maltEntity: MaltEntity? = nil
   var yeastEntity: YeastEntity? = nil
   var additionEntity: AdditionEntity? = nil
+  
+  @State var isValidationAlertPresented = false
   
   @Environment(\.presentationMode) var presentationMode
   @ObservedObject var persistenceController = PersistenceController.shared
@@ -382,6 +402,10 @@ struct ModifyIngredientView: View {
       Button {
         switch ingredient {
         case .hop:
+          if (hopName.isEmpty || hopWeight.isEmpty || hopDuration.isEmpty) {
+            isValidationAlertPresented = true
+            break
+          }
           hopEntity?.name = hopName
           hopEntity?.weight = Int32(hopWeight) ?? 0
           hopEntity?.duration = Int32(hopDuration) ?? 0
@@ -389,20 +413,33 @@ struct ModifyIngredientView: View {
           hideKeyboard()
           presentationMode.wrappedValue.dismiss()
         case .malt:
+          if (maltName.isEmpty || maltWeight.isEmpty) {
+            isValidationAlertPresented = true
+            break
+          }
           maltEntity?.name = maltName
           maltEntity?.weight = Float(maltWeight) ?? 0.0
           persistenceController.saveData()
           hideKeyboard()
           presentationMode.wrappedValue.dismiss()
         case .yeast:
+          if (yeastName.isEmpty || yeastType.isEmpty) {
+            isValidationAlertPresented = true
+            break
+          }
           yeastEntity?.name = yeastName
           yeastEntity?.type = yeastType
           persistenceController.saveData()
           hideKeyboard()
           presentationMode.wrappedValue.dismiss()
         case .addition:
+          if (additionName.isEmpty || additionWeight.isEmpty || additionDuration.isEmpty) {
+            isValidationAlertPresented = true
+            break
+          }
           additionEntity?.name = additionName
           additionEntity?.weight = Int16(additionWeight) ?? 0
+          additionEntity?.duration = Int32(additionDuration) ?? 0
           persistenceController.saveData()
           hideKeyboard()
           presentationMode.wrappedValue.dismiss()
@@ -414,11 +451,9 @@ struct ModifyIngredientView: View {
           .background(Color.blue)
           .cornerRadius(15.0)
       }
-      .disabled(ingredient == .hop ? hopName.isEmpty :
-                  ingredient == .malt ? maltName.isEmpty :
-                  ingredient == .yeast ? yeastName.isEmpty :
-                  ingredient == .addition ? additionName.isEmpty :
-                  false)
+      .alert(isPresented: $isValidationAlertPresented) {
+        Alert(title: Text("Warning"), message: Text("Fields can't be empty"), dismissButton: .destructive(Text("ok")))
+      }
     }
     .padding()
   }

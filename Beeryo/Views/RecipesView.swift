@@ -17,7 +17,7 @@ struct RecipesView: View {
   @State var newRecipeName: String = ""
   @State var isAlertPresented = false
   
-  init(){
+  init() {
     
   }
   
@@ -49,7 +49,7 @@ struct RecipesView: View {
           .padding()
         Spacer()
         Button {
-          if persistenceController.doesRecipeNameExist(name: newRecipeName) {
+          if (persistenceController.doesRecipeNameExist(name: newRecipeName) || newRecipeName.isEmpty) {
             isAlertPresented = true
           }
           else {
@@ -64,11 +64,12 @@ struct RecipesView: View {
             .cornerRadius(10)
             .padding()
         }
-        .disabled(newRecipeName.isEmpty)
       }
       .background(Color.gray.opacity(0.2))
+      .cornerRadius(15)
+      .padding()
       .alert(isPresented: $isAlertPresented) {
-        Alert(title: Text("Warning"), message: Text("Recipe already exist"), dismissButton: .cancel())
+        Alert(title: Text("Warning"), message: Text("Recipe name is empty or it already exist!"), dismissButton: .cancel())
       }
       .navigationBarTitle("My Recipes", displayMode: .inline)
       .navigationViewStyle(StackNavigationViewStyle())
